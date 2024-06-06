@@ -1,0 +1,15 @@
+# config.toml
+
+[default]
+app_name = "FastAPI Application"
+api_version = "v1"
+enable_logging = true
+
+[development]
+database_url = "mongodb://localhost/darkknight"
+jwt_secret_key = "Test"
+debug = true
+
+[production]
+debug = false
+optimize = true

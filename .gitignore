@@ -1,0 +1,14 @@
+node_modules
+backend/venv
+backend/.env
+ui/node_modules
+**/__pycache__
+backend/.pytest_cache
+backend/.coverage
+backend/.vscode
+app-ui/.vscode
+backend/bart_base.pth
+
+# System Files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <span style="justify-self: center; align-self: center">Products</span>
+      <span style="flex: 1 1 auto"></span>
+      <button (click)="createProduct($event)" mat-icon-button>
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-expansion-panel-header>
+
+    <app-products-grid
+      [products]="products | async"
+      [productCardActions]="productCardActions"
+      [componentInstance]="this"
+    ></app-products-grid>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,58 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { TranscriptInstance } from 'src/app/shared/services/recording.service';
+
+export interface Room {
+  room_id?: string;
+  name: string;
+  description: string;
+  owner: string;
+  transcript?: TranscriptInstance[];
+  summaries?: string[];
+}
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
+})
+export class HomeComponent implements OnInit {
+  createRoomForm!: FormGroup;
+  joinRoomForm!: FormGroup;
+  user = this.authService.getTokenData().email;
+
+  constructor(private http: HttpClient, private router: Router, private authService: AuthenticationService) {}
+
+  ngOnInit(): void {
+    this.createRoomForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+    });
+    this.joinRoomForm = new FormGroup({
+      roomId: new FormControl('', Validators.required),
+    });
+  }
+
+  createRoom() {
+    if (this.createRoomForm.valid) {
+      const room: Room = {
+        name: this.createRoomForm.controls['name'].value,
+        description: this.createRoomForm.controls['description'].value,
+        owner: this.authService.getTokenData().email,
+      };
+      console.log(room);
+      this.http.post<Room>('/api/room', room).subscribe((res) => {
+        this.router.navigate(['room', res.room_id]);
+      });
+    }
+  }
+
+  joinRoom() {
+    if (this.joinRoomForm.valid) {
+      this.router.navigate(['room', 'join', this.joinRoomForm.controls['roomId'].value]);
+    }
+  }
+}

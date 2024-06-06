@@ -1,0 +1,17 @@
+<div *ngIf="device === 'mobile'; else default" class="mobile">
+  <span class="brand-icon"><mat-icon>takeout_dining </mat-icon></span>
+  <span class="title">SIRIUS</span>
+  <span style="flex: 1 1 auto"></span>
+  <span class="title-action">
+    <mat-icon (click)="displayDetails()">person</mat-icon>
+  </span>
+</div>
+
+<ng-template #default>
+  <div class="default" style="padding: 0 20px; gap: 4px" fxLayout="row" fxLayoutAlign="center center">
+    <span class="brand-icon"><mat-icon>cast_for_education </mat-icon></span>
+    &nbsp;
+    <span class="title">EduCast</span>
+    <span style="flex: 1 1 auto"></span>
+  </div>
+</ng-template>

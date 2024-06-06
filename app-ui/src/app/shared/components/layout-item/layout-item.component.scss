@@ -1,0 +1,86 @@
+@use '@angular/material' as mat;
+:host {
+  cursor: pointer;
+}
+
+.minimal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  max-height: 64px;
+  max-width: 64px;
+  gap: 4px;
+  ::ng-deep {
+    .image-wrapper {
+      height: 32px;
+      width: 32px;
+      * {
+        height: 32px;
+        width: 32px;
+        font-size: 32px;
+      }
+    }
+    .title-wrapper {
+      font-size: smaller;
+      max-width: 48px;
+      text-align: center;
+      line-height: calc(1em + 2px);
+    }
+  }
+}
+.list {
+  display: flex;
+  flex-direction: row;
+  padding: 0.5em;
+  gap: 8px;
+  ::ng-deep {
+    .image-wrapper {
+      height: 32px;
+      width: 32px;
+      * {
+        height: 32px;
+        width: 32px;
+        font-size: 32px;
+      }
+    }
+    .title-wrapper {
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  @include mat.elevation(2);
+  ::ng-deep {
+    .image-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .title-wrapper {
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .description-wrapper {
+      padding: 0.5em;
+      font-size: small;
+      color: black;
+      flex: 1 1 auto;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      text-justify: distribute-all-lines;
+      text-align: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}

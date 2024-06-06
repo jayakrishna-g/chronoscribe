@@ -1,0 +1,52 @@
+.Minimal {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1em;
+  gap: 1em;
+  justify-content: space-around;
+}
+
+.List {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+
+.Card {
+  display: grid;
+  padding: 1em;
+  gap: 1em;
+  grid-template-columns: repeat(auto-fit, 172px);
+  justify-content: space-around;
+}
+
+.selection-panel {
+  display: flex;
+  align-content: flex-end;
+  justify-content: flex-end;
+  padding: 1em;
+  gap: 0.5em;
+  input {
+    flex: 1 1 auto;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 1.3em;
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 8px;
+    padding-bottom: 2px;
+    align-items: center;
+    justify-content: center;
+    font-size: small;
+    border-radius: 3px;
+    cursor: pointer;
+    &.active {
+      background-color: rgba(0, 0, 0, 1);
+      color: white;
+    }
+  }
+}

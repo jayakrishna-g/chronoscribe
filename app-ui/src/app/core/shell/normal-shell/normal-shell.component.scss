@@ -1,0 +1,19 @@
+:host {
+  display: grid;
+  grid-template-areas: 'title title nav' 'body body body';
+  grid-template-rows: 64px 1fr;
+  grid-template-columns: 64px 1fr 1fr;
+}
+.title-bar {
+  grid-area: title;
+}
+.nav-list {
+  grid-area: nav;
+  overflow: auto;
+  padding: 0 2em;
+}
+
+.body {
+  grid-area: body;
+  overflow: auto;
+}

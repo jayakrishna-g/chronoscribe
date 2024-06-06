@@ -1,0 +1,21 @@
+<div *ngIf="device === 'mobile'; else default" class="mobile">
+  <a *ngFor="let item of mobileItems" class="nav-icon" [routerLink]="item.route" routerLinkActive="active">
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <span>{{ item.name }}</span>
+    <span class="highlight"></span>
+  </a>
+  <a class="nav-icon" (click)="logout()"
+    ><mat-icon>logout</mat-icon> <span>logout</span> <span class="highlight"></span
+  ></a>
+</div>
+
+<ng-template #default>
+  <div class="default">
+    <a *ngFor="let item of mobileItems" class="nav-icon" [routerLink]="item.route" routerLinkActive="active">
+      <!-- <mat-icon>{{ item.icon }}</mat-icon> -->
+      <span>{{ item.name }}</span>
+      <span class="highlight"></span>
+    </a>
+    <a class="nav-icon" (click)="logout()"><span>logout</span> <span class="highlight"></span></a>
+  </div>
+</ng-template>

@@ -1,0 +1,57 @@
+<div class="image-wrapper">
+  <div class="image">
+    <img [src]="domSanitizer.bypassSecurityTrustUrl(product.icon)" />
+    <div class="edit-wrapper">
+      <mat-icon>edit</mat-icon>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-header">
+    <mat-icon>description</mat-icon>
+    <span class="title"> Product Details </span>
+    <span style="flex: 1 1 auto"></span>
+    <mat-icon (click)="productDetailsEdit()">edit</mat-icon>
+  </div>
+  <div class="section-body title-group">
+    <div class="title-price">
+      <span class="title">
+        {{ product.name }}
+      </span>
+      <span class="price">
+        {{ product.basePrice | currency: 'INR':'symbol' }}
+      </span>
+    </div>
+    <span class="description">
+      {{ product.description }}
+    </span>
+  </div>
+</div>
+<div class="section">
+  <div class="section-header">
+    <mat-icon>category</mat-icon>
+    <span class="title"> Categories </span>
+    <span style="flex: 1 1 auto"></span>
+    <mat-icon>edit</mat-icon>
+  </div>
+  <div class="section-body"></div>
+</div>
+<div class="section">
+  <div class="section-header">
+    <mat-icon>shopping_cart</mat-icon>
+    <span class="title">Pending Orders </span>
+    <span style="flex: 1 1 auto"></span>
+    <mat-icon>open_in_new</mat-icon>
+  </div>
+  <div class="section-body"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <mat-icon>assessment</mat-icon>
+    <span class="title">Todays Sales </span>
+    <span style="flex: 1 1 auto"></span>
+    <mat-icon>open_in_new</mat-icon>
+  </div>
+  <div class="section-body"></div>
+</div>

@@ -1,0 +1,50 @@
+.default,
+.mobile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.menu-icon {
+  height: 100%;
+  width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mat-icon {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
+}
+.title {
+  font-weight: 400;
+  font-size: 1.8em;
+}
+
+.title-action {
+  height: 100%;
+  width: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mat-icon {
+    height: 32px;
+    width: 32px;
+    font-size: 32px;
+  }
+}
+
+.brand-icon {
+  height: 48px;
+  width: 32px;
+  padding: 8px;
+  padding-right: 0;
+  mat-icon {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
+}

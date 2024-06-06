@@ -1,0 +1,32 @@
+{
+  "name": "darkknight",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jayakrishna-g/DarkKnight.git"
+  },
+  "author": "Jayakrishna Gandhamalla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jayakrishna-g/DarkKnight/issues"
+  },
+  "homepage": "https://github.com/jayakrishna-g/DarkKnight#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}

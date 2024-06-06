@@ -1,0 +1,15 @@
+import { Injectable } from '@angular/core';
+import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { Menu } from 'src/app/shared/types/menuTypes';
+import { MenuService } from '../menu/menu-service/menu-service.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class MenusResolver implements Resolve<Menu[]> {
+  constructor(private menuService: MenuService) {}
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Menu[]> {
+    return this.menuService.getMenus();
+  }
+}

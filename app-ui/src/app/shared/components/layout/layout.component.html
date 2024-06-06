@@ -1,0 +1,37 @@
+<div class="selection-panel">
+  <input *ngIf="filter" [(ngModel)]="filterString" (keyup)="filterData()" />
+  <div
+    *ngFor="let ele of layout"
+    [ngClass]="(selectedLayout$ | async) === ele ? 'active' : ''"
+    class="item"
+    (click)="markActive(ele)"
+  >
+    <mat-icon>{{ icons[ele] }}</mat-icon>
+    <span>{{ ele }}</span>
+  </div>
+</div>
+<div [ngClass]="(selectedLayout$ | async) + ' genric'">
+  <div *ngIf="addItem">
+    <ng-container
+      *ngTemplateOutlet="
+        addItem;
+        context: {
+          layout: (selectedLayout$ | async)
+        }
+      "
+    >
+    </ng-container>
+  </div>
+  <div *ngFor="let data of dataSource$ | async">
+    <ng-container
+      *ngTemplateOutlet="
+        layoutItemTemplate;
+        context: {
+          data: data,
+          layout: (selectedLayout$ | async)
+        }
+      "
+    >
+    </ng-container>
+  </div>
+</div>

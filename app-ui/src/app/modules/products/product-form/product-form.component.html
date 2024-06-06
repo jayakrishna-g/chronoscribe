@@ -1,0 +1,25 @@
+<form (ngSubmit)="update()" [formGroup]="productForm" class="productForm">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input type="text" matInput formControlName="name" placeholder="Name of the Product" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+  <!-- <div fxLayout="column">
+    <mat-label for="imageInput">Icon</mat-label>
+    <div fxLayout="row">
+      <img [src]="domSanitizer.bypassSecurityTrustUrl(productForm.get('icon')?.value)" mat-card-sm-image />
+      <button type="button" mat-raised-button (click)="fileInput.click()" style="margin: 1em" color="accent">
+        Choose File
+      </button>
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file" />
+    </div>
+  </div> -->
+  <mat-form-field>
+    <mat-label>Price</mat-label>
+    <input matInput formControlName="basePrice" />
+  </mat-form-field>
+  <button type="submit" mat-button>Update</button>
+</form>
