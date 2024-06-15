@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { TokenData, AuthenticationService } from '../../authentication/authentication.service';
+import { MatIconModule } from '@angular/material/icon';
+import { NgIf, NgFor } from '@angular/common';
 
 interface NavListItem {
   icon: string;
@@ -9,9 +11,17 @@ interface NavListItem {
 }
 
 @Component({
-  selector: 'app-nav-list',
-  templateUrl: './nav-list.component.html',
-  styleUrls: ['./nav-list.component.scss'],
+    selector: 'app-nav-list',
+    templateUrl: './nav-list.component.html',
+    styleUrls: ['./nav-list.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgFor,
+        RouterLinkActive,
+        RouterLink,
+        MatIconModule,
+    ],
 })
 export class NavListComponent implements OnInit {
   @Input()

@@ -16,18 +16,15 @@ import { NavListComponent } from './core/shell/nav-list/nav-list.component';
 import { TitleBarComponent } from './core/shell/title-bar/title-bar.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ShellComponent,
-    LoginComponent,
-    PasswordResetComponent,
-    MobileShellComponent,
-    NormalShellComponent,
-    NavListComponent,
-    TitleBarComponent,
-  ],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, SharedModule.forRoot(), ToastrModule.forRoot()],
-  providers: [AuthenticationService],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, SharedModule.forRoot(), ToastrModule.forRoot(), ShellComponent,
+        LoginComponent,
+        PasswordResetComponent,
+        MobileShellComponent,
+        NormalShellComponent,
+        NavListComponent,
+        TitleBarComponent],
+    providers: [AuthenticationService],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

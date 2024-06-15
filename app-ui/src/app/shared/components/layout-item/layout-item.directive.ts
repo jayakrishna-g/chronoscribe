@@ -1,7 +1,8 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[appLayoutItem]',
+    selector: '[appLayoutItem]',
+    standalone: true,
 })
 export class LayoutItemDirective {
   constructor() {}

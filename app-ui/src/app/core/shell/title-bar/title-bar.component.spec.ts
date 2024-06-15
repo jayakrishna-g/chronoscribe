@@ -8,8 +8,8 @@ describe('TitleBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TitleBarComponent],
-    }).compileComponents();
+    imports: [TitleBarComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

@@ -17,29 +17,26 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { LayoutItemComponent } from './components/layout-item/layout-item.component';
 import { LayoutItemDirective } from './components/layout-item/layout-item.directive';
 @NgModule({
-  declarations: [
-    TimeConversionPipe,
-    SafeHtmlPipe,
-    RunScriptsDirective,
-    ConfirmDialogComponent,
-    DisplayDetailsComponent,
-    LayoutComponent,
-    LayoutItemComponent,
-    LayoutItemDirective,
-  ],
-  exports: [
-    MaterialModule,
-    FlexLayoutModule,
-    ReactiveFormsModule,
-    FormsModule,
-    TimeConversionPipe,
-    SafeHtmlPipe,
-    LayoutComponent,
-    LayoutItemComponent,
-    RunScriptsDirective,
-  ],
-  imports: [CommonModule, MaterialModule, FlexLayoutModule, FormsModule, ReactiveFormsModule],
-  providers: [provideHttpClient(withInterceptorsFromDi())],
+    exports: [
+        MaterialModule,
+        FlexLayoutModule,
+        ReactiveFormsModule,
+        FormsModule,
+        TimeConversionPipe,
+        SafeHtmlPipe,
+        LayoutComponent,
+        LayoutItemComponent,
+        RunScriptsDirective,
+    ],
+    imports: [CommonModule, MaterialModule, FlexLayoutModule, FormsModule, ReactiveFormsModule, TimeConversionPipe,
+        SafeHtmlPipe,
+        RunScriptsDirective,
+        ConfirmDialogComponent,
+        DisplayDetailsComponent,
+        LayoutComponent,
+        LayoutItemComponent,
+        LayoutItemDirective],
+    providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {

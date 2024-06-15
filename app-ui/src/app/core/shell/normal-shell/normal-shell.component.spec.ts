@@ -8,8 +8,8 @@ describe('NormalShellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NormalShellComponent],
-    }).compileComponents();
+    imports: [NormalShellComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

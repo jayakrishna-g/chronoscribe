@@ -8,12 +8,29 @@ import { DisplayDetailsComponent } from 'src/app/shared/components/display-detai
 import { QuizQuestion } from '../room.component';
 import { BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-join-room',
-  templateUrl: './join-room.component.html',
-  styleUrls: ['./join-room.component.scss'],
-  providers: [RoomService],
+    selector: 'app-join-room',
+    templateUrl: './join-room.component.html',
+    styleUrls: ['./join-room.component.scss'],
+    providers: [RoomService],
+    standalone: true,
+    imports: [
+        NgIf,
+        FlexModule,
+        MatLegacyCardModule,
+        NgFor,
+        FormsModule,
+        MatLegacyRadioModule,
+        MatLegacyProgressBarModule,
+        AsyncPipe,
+    ],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   room: Room = this.route.snapshot.data.room;

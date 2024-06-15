@@ -1,11 +1,21 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { NormalShellComponent } from './normal-shell/normal-shell.component';
+import { MobileShellComponent } from './mobile-shell/mobile-shell.component';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-shell',
-  templateUrl: './shell.component.html',
-  styleUrls: ['./shell.component.scss'],
+    selector: 'app-shell',
+    templateUrl: './shell.component.html',
+    styleUrls: ['./shell.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        MobileShellComponent,
+        NormalShellComponent,
+        AsyncPipe,
+    ],
 })
 export class ShellComponent implements OnInit {
   smallScreen = new BehaviorSubject<boolean>(false);

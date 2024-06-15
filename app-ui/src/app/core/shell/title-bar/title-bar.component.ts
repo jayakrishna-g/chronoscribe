@@ -2,11 +2,20 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-title-bar',
-  templateUrl: './title-bar.component.html',
-  styleUrls: ['./title-bar.component.scss'],
+    selector: 'app-title-bar',
+    templateUrl: './title-bar.component.html',
+    styleUrls: ['./title-bar.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        MatIconModule,
+        FlexModule,
+    ],
 })
 export class TitleBarComponent implements OnInit {
   @Input()

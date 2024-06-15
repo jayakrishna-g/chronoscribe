@@ -1,12 +1,27 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgFor, NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 
 export type Layout = 'Card' | 'List' | 'Minimal';
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+    selector: 'app-layout',
+    templateUrl: './layout.component.html',
+    styleUrls: ['./layout.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FormsModule,
+        NgFor,
+        NgClass,
+        ExtendedModule,
+        MatIconModule,
+        NgTemplateOutlet,
+        AsyncPipe,
+    ],
 })
 export class LayoutComponent<T> implements OnInit {
   @Input()

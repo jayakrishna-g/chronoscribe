@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Form, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Form, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TranscriptInstance } from 'src/app/shared/services/recording.service';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgTemplateOutlet } from '@angular/common';
 
 export interface Room {
   room_id?: string;
@@ -15,9 +19,18 @@ export interface Room {
 }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true,
+    imports: [
+        NgTemplateOutlet,
+        MatLegacyCardModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatLegacyFormFieldModule,
+        MatLegacyInputModule,
+    ],
 })
 export class HomeComponent implements OnInit {
   createRoomForm!: UntypedFormGroup;

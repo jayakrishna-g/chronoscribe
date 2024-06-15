@@ -1,13 +1,33 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { NgIf } from '@angular/common';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { FlexModule } from '@angular/flex-layout/flex';
 @UntilDestroy()
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [
+        FlexModule,
+        MatLegacyCardModule,
+        NgIf,
+        MatLegacyRadioModule,
+        FormsModule,
+        RouterLink,
+        ReactiveFormsModule,
+        MatLegacyFormFieldModule,
+        MatLegacyInputModule,
+        MatLegacyButtonModule,
+    ],
 })
 export class LoginComponent implements OnInit {
   loginForm!: UntypedFormGroup;

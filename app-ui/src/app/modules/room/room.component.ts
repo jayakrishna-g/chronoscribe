@@ -5,8 +5,14 @@ import { RecordingService } from 'src/app/shared/services/recording.service';
 import { RoomService } from './room.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
-import { Form, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Form, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 export type QuizQuestion = {
   question: string;
@@ -14,10 +20,23 @@ export type QuizQuestion = {
 };
 
 @Component({
-  selector: 'app-room',
-  templateUrl: './room.component.html',
-  styleUrls: ['./room.component.scss'],
-  providers: [RoomService, RecordingService],
+    selector: 'app-room',
+    templateUrl: './room.component.html',
+    styleUrls: ['./room.component.scss'],
+    providers: [RoomService, RecordingService],
+    standalone: true,
+    imports: [
+        NgIf,
+        FlexModule,
+        MatLegacyCardModule,
+        NgFor,
+        MatIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatLegacyFormFieldModule,
+        MatLegacyInputModule,
+        AsyncPipe,
+    ],
 })
 export class RoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
