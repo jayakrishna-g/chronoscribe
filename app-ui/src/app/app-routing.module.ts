@@ -16,15 +16,6 @@ const routes: Routes = [
         loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
       },
       {
-        path: 'products',
-        loadChildren: () => import('./modules/products/products.module').then((m) => m.ProductsModule),
-      },
-      {
-        path: 'transcription',
-        loadChildren: () =>
-          import('./modules/live-transcription/live-transcription.module').then((m) => m.LiveTranscriptionModule),
-      },
-      {
         path: 'room',
         loadChildren: () => import('./modules/room/room.module').then((m) => m.RoomModule),
       },

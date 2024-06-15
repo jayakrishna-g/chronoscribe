@@ -21,7 +21,6 @@ export class NavListComponent implements OnInit {
 
   commonItems: NavListItem[] = [
     { icon: 'home', route: 'home', name: 'Home' },
-    { icon: 'record_voice_over', route: 'transcription', name: 'Transcription' },
     { icon: 'settings', route: 'room', name: 'Rooms' },
   ];
 
