@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor, NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 
 export type Layout = 'Card' | 'List' | 'Minimal';
 
@@ -13,15 +13,13 @@ export type Layout = 'Card' | 'List' | 'Minimal';
     styleUrls: ['./layout.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        FormsModule,
-        NgFor,
-        NgClass,
-        ExtendedModule,
-        MatIconModule,
-        NgTemplateOutlet,
-        AsyncPipe,
-    ],
+    FormsModule,
+    NgClass,
+    ExtendedModule,
+    MatIconModule,
+    NgTemplateOutlet,
+    AsyncPipe
+],
 })
 export class LayoutComponent<T> implements OnInit {
   @Input()

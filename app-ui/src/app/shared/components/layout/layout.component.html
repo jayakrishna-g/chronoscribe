@@ -1,17 +1,16 @@
 <div class="selection-panel">
-  <input *ngIf="filter" [(ngModel)]="filterString" (keyup)="filterData()" />
-  <div
-    *ngFor="let ele of layout"
-    [ngClass]="(selectedLayout$ | async) === ele ? 'active' : ''"
-    class="item"
-    (click)="markActive(ele)"
-  >
+  @if (filter !== undefined) {
+  <input [(ngModel)]="filterString" (keyup)="filterData()" />
+  } @for (ele of layout; track ele) {
+  <div [ngClass]="(selectedLayout$ | async) === ele ? 'active' : ''" class="item" (click)="markActive(ele)">
     <mat-icon>{{ icons[ele] }}</mat-icon>
     <span>{{ ele }}</span>
   </div>
+  }
 </div>
 <div [ngClass]="(selectedLayout$ | async) + ' genric'">
-  <div *ngIf="addItem">
+  @if (addItem) {
+  <div>
     <ng-container
       *ngTemplateOutlet="
         addItem;
@@ -22,7 +21,8 @@
     >
     </ng-container>
   </div>
-  <div *ngFor="let data of dataSource$ | async">
+  } @for (data of dataSource$ | async; track data) {
+  <div>
     <ng-container
       *ngTemplateOutlet="
         layoutItemTemplate;
@@ -34,4 +34,5 @@
     >
     </ng-container>
   </div>
+  }
 </div>

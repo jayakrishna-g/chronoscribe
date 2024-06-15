@@ -1,16 +1,22 @@
-<div *ngIf="layout === 'Minimal'" class="minimal">
-  <ng-container *ngTemplateOutlet="imageWrapper"></ng-container>
-  <ng-container *ngTemplateOutlet="titleWrapper"></ng-container>
-</div>
-<div *ngIf="layout === 'List'" class="list">
-  <ng-container *ngTemplateOutlet="imageWrapper"></ng-container>
-  <ng-container *ngTemplateOutlet="titleWrapper"></ng-container>
-</div>
-<div *ngIf="layout === 'Card'" class="card">
-  <ng-container *ngTemplateOutlet="imageWrapper"></ng-container>
-  <ng-container *ngTemplateOutlet="titleWrapper"></ng-container>
-  <ng-container *ngTemplateOutlet="descriptionWrapper"></ng-container>
-</div>
+@if (layout === 'Minimal') {
+  <div class="minimal">
+    <ng-container *ngTemplateOutlet="imageWrapper"></ng-container>
+    <ng-container *ngTemplateOutlet="titleWrapper"></ng-container>
+  </div>
+}
+@if (layout === 'List') {
+  <div class="list">
+    <ng-container *ngTemplateOutlet="imageWrapper"></ng-container>
+    <ng-container *ngTemplateOutlet="titleWrapper"></ng-container>
+  </div>
+}
+@if (layout === 'Card') {
+  <div class="card">
+    <ng-container *ngTemplateOutlet="imageWrapper"></ng-container>
+    <ng-container *ngTemplateOutlet="titleWrapper"></ng-container>
+    <ng-container *ngTemplateOutlet="descriptionWrapper"></ng-container>
+  </div>
+}
 
 <ng-template #imageWrapper>
   <div class="image-wrapper">

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NormalShellComponent } from './normal-shell/normal-shell.component';
 import { MobileShellComponent } from './mobile-shell/mobile-shell.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-shell',
@@ -11,11 +11,10 @@ import { NgIf, AsyncPipe } from '@angular/common';
     styleUrls: ['./shell.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        MobileShellComponent,
-        NormalShellComponent,
-        AsyncPipe,
-    ],
+    MobileShellComponent,
+    NormalShellComponent,
+    AsyncPipe
+],
 })
 export class ShellComponent implements OnInit {
   smallScreen = new BehaviorSubject<boolean>(false);

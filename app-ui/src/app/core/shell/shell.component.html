@@ -1,4 +1,5 @@
-<app-mobile-shell class="shell" *ngIf="(smallScreen | async) === true; else normal"> </app-mobile-shell>
-<ng-template #normal>
+@if ((smallScreen | async) === true) {
+  <app-mobile-shell class="shell"> </app-mobile-shell>
+} @else {
   <app-normal-shell class="shell"> </app-normal-shell>
-</ng-template>
+}

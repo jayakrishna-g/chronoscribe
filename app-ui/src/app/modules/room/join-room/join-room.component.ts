@@ -13,7 +13,7 @@ import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { FormsModule } from '@angular/forms';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { FlexModule } from '@angular/flex-layout/flex';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-join-room',
@@ -22,15 +22,13 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
     providers: [RoomService],
     standalone: true,
     imports: [
-        NgIf,
-        FlexModule,
-        MatLegacyCardModule,
-        NgFor,
-        FormsModule,
-        MatLegacyRadioModule,
-        MatLegacyProgressBarModule,
-        AsyncPipe,
-    ],
+    FlexModule,
+    MatLegacyCardModule,
+    FormsModule,
+    MatLegacyRadioModule,
+    MatLegacyProgressBarModule,
+    AsyncPipe
+],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   room: Room = this.route.snapshot.data.room;

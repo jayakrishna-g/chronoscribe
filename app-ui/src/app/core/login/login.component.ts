@@ -7,7 +7,7 @@ import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyInputModule } from '@angular/material/legacy-input';
 import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
-import { NgIf } from '@angular/common';
+
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { FlexModule } from '@angular/flex-layout/flex';
 @UntilDestroy()
@@ -17,17 +17,16 @@ import { FlexModule } from '@angular/flex-layout/flex';
     styleUrls: ['./login.component.scss'],
     standalone: true,
     imports: [
-        FlexModule,
-        MatLegacyCardModule,
-        NgIf,
-        MatLegacyRadioModule,
-        FormsModule,
-        RouterLink,
-        ReactiveFormsModule,
-        MatLegacyFormFieldModule,
-        MatLegacyInputModule,
-        MatLegacyButtonModule,
-    ],
+    FlexModule,
+    MatLegacyCardModule,
+    MatLegacyRadioModule,
+    FormsModule,
+    RouterLink,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyButtonModule
+],
 })
 export class LoginComponent implements OnInit {
   loginForm!: UntypedFormGroup;

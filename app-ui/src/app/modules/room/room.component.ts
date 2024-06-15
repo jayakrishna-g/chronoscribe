@@ -12,7 +12,7 @@ import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { FlexModule } from '@angular/flex-layout/flex';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 export type QuizQuestion = {
   question: string;
@@ -26,17 +26,15 @@ export type QuizQuestion = {
     providers: [RoomService, RecordingService],
     standalone: true,
     imports: [
-        NgIf,
-        FlexModule,
-        MatLegacyCardModule,
-        NgFor,
-        MatIconModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatLegacyFormFieldModule,
-        MatLegacyInputModule,
-        AsyncPipe,
-    ],
+    FlexModule,
+    MatLegacyCardModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    AsyncPipe
+],
 })
 export class RoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;

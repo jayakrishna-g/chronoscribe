@@ -2,64 +2,72 @@
   <div class="login-container" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" fxFlexFill>
     <h1>Live Transcription App</h1>
     <mat-card fxLayout="column">
-      <mat-card-title *ngIf="formChoice === 'login'">Login</mat-card-title>
-      <mat-card-title *ngIf="formChoice === 'signup'">Sign Up</mat-card-title>
+      @if (formChoice === 'login') {
+        <mat-card-title>Login</mat-card-title>
+      }
+      @if (formChoice === 'signup') {
+        <mat-card-title>Sign Up</mat-card-title>
+      }
       <mat-radio-group aria-label="Select one option" [(ngModel)]="formChoice">
         <mat-radio-button value="login" [checked]="true" routerLink="./../login"> Login </mat-radio-button>
         <mat-radio-button value="signup" [checked]="false" routerLink="./../signup"> Signup </mat-radio-button>
       </mat-radio-group>
 
       <mat-card-content class="login-box">
-        <form (ngSubmit)="login()" [formGroup]="loginForm" *ngIf="formChoice === 'login'">
-          <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input type="text" matInput formControlName="username" placeholder="Username" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input type="password" matInput formControlName="password" placeholder="Password" />
-          </mat-form-field>
-          <button mat-flat-button color="primary" type="submit">Login</button>
-          <a href="\EditPass" style="display: block">forgot or edit password?</a>
-        </form>
-        <form (ngSubmit)="signup()" [formGroup]="signUpForm" *ngIf="formChoice === 'signup'">
-          <mat-form-field>
-            <mat-label>Full Name</mat-label>
-            <input type="text" matInput formControlName="full_name" placeholder="FullName" />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input type="text" matInput formControlName="username" placeholder="Username" />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Email</mat-label>
-            <input type="email" matInput formControlName="email" placeholder="Email" />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input
-              type="password"
-              matInput
-              formControlName="password"
-              placeholder="Password"
-              (change)="onPasswordchange()"
-            />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Confirm Password</mat-label>
-            <input
-              type="password"
-              matInput
-              formControlName="passwordAgain"
-              placeholder="Confirm Password"
-              (change)="onPasswordchange()"
-            />
-            <mat-error *ngIf="passwordAgain.hasError('mismatch')">Passwords are different!should be same</mat-error>
-          </mat-form-field>
-          <button mat-flat-button color="primary" type="submit">Sign Up</button>
-        </form>
+        @if (formChoice === 'login') {
+          <form (ngSubmit)="login()" [formGroup]="loginForm">
+            <mat-form-field>
+              <mat-label>Username</mat-label>
+              <input type="text" matInput formControlName="username" placeholder="Username" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Password</mat-label>
+              <input type="password" matInput formControlName="password" placeholder="Password" />
+            </mat-form-field>
+            <button mat-flat-button color="primary" type="submit">Login</button>
+            <a href="\EditPass" style="display: block">forgot or edit password?</a>
+          </form>
+        }
+        @if (formChoice === 'signup') {
+          <form (ngSubmit)="signup()" [formGroup]="signUpForm">
+            <mat-form-field>
+              <mat-label>Full Name</mat-label>
+              <input type="text" matInput formControlName="full_name" placeholder="FullName" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Username</mat-label>
+              <input type="text" matInput formControlName="username" placeholder="Username" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Email</mat-label>
+              <input type="email" matInput formControlName="email" placeholder="Email" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Password</mat-label>
+              <input
+                type="password"
+                matInput
+                formControlName="password"
+                placeholder="Password"
+                (change)="onPasswordchange()"
+                />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Confirm Password</mat-label>
+              <input
+                type="password"
+                matInput
+                formControlName="passwordAgain"
+                placeholder="Confirm Password"
+                (change)="onPasswordchange()"
+                />
+              @if (passwordAgain.hasError('mismatch')) {
+                <mat-error>Passwords are different!should be same</mat-error>
+              }
+            </mat-form-field>
+            <button mat-flat-button color="primary" type="submit">Sign Up</button>
+          </form>
+        }
       </mat-card-content>
     </mat-card>
   </div>

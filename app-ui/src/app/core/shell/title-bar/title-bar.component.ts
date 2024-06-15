@@ -4,7 +4,7 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-title-bar',
@@ -12,10 +12,9 @@ import { NgIf } from '@angular/common';
     styleUrls: ['./title-bar.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        MatIconModule,
-        FlexModule,
-    ],
+    MatIconModule,
+    FlexModule
+],
 })
 export class TitleBarComponent implements OnInit {
   @Input()
