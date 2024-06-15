@@ -14,9 +14,6 @@ import { MobileShellComponent } from './core/shell/mobile-shell/mobile-shell.com
 import { NormalShellComponent } from './core/shell/normal-shell/normal-shell.component';
 import { NavListComponent } from './core/shell/nav-list/nav-list.component';
 import { TitleBarComponent } from './core/shell/title-bar/title-bar.component';
-import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-
-const config: SocketIoConfig = { url: 'http://localhost:8000/ws', options: {} };
 
 @NgModule({
   declarations: [

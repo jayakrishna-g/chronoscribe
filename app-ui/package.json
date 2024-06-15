@@ -26,7 +26,6 @@
     "@ng-web-apis/common": "^3.0.6",
     "@ng-web-apis/speech": "^3.0.7",
     "@ngneat/until-destroy": "^8.1.4",
-    "ngx-socket-io": "^4.1.0",
     "ngx-toastr": "^14.1.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",

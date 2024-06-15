@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Room } from '../home/home.component';
-import { Socket } from 'ngx-socket-io';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 import { WebSocketSubject, webSocket as websocket } from 'rxjs/webSocket';
