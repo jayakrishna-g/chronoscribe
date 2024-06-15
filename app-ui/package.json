@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.11",
+    "@angular-devkit/core": "^18.0.4",
     "@angular-eslint/builder": "13.5.0",
     "@angular-eslint/eslint-plugin": "13.5.0",
     "@angular-eslint/eslint-plugin-template": "13.5.0",
@@ -44,6 +45,7 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
+    "@typescript-eslint/utils": "^7.11.0",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-typescript": "^14.0.1",
     "eslint-config-prettier": "^8.3.0",
