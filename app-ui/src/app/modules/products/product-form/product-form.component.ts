@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
@@ -12,11 +12,11 @@ import { ProductService } from '../products-services/product-service.service';
   styleUrls: ['./product-form.component.scss'],
 })
 export class ProductFormComponent implements OnInit {
-  productForm!: FormGroup;
+  productForm!: UntypedFormGroup;
   constructor(
     public dialogRef: MatDialogRef<ProductFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Product,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public domSanitizer: DomSanitizer,
     private productService: ProductService,
     private toaster: ToastrService

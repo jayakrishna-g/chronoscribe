@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TranscriptInstance } from 'src/app/shared/services/recording.service';
@@ -20,19 +20,19 @@ export interface Room {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  createRoomForm!: FormGroup;
-  joinRoomForm!: FormGroup;
+  createRoomForm!: UntypedFormGroup;
+  joinRoomForm!: UntypedFormGroup;
   user = this.authService.getTokenData().email;
 
   constructor(private http: HttpClient, private router: Router, private authService: AuthenticationService) {}
 
   ngOnInit(): void {
-    this.createRoomForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
+    this.createRoomForm = new UntypedFormGroup({
+      name: new UntypedFormControl('', Validators.required),
+      description: new UntypedFormControl('', Validators.required),
     });
-    this.joinRoomForm = new FormGroup({
-      roomId: new FormControl('', Validators.required),
+    this.joinRoomForm = new UntypedFormGroup({
+      roomId: new UntypedFormControl('', Validators.required),
     });
   }
 

@@ -5,7 +5,7 @@ import { RecordingService } from 'src/app/shared/services/recording.service';
 import { RoomService } from './room.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
-import { Form, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 
 export type QuizQuestion = {
@@ -26,7 +26,7 @@ export class RoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   isRecording: boolean = false;
   room!: Room;
-  quickQuestionForm!: FormGroup;
+  quickQuestionForm!: UntypedFormGroup;
   quizQuestion = new BehaviorSubject<QuizQuestion | null>(null);
   constructor(
     private route: ActivatedRoute,
@@ -97,8 +97,8 @@ export class RoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   addOption(): void {
-    const options = this.quickQuestionForm.get('options') as FormArray;
-    options.push(new FormControl('', Validators.required));
+    const options = this.quickQuestionForm.get('options') as UntypedFormArray;
+    options.push(new UntypedFormControl('', Validators.required));
   }
 
   askQuestion(): void {
@@ -114,15 +114,15 @@ export class RoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  quizOptions(): FormControl[] {
-    let formArray = this.quickQuestionForm.get('options') as FormArray;
-    return formArray.controls as FormControl[];
+  quizOptions(): UntypedFormControl[] {
+    let formArray = this.quickQuestionForm.get('options') as UntypedFormArray;
+    return formArray.controls as UntypedFormControl[];
   }
 
   initQuizQuestionsForm(): void {
-    this.quickQuestionForm = new FormGroup({
-      question: new FormControl('', Validators.required),
-      options: new FormArray([]),
+    this.quickQuestionForm = new UntypedFormGroup({
+      question: new UntypedFormControl('', Validators.required),
+      options: new UntypedFormArray([]),
     });
   }
 }

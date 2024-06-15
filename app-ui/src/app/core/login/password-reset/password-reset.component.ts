@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatCard } from '@angular/material/card';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { RouteConfigLoadStart, Router } from '@angular/router';
 
@@ -10,9 +10,9 @@ import { RouteConfigLoadStart, Router } from '@angular/router';
   styleUrls: ['./password-reset.component.scss'],
 })
 export class PasswordResetComponent implements OnInit {
-  PassResetForm!: FormGroup;
+  PassResetForm!: UntypedFormGroup;
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
