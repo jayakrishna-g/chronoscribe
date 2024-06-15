@@ -9,7 +9,7 @@ backend/.vscode
 app-ui/.vscode
 backend/bart_base.pth
 summarizer
-
+.angular
 # System Files
 .DS_Store
 Thumbs.db

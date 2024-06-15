@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material-module/material-module.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { ApiInterceptor } from '../core/interceptors/api.interceptor';
 import { TokenInterceptor } from '../core/interceptors/token.interceptor';
 import { TimeConversionPipe } from './pipes/time-conversion.pipe';
@@ -43,7 +42,7 @@ import { LayoutItemDirective } from './components/layout-item/layout-item.direct
   ],
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [
