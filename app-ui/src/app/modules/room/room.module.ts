@@ -7,6 +7,6 @@ import { JoinRoomComponent } from './join-room/join-room.component';
 import { AllComponent } from './all/all.component';
 
 @NgModule({
-    imports: [CommonModule, SharedModule.forRoot(), RoomRoutingModule, RoomComponent, JoinRoomComponent, AllComponent],
+  imports: [CommonModule, SharedModule.forRoot(), RoomRoutingModule, RoomComponent, JoinRoomComponent, AllComponent],
 })
 export class RoomModule {}

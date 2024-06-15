@@ -7,7 +7,7 @@ import { Room } from '../home/home.component';
 @Injectable({
   providedIn: 'root',
 })
-export class RoomResolver  {
+export class RoomResolver {
   constructor(private roomService: RoomService) {}
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Room> {
     return this.roomService.getRoom(route.params.id);

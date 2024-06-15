@@ -16,19 +16,12 @@ import { FlexModule } from '@angular/flex-layout/flex';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-join-room',
-    templateUrl: './join-room.component.html',
-    styleUrls: ['./join-room.component.scss'],
-    providers: [RoomService],
-    standalone: true,
-    imports: [
-    FlexModule,
-    MatLegacyCardModule,
-    FormsModule,
-    MatLegacyRadioModule,
-    MatLegacyProgressBarModule,
-    AsyncPipe
-],
+  selector: 'app-join-room',
+  templateUrl: './join-room.component.html',
+  styleUrls: ['./join-room.component.scss'],
+  providers: [RoomService],
+  standalone: true,
+  imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   room: Room = this.route.snapshot.data.room;

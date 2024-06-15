@@ -8,18 +8,11 @@ import { NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 export type Layout = 'Card' | 'List' | 'Minimal';
 
 @Component({
-    selector: 'app-layout',
-    templateUrl: './layout.component.html',
-    styleUrls: ['./layout.component.scss'],
-    standalone: true,
-    imports: [
-    FormsModule,
-    NgClass,
-    ExtendedModule,
-    MatIconModule,
-    NgTemplateOutlet,
-    AsyncPipe
-],
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss'],
+  standalone: true,
+  imports: [FormsModule, NgClass, ExtendedModule, MatIconModule, NgTemplateOutlet, AsyncPipe],
 })
 export class LayoutComponent<T> implements OnInit {
   @Input()

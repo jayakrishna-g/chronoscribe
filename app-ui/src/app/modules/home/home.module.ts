@@ -10,15 +10,15 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { MatLegacyInputModule } from '@angular/material/legacy-input';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        HomeRoutingModule,
-        MatLegacyFormFieldModule,
-        ReactiveFormsModule,
-        MatLegacyCardModule,
-        MatLegacyInputModule,
-        HomeComponent,
-    ],
-    providers: [],
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    MatLegacyFormFieldModule,
+    ReactiveFormsModule,
+    MatLegacyCardModule,
+    MatLegacyInputModule,
+    HomeComponent,
+  ],
+  providers: [],
 })
 export class HomeModule {}

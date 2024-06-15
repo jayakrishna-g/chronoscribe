@@ -6,16 +6,11 @@ import { LayoutItemComponent } from '../../../shared/components/layout-item/layo
 import { LayoutComponent } from '../../../shared/components/layout/layout.component';
 
 @Component({
-    selector: 'app-all',
-    templateUrl: './all.component.html',
-    styleUrls: ['./all.component.scss'],
-    standalone: true,
-    imports: [
-        LayoutComponent,
-        LayoutItemComponent,
-        MatIconModule,
-        RouterLink,
-    ],
+  selector: 'app-all',
+  templateUrl: './all.component.html',
+  styleUrls: ['./all.component.scss'],
+  standalone: true,
+  imports: [LayoutComponent, LayoutItemComponent, MatIconModule, RouterLink],
 })
 export class AllComponent implements OnInit {
   rooms: Room[] = this.route.snapshot.data.rooms;

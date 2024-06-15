@@ -6,15 +6,11 @@ import { MobileShellComponent } from './mobile-shell/mobile-shell.component';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-shell',
-    templateUrl: './shell.component.html',
-    styleUrls: ['./shell.component.scss'],
-    standalone: true,
-    imports: [
-    MobileShellComponent,
-    NormalShellComponent,
-    AsyncPipe
-],
+  selector: 'app-shell',
+  templateUrl: './shell.component.html',
+  styleUrls: ['./shell.component.scss'],
+  standalone: true,
+  imports: [MobileShellComponent, NormalShellComponent, AsyncPipe],
 })
 export class ShellComponent implements OnInit {
   smallScreen = new BehaviorSubject<boolean>(false);

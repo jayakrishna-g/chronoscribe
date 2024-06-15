@@ -8,8 +8,8 @@ describe('NavListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [NavListComponent],
-}).compileComponents();
+      imports: [NavListComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

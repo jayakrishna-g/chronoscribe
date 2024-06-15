@@ -1,39 +1,39 @@
 <div class="ml-8 mr-8 flex flex-col gap-4">
   <div class="flex flex-row gap-1 p-4" style="justify-content: space-between; align-items: center; width: 100%">
     @if (room) {
-      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" style="width: 100%">
-        <div class="bg-white shadow-md rounded-lg p-4">
-          <mat-card-title>Room Details</mat-card-title><br />
-          <mat-card-subtitle>Created By: {{ room.owner }} </mat-card-subtitle>
-          <mat-card-content>
-            <p>Room Name: {{ room.name }}</p>
-            <p>Room Description: {{ room.description }}</p>
-            <p>Room ID: {{ room.room_id }}</p>
-          </mat-card-content>
-        </div>
-        @for (emoji of ['😀', '😑', '☹️']; track emoji) {
-          <div
-            class="bg-white shadow-md rounded-lg p-4 text-[64px] hover:bg-gray-100 cursor-pointer"
-            (click)="emojiClick(emoji)"
-            >
-            {{ emoji }}
-          </div>
-        }
-        <div
-          class="bg-white shadow-md rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2"
-          style="flex: 1 1 auto; height: 100%"
-          >
-          <span class="text-2xl">Have a question?</span>
-          <textarea
-            class="text-md p-2 border border-gray-300 rounded-md h-full w-full"
-            placeholder="Enter your question here"
-            [(ngModel)]="question"
-          ></textarea>
-          <div class="flex flex-row gap-4">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded max-w-64" (click)="askQuestion()">Ask</button>
-          </div>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" style="width: 100%">
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <mat-card-title>Room Details</mat-card-title><br />
+        <mat-card-subtitle>Created By: {{ room.owner }} </mat-card-subtitle>
+        <mat-card-content>
+          <p>Room Name: {{ room.name }}</p>
+          <p>Room Description: {{ room.description }}</p>
+          <p>Room ID: {{ room.room_id }}</p>
+        </mat-card-content>
+      </div>
+      @for (emoji of ['😀', '😑', '☹️']; track emoji) {
+      <div
+        class="bg-white shadow-md rounded-lg p-4 text-[64px] hover:bg-gray-100 cursor-pointer"
+        (click)="emojiClick(emoji)"
+      >
+        {{ emoji }}
+      </div>
+      }
+      <div
+        class="bg-white shadow-md rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2"
+        style="flex: 1 1 auto; height: 100%"
+      >
+        <span class="text-2xl">Have a question?</span>
+        <textarea
+          class="text-md p-2 border border-gray-300 rounded-md h-full w-full"
+          placeholder="Enter your question here"
+          [(ngModel)]="question"
+        ></textarea>
+        <div class="flex flex-row gap-4">
+          <button class="bg-blue-500 text-white px-4 py-2 rounded max-w-64" (click)="askQuestion()">Ask</button>
         </div>
       </div>
+    </div>
     }
   </div>
 
@@ -44,16 +44,13 @@
       <div class="h-[1em]"></div>
       <div class="overflow-y-auto h-[66vh]" #scrollMe>
         @for (transcript of this.roomService.transcript$ | async; track transcript; let i = $index; let last = $last) {
-          <div
-            class="overflow-y-auto border-b border-gray-200 p-4"
-            >
-            @if (!last) {
-              <span class="text text-gray-500"> {{ transcript.transcript_content }}</span>
-            }
-            @if (last) {
-              <span class="text text-gray-800">{{ transcript.transcript_content }}</span>
-            }
-          </div>
+        <div class="overflow-y-auto border-b border-gray-200 p-4">
+          @if (!last) {
+          <span class="text text-gray-500"> {{ transcript.transcript_content }}</span>
+          } @if (last) {
+          <span class="text text-gray-800">{{ transcript.transcript_content }}</span>
+          }
+        </div>
         }
       </div>
     </div>
@@ -63,11 +60,9 @@
       <div class="h-[1em]"></div>
       <div class="overflow-y-auto h-[66vh]" #scrollMe>
         @for (transcript of this.roomService.summary$ | async; track transcript; let i = $index; let last = $last) {
-          <div
-            class="overflow-y-auto border-b border-gray-200 p-4"
-            >
-            <span class="text text-gray-800"> {{ transcript }}</span>
-          </div>
+        <div class="overflow-y-auto border-b border-gray-200 p-4">
+          <span class="text text-gray-800"> {{ transcript }}</span>
+        </div>
         }
       </div>
     </div>
@@ -81,18 +76,14 @@
       <p>Question: {{ quiz_question.value?.question }}</p>
       <mat-radio-group [(ngModel)]="selected_option" class="flex flex-col gap-4">
         @for (option of quiz_question.value?.options; track option) {
-          <mat-radio-button
-            [value]="option"
-            class="p-4 rounded-md border border-gray-300"
-            >{{ option }}</mat-radio-button
-            >
-          }
-        </mat-radio-group>
-        <span style="flex: 1 1 auto"></span>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-md" (click)="submitQuiz()">Submit</button>
-        <div #timer>
-          <mat-progress-bar mode="determinate" [value]="((60 - ((timeLeft | async) || 0)) * 100) / 60"></mat-progress-bar>
-        </div>
-      </mat-card-content>
-    </div>
-  </ng-template>
+        <mat-radio-button [value]="option" class="p-4 rounded-md border border-gray-300">{{ option }}</mat-radio-button>
+        }
+      </mat-radio-group>
+      <span style="flex: 1 1 auto"></span>
+      <button class="bg-blue-500 text-white px-4 py-2 rounded-md" (click)="submitQuiz()">Submit</button>
+      <div #timer>
+        <mat-progress-bar mode="determinate" [value]="((60 - ((timeLeft | async) || 0)) * 100) / 60"></mat-progress-bar>
+      </div>
+    </mat-card-content>
+  </div>
+</ng-template>

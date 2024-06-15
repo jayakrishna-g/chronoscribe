@@ -5,16 +5,12 @@ import { DisplayDetailsComponent } from 'src/app/shared/components/display-detai
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 
-
 @Component({
-    selector: 'app-title-bar',
-    templateUrl: './title-bar.component.html',
-    styleUrls: ['./title-bar.component.scss'],
-    standalone: true,
-    imports: [
-    MatIconModule,
-    FlexModule
-],
+  selector: 'app-title-bar',
+  templateUrl: './title-bar.component.html',
+  styleUrls: ['./title-bar.component.scss'],
+  standalone: true,
+  imports: [MatIconModule, FlexModule],
 })
 export class TitleBarComponent implements OnInit {
   @Input()

@@ -3,7 +3,6 @@ import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { TokenData, AuthenticationService } from '../../authentication/authentication.service';
 import { MatIconModule } from '@angular/material/icon';
 
-
 interface NavListItem {
   icon: string;
   route: string;
@@ -11,15 +10,11 @@ interface NavListItem {
 }
 
 @Component({
-    selector: 'app-nav-list',
-    templateUrl: './nav-list.component.html',
-    styleUrls: ['./nav-list.component.scss'],
-    standalone: true,
-    imports: [
-    RouterLinkActive,
-    RouterLink,
-    MatIconModule
-],
+  selector: 'app-nav-list',
+  templateUrl: './nav-list.component.html',
+  styleUrls: ['./nav-list.component.scss'],
+  standalone: true,
+  imports: [RouterLinkActive, RouterLink, MatIconModule],
 })
 export class NavListComponent implements OnInit {
   @Input()

@@ -1,5 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -12,11 +19,11 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { FlexModule } from '@angular/flex-layout/flex';
 @UntilDestroy()
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: true,
-    imports: [
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
     FlexModule,
     MatLegacyCardModule,
     MatLegacyRadioModule,
@@ -25,8 +32,8 @@ import { FlexModule } from '@angular/flex-layout/flex';
     ReactiveFormsModule,
     MatLegacyFormFieldModule,
     MatLegacyInputModule,
-    MatLegacyButtonModule
-],
+    MatLegacyButtonModule,
+  ],
 })
 export class LoginComponent implements OnInit {
   loginForm!: UntypedFormGroup;

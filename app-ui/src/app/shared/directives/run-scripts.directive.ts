@@ -1,10 +1,9 @@
 /* eslint-disable @angular-eslint/directive-selector */
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { Directive, ElementRef, OnInit } from '@angular/core';
 
 @Directive({
-    selector: '[runScripts]',
-    standalone: true
+  selector: '[runScripts]',
+  standalone: true,
 })
 export class RunScriptsDirective implements OnInit {
   constructor(private elementRef: ElementRef) {}

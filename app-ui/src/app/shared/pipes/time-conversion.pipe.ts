@@ -5,8 +5,8 @@ export interface Interval {
 }
 
 @Pipe({
-    name: 'timeConversion',
-    standalone: true,
+  name: 'timeConversion',
+  standalone: true,
 })
 export class TimeConversionPipe implements PipeTransform {
   intervals: Interval = {

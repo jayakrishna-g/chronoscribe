@@ -8,8 +8,8 @@ describe('ShellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ShellComponent],
-}).compileComponents();
+      imports: [ShellComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
