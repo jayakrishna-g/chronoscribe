@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Product } from '../products/product/product.component';
 import { ProductService } from '../products/products-services/product-service.service';
@@ -7,7 +7,7 @@ import { ProductService } from '../products/products-services/product-service.se
 @Injectable({
   providedIn: 'root',
 })
-export class ProductResolver implements Resolve<Product> {
+export class ProductResolver  {
   constructor(private productService: ProductService) {}
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product> {
     return this.productService.fetchProduct(route.params.id);
