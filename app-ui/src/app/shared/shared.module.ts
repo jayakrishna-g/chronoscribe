@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material-module/material-module.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApiInterceptor } from '../core/interceptors/api.interceptor';
 import { TokenInterceptor } from '../core/interceptors/token.interceptor';
 import { TimeConversionPipe } from './pipes/time-conversion.pipe';
@@ -27,19 +27,19 @@ import { LayoutItemDirective } from './components/layout-item/layout-item.direct
     LayoutItemComponent,
     LayoutItemDirective,
   ],
-  imports: [CommonModule, MaterialModule, FlexLayoutModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   exports: [
     MaterialModule,
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule,
     TimeConversionPipe,
     SafeHtmlPipe,
     LayoutComponent,
     LayoutItemComponent,
     RunScriptsDirective,
   ],
+  imports: [CommonModule, MaterialModule, FlexLayoutModule, FormsModule, ReactiveFormsModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {
