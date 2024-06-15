@@ -8,6 +8,7 @@ backend/.coverage
 backend/.vscode
 app-ui/.vscode
 backend/bart_base.pth
+summarizer
 
 # System Files
 .DS_Store
