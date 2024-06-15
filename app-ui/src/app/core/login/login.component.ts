@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -17,9 +17,12 @@ export class LoginComponent implements OnInit {
   formChoice = 'login';
 
   constructor(
+    @Inject(UntypedFormBuilder)
     private formBuilder: UntypedFormBuilder,
     private authService: AuthenticationService,
+    @Inject(Router)
     private router: Router,
+    @Inject(ActivatedRoute)
     private route: ActivatedRoute
   ) {}
 

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface LoginForm {
@@ -31,7 +31,7 @@ export interface TokenData {
 export class AuthenticationService {
   jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient) {}
+  constructor(@Inject(HttpClient) private http: HttpClient) {}
 
   public isAuthenticated(): boolean {
     const token = this.getToken();

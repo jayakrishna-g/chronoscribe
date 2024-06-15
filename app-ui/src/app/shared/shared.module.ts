@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material-module/material-module.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApiInterceptor } from '../core/interceptors/api.interceptor';
 import { TokenInterceptor } from '../core/interceptors/token.interceptor';
 import { TimeConversionPipe } from './pipes/time-conversion.pipe';

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatLegacyCard as MatCard } from '@angular/material/legacy-card';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../authentication/authentication.service';
@@ -12,8 +12,10 @@ import { RouteConfigLoadStart, Router } from '@angular/router';
 export class PasswordResetComponent implements OnInit {
   PassResetForm!: UntypedFormGroup;
   constructor(
+    @Inject(UntypedFormBuilder)
     private formBuilder: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
+    @Inject(Router)
     private router: Router
   ) {}
   ngOnInit() {
