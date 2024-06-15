@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatCard } from '@angular/material/card';
+import { MatLegacyCard as MatCard } from '@angular/material/legacy-card';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { RouteConfigLoadStart, Router } from '@angular/router';

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Room } from '../../home/home.component';
 import { RoomService } from '../room.service';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 import { QuizQuestion } from '../room.component';
 import { BehaviorSubject } from 'rxjs';

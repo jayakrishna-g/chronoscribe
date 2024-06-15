@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Room } from '../home/home.component';
 import { RecordingService } from 'src/app/shared/services/recording.service';
 import { RoomService } from './room.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 import { Form, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';

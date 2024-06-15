@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 
