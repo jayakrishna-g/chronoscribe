@@ -9,7 +9,7 @@ from app.modules.room.service import (
     handle_room_socket,
 )
 
-room_router = APIRouter(prefix="/room")
+room_router = APIRouter()
 connection_manager = get_connection_manager()
 
 

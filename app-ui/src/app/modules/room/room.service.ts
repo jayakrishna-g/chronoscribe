@@ -215,7 +215,7 @@ export class RoomService {
   }
 
   connectToRoom(roomId: string) {
-    let url = `ws://${window.location.hostname}:8080/room/ws/${roomId}`;
+    let url = `ws://${window.location.hostname}:8000/room/ws/${roomId}`;
     if (environment.production) {
       url = `ws://${window.location.hostname}/room/ws/${roomId}`;
     }

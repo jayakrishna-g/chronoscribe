@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 export class ApiInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!environment.production && !request.url.includes('http')) {
-      request = request.clone({ url: 'http://localhost:8080' + request.url });
+      request = request.clone({ url: 'http://localhost:8000' + request.url });
     }
     return next.handle(request);
   }

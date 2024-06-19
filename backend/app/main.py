@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 import app.config as cfg
+from app.core import core_router
 from app.database import get_database
 from app.modules import api_router
 
@@ -20,6 +21,9 @@ app.add_middleware(
 db = get_database(cfg.config.database_url, "darkknight")
 
 app.include_router(api_router)
+app.include_router(core_router)
+
+print(app.routes)
 
 
 if __name__ == "__main__":

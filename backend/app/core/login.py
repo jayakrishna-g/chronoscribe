@@ -10,7 +10,8 @@ login_router = APIRouter()
 async def signup(data: UserLogin):
     print(data)
     try:
-        user = create_user(data)
+        user = await create_user(data)
+        print(user)
         if not user:
             return HTTPException(status_code=400, detail="User already exists")
         return user
