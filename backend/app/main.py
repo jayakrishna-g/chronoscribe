@@ -1,0 +1,26 @@
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+import app.config as cfg
+from app.database import get_database
+from app.modules import api_router
+
+app = FastAPI(root_path="/api")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+db = get_database(cfg.config.database_url, "darkknight")
+
+app.include_router(api_router)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8080, reload=True)

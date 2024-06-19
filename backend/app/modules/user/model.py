@@ -1,6 +1,4 @@
-from typing import Optional
-
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr
 
 
 class User(BaseModel):
@@ -8,10 +6,6 @@ class User(BaseModel):
     email: EmailStr | None = None
     full_name: str | None = None
     disabled: bool | None = False
-    
-
-class UserInDB(User):
-    hashed_password: str
 
 
 class UserCreate(User):
@@ -19,13 +13,12 @@ class UserCreate(User):
 
 
 class UserUpdate(User):
-    password: Optional[str] = None
+    password: str | None = None
 
 
 class UserLogin(User):
     password: str
     username: str
-
 
 
 class Token(BaseModel):

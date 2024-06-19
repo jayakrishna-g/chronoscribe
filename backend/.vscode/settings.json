@@ -1,0 +1,19 @@
+{
+    "python.defaultInterpreterPath": ".venv/",
+    "python.analysis.typeCheckingMode": "standard",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "python.languageServer": "Pylance",
+    "ruff.lint.args": [
+        "--config=pyproject.toml"
+    ],
+    "mypy-type-checker.args": [
+        "--config=pyproject.toml"
+    ],
+    "black-formatter.args": [
+        "--config=pyproject.toml"
+    ],
+    "ruff.lint.run": "onType",
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "ruff.format.preview": true
+}

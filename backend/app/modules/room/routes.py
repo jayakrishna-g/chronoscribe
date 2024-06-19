@@ -1,17 +1,23 @@
-from fastapi import APIRouter, Depends, FastAPI, WebSocket, WebSocketDisconnect
-from modules.room.connection_manager import get_connection_manager
-from modules.room.service import create_room, get_owner_rooms, get_room, handle_room_socket
-from modules.room.model import Room, RoomCreate
+from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
 
+from app.modules.room.connection_manager import get_connection_manager
+from app.modules.room.model import RoomCreate
+from app.modules.room.service import (
+    create_room,
+    get_owner_rooms,
+    get_room,
+    handle_room_socket,
+)
 
 room_router = APIRouter(prefix="/room")
 connection_manager = get_connection_manager()
 
+
 @room_router.get("/{room_id}")
 async def fetch_room(room_id: str):
-    print('fetching room with id', room_id)
+    print("fetching room with id", room_id)
     room = await get_room(room_id)
-    print('room fetched', room)
+    print("room fetched", room)
     if not room:
         return {"error": "Room not found"}
     return room.dict()
@@ -20,21 +26,21 @@ async def fetch_room(room_id: str):
 @room_router.get("/all/{owner}")
 async def get_all_rooms(owner: str):
     owner_rooms = await get_owner_rooms(owner)
-    print('owner rooms', owner_rooms)
+    print("owner rooms", owner_rooms)
     return {"rooms": owner_rooms}
-
 
 
 @room_router.post("/")
 async def new_room(room: RoomCreate):
-    print('creating room')
-    room = await create_room(room.name, room.description, room.owner)
-    print('room created' , room)
-    return {"room_id": room}
+    print("creating room")
+    room_id = await create_room(room.name, room.description, room.owner)
+    print("room created", room_id)
+    return {"room_id": room_id}
+
 
 @room_router.websocket("/ws/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str):
-    if not await get_room(room_id):  
+    if not await get_room(room_id):
         await websocket.accept()
         await websocket.send_text("Invalid room ID")
         await websocket.close()
@@ -52,4 +58,3 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
 
 def init_room_routes(app: FastAPI):
     app.include_router(room_router)
-
