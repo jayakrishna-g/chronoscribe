@@ -4,7 +4,6 @@ import { MaterialModule } from './modules/material-module/material-module.module
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ApiInterceptor } from '../core/interceptors/api.interceptor';
 import { TokenInterceptor } from '../core/interceptors/token.interceptor';
 import { TimeConversionPipe } from './pipes/time-conversion.pipe';
 import { NotificationInterceptor } from '../core/interceptors/notification.interceptor';
@@ -50,11 +49,6 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: ApiInterceptor,
-          multi: true,
-        },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TokenInterceptor,
