@@ -10,10 +10,12 @@ class Settings(BaseModel):
     api_version: str
     database_url: str
     jwt_secret_key: str
+    keycloak_public_key: str
+    jwt_algorithm: str
+    keycloak_audience: str
     enable_logging: bool
     debug: bool = False
     optimize: bool = False
-    jwt_algorithm: str = "HS256"
 
     class Config:
         env_file = ".env"

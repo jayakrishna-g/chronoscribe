@@ -1,11 +1,13 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-import app.config as cfg
+import jwt
 from app.core import core_router
 from app.database import get_database
 from app.modules import api_router
+
+import app.config as cfg
+import app.TokenVerification as tv
 
 app = FastAPI(root_path="/api")
 
@@ -16,6 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.add_middleware(tv.JWTVerificationMiddleware)
 
 
 db = get_database(cfg.config.database_url, "darkknight")

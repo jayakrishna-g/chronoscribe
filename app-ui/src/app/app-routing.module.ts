@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/authentication/auth.guard';
-import { LoginComponent } from './core/login/login.component';
-import { PasswordResetComponent } from './core/login/password-reset/password-reset.component';
 import { ShellComponent } from './core/shell/shell.component';
+// import { KeyCloakLoginComponent } from './path/to/KeyCloakLoginComponent'; // Import the KeyCloakLoginComponent class
 
 const routes: Routes = [
   {
@@ -19,19 +18,11 @@ const routes: Routes = [
         path: 'room',
         loadChildren: () => import('./modules/room/room.module').then((m) => m.RoomModule),
       },
+      // {
+      //   path: 'keycloak-login',
+      //   component: KeyCloakLoginComponent,
+      // },
     ],
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'signup',
-    component: LoginComponent,
-  },
-  {
-    path: 'EditPass',
-    component: PasswordResetComponent,
   },
 ];
 

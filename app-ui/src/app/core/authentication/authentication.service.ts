@@ -64,6 +64,10 @@ export class AuthenticationService {
     return this.http.post<AuthenticationResponse>('/api/resetpass', ResetValues);
   }
 
+  verifyKeycloakToken(token: string) {
+    return this.http.post<AuthenticationResponse>('/api/verify', { token: token });
+  }
+
   storeTokenData(token?: string) {
     let tokenData;
     if (token) {
@@ -82,6 +86,6 @@ export class AuthenticationService {
       return { full_name: 'Broke', email: 'Broke' };
     }
     const data = JSON.parse(tokenData);
-    return { full_name: data.sub, email: data.sub };
+    return { full_name: data.name, email: data.email };
   }
 }
