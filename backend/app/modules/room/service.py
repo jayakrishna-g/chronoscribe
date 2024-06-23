@@ -1,25 +1,13 @@
-import asyncio
-import random
-import string
-from threading import Lock
-
+from app.core.connection_manager import get_connection_manager
 from app.database import get_database
-from app.modules.room.connection_manager import get_connection_manager
-from app.modules.room.model import Room, TranscriptInstance
+from app.modules.room import CacheName, get_cache_manager
+from app.modules.room.cache import RoomMetaCache, SummaryCache, TranscriptCache
+from app.modules.room.model import RoomMetaData, TranscriptInstance
 
 db = get_database()
 room_coll = db.get_collection("rooms")
-in_memory_rooms: dict[str, Room] = {}
-room_lock = Lock()
+cache_manager = get_cache_manager()
 connection_manager = get_connection_manager()
-
-
-async def sync_rooms():
-    print("Syncing rooms")
-    await asyncio.gather(*[save_room(room) for room in in_memory_rooms.values()])
-    print("Rooms synced")
-    await asyncio.sleep(120)
-    await sync_rooms()
 
 
 async def get_owner_rooms(owner):
@@ -27,9 +15,6 @@ async def get_owner_rooms(owner):
         {"owner": owner}, {"name": 1, "description": 1, "room_id": 1, "_id": 0}
     )
     return await rooms.to_list(length=1000)
-
-
-asyncio.get_event_loop().create_task(sync_rooms())  # type: ignore
 
 
 def create_broadcast_message(service, message):
@@ -40,55 +25,71 @@ def create_broadcast_message(service, message):
     }
 
 
-async def get_room(room_id):
-    room = in_memory_rooms.get(room_id)
-    if room:
-        print("Room found in memory")
-        return room
-    room = await room_coll.find_one({"room_id": room_id})
-    if room:
-        room_obj = Room(
-            room["name"], room["description"], room["owner"], room["room_id"]
-        )
-        room_obj.transcript = [
-            TranscriptInstance(transcript_content=x[1], transcript_index=x[0])
-            for x in enumerate(room["transcript"])
-        ]
-        room_obj.summaries = room["summaries"]
-        room_obj.start_summary_index = len(room_obj.transcript)
-        room_lock.acquire()
-        in_memory_rooms[room_id] = room_obj
-        room_lock.release()
-        return room_obj
+class RoomMetaService:
+    def __init__(self) -> None:
+        self._cache: RoomMetaCache = cache_manager.get_cache(CacheName.room_meta)  # type: ignore
+
+    async def get(self, room_id):
+        return await self._cache.get_room_meta(room_id)
+
+    async def write(self, room_id, value):
+        await self._cache.write_room_meta(room_id, value)
+
+    @staticmethod
+    def instance():
+        instance: RoomMetaService = globals().get("room_meta_service")  # type: ignore
+        if instance:
+            return instance
+        else:
+            instance = RoomMetaService()
+            globals()["room_meta_service"] = instance
+            return instance
 
 
-async def get_unique_id():
-    id = "".join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    while await get_room(id):
-        id = "".join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    return id
+class TranscriptService:
+    def __init__(self) -> None:
+        self._cache: TranscriptCache = cache_manager.get_cache(CacheName.transcript)  # type: ignore
+
+    async def get(self, room_id):
+        return self._cache.get_transcript(room_id)
+
+    async def write(self, room_id, value):
+        return self._cache.write_transcript(room_id, value)
+
+    @staticmethod
+    def instance():
+        _identifier = "room_transcript_service"
+        instance: TranscriptService = globals().get(_identifier)  # type: ignore
+        if instance:
+            return instance
+        else:
+            instance = TranscriptService()
+            globals()[_identifier] = instance
+            return instance
 
 
-async def save_room(room: Room):
-    room.summarize()
-    if len(room.summaries) > 0 and room.has_newSummary():
-        await connection_manager.broadcast(
-            room.room_id, create_broadcast_message("summary", room.summaries[-1])
-        )
-    room_dict = room.db_dict()
-    room_id = room_dict["room_id"]
-    await room_coll.update_one({"room_id": room_id}, {"$set": room_dict}, upsert=True)
-    return room_id
+class SummaryService:
+    def __init__(self) -> None:
+        self._cache: SummaryCache = cache_manager.get_cache(CacheName.summary)  # type: ignore
 
+    async def get(self, room_id):
+        return self._cache.get_summary(room_id)
 
-async def create_room(name, description, owner) -> str:
-    room_id = await get_unique_id()
-    room = Room(name, description, owner, room_id)
-    room_lock.acquire()
-    in_memory_rooms[room_id] = room
-    room_lock.release()
-    await save_room(room)
-    return room_id
+    async def write(self, room_id, value):
+        return self._cache.write_summary(room_id, value)
+
+    @staticmethod
+    def instance():
+        _identifier = "summary_service"
+        instance: SummaryService = globals().get(_identifier)  # type: ignore
+
+        if instance:
+            return instance
+
+        else:
+            instance = SummaryService()
+            globals()[_identifier] = instance
+            return instance
 
 
 class RoomService:
@@ -98,7 +99,7 @@ class RoomService:
                 "transcript_content": data["transcript_content"],
                 "transcript_index": data["transcript_index"],
             }
-            room = await get_room(room_id)
+            room = await cached_rooms.get(room_id)
             if room:
                 room.save_transcript(TranscriptInstance(**message))
                 await connection_manager.broadcast(
