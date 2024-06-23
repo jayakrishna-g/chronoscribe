@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile
     hostname: backend-cont
     container_name: backend-cont
+    environment:
+      MONGO_URI: mongodb://root:example@mongo-db:27017
     depends_on:
       - mongodb
     networks:

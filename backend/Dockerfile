@@ -5,11 +5,18 @@ WORKDIR /backend
 RUN pip install poetry
 RUN poetry config virtualenvs.create false
 
-COPY pyproject.toml poetry.lock ./
+RUN apt-get update && apt-get install -y gettext
 
+
+
+COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --sync
 
 COPY . .
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 8000
 
