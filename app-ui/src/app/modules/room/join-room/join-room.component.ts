@@ -5,7 +5,6 @@ import { RoomService } from '../room.service';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
-import { QuizQuestion } from '../room.component';
 import { BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
@@ -14,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { AsyncPipe } from '@angular/common';
+import { QuizQuestion } from '../admin-room/admin-room.component';
 
 @Component({
   selector: 'app-join-room',

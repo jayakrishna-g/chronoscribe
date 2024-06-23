@@ -6,8 +6,8 @@ import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 import { WebSocketSubject, webSocket as websocket } from 'rxjs/webSocket';
 import { webSocket } from 'rxjs/webSocket';
 import { BehaviorSubject } from 'rxjs';
-import { QuizQuestion } from './room.component';
 import { environment } from 'src/environments/environment';
+import { QuizQuestion } from './admin-room/admin-room.component';
 
 export type RoomSocketData = {
   transcript_content: string;
