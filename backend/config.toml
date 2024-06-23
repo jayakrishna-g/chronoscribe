@@ -6,7 +6,7 @@ api_version = "v1"
 enable_logging = true
 
 [development]
-database_url = "mongodb://localhost/darkknight"
+database_url = "${MONGO_URI}"
 jwt_secret_key = "Test"
 debug = true
 

@@ -7,9 +7,9 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.static(`${__dirname}/ui/dist/ui`));
+app.use(express.static(`${__dirname}/dist/ui/browser`));
 app.get('*', (req, res) =>
-  res.sendFile(`${__dirname}/app-ui/dist/app-ui/index.html`)
+  res.sendFile(`${__dirname}/dist/ui/browser/index.html`)
 );
 
 app.listen(port, () => {

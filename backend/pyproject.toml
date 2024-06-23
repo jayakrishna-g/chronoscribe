@@ -11,7 +11,6 @@ fastapi = "^0.111.0"
 tomli = "^2.0.1"
 motor = "^3.4.0"
 python-jose = "^3.3.0"
-passlib = "^1.7.4"
 schedule = "^1.2.2"
 torch = "2.2.2"
 transformers = "^4.41.2"
@@ -29,7 +28,6 @@ mypy = "^1.10.0"
 isort = "^5.13.2"
 motor-types = "^1.0.0b4"
 types-python-jose = "^3.3.4.20240106"
-types-passlib = "^1.7.7.20240327"
 
 [build-system]
 requires = ["poetry-core"]

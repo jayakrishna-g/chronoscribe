@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  frontend:
+    build: 
+      context: ./app-ui/
+      dockerfile: Dockerfile
+    hostname: frontend-cont
+    container_name: frontend-cont
+    networks:
+      - educast
+  
+  backend:
+    build: 
+      context: ./backend/
+      dockerfile: Dockerfile
+    hostname: backend-cont
+    container_name: backend-cont
+    environment:
+      MONGO_URI: mongodb://root:example@mongo-db:27017
+    depends_on:
+      - mongodb
+    networks:
+      - educast
+
+  mongodb:
+    image: mongo
+    hostname: mongo-db
+    container_name: mongo-db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - educast
+  
+  nginx:
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile
+    hostname: nginx
+    container_name: nginx
+    restart: always
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "8081:80"
+    networks:
+      - educast
+
+networks:
+  educast:
+    driver: bridge
