@@ -8,10 +8,10 @@ class Cache:
         self.register_sync_func(name, 120)
         self.name = name
 
-    def get(self, key: str) -> Any:
+    async def _get(self, key: str) -> Any:
         return self.cache.get(key)
 
-    def set(self, key: str, value: Any, ttl: int = 120) -> None:
+    async def _set(self, key: str, value: Any, ttl: int = 120) -> None:
         self.cache[key] = value
 
     async def sync_func(self, key: str, value: Any):
@@ -27,7 +27,7 @@ class Cache:
     def register_sync_func(self, key: str, ttl: int) -> None:
         async def sync():
             while True:
-                cur_cache = self.get(key)
+                cur_cache = await self._get(key)
                 await self.sync_func(key, cur_cache)
                 await asyncio.sleep(ttl)
 

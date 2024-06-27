@@ -18,6 +18,7 @@ class Database:
 
         else:
             instance = Database()
+            instance.connect(cfg.config.database_url)
             globals()[_identifier] = globals().get(_identifier)
             return instance
 

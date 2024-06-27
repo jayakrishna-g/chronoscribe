@@ -9,6 +9,10 @@ from app.core import core_router
 from app.database import Database
 from app.modules import api_router
 
+db = Database.instance()
+
+# db.connect(cfg.config.database_url)
+
 app = FastAPI()
 
 app.add_middleware(

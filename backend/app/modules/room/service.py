@@ -1,20 +1,20 @@
 from app.core.connection_manager import get_connection_manager
-from app.database import get_database
 from app.modules.room import CacheName, get_cache_manager
-from app.modules.room.cache import RoomMetaCache, SummaryCache, TranscriptCache
-from app.modules.room.model import RoomMetaData, TranscriptInstance
+from app.modules.room.cache import (
+    RoomCache,
+    RoomMetaCache,
+    SummaryCache,
+    TranscriptCache,
+)
+from app.modules.room.model import Room, RoomCreate, RoomMetaData, TranscriptInstance
+from app.modules.room.crud import create_room
 
-db = get_database()
-room_coll = db.get_collection("rooms")
 cache_manager = get_cache_manager()
 connection_manager = get_connection_manager()
 
 
 async def get_owner_rooms(owner):
-    rooms = room_coll.find(
-        {"owner": owner}, {"name": 1, "description": 1, "room_id": 1, "_id": 0}
-    )
-    return await rooms.to_list(length=1000)
+    return []
 
 
 def create_broadcast_message(service, message):
@@ -35,6 +35,9 @@ class RoomMetaService:
     async def write(self, room_id, value):
         await self._cache.write_room_meta(room_id, value)
 
+    async def add(self, room_meta: RoomMetaData):
+        return await self._cache.add_room_meta(room_meta)
+
     @staticmethod
     def instance():
         instance: RoomMetaService = globals().get("room_meta_service")  # type: ignore
@@ -53,7 +56,7 @@ class TranscriptService:
     async def get(self, room_id):
         return self._cache.get_transcript(room_id)
 
-    async def write(self, room_id, value):
+    def write(self, room_id, value):
         return self._cache.write_transcript(room_id, value)
 
     @staticmethod
@@ -93,15 +96,45 @@ class SummaryService:
 
 
 class RoomService:
+    def __init__(self) -> None:
+        self._cache: RoomCache = cache_manager.get_cache(CacheName.room)  # type: ignore
+
+    async def get(self, room_id):
+        return await self._cache.get_room(room_id)
+
+    async def create(self, room: RoomCreate):
+        try:
+            room_id = await create_room(room.name, room.description, room.owner_id)
+            return room_id
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def instance():
+        _identifier = "room_service"
+        instance: RoomService = globals().get(_identifier)  # type: ignore
+
+        if instance:
+            return instance
+
+        else:
+            instance = RoomService()
+            globals()[_identifier] = instance
+            return instance
+
+
+class WebSocketService:
     async def transcript(self, room_id, websocket, data, connection_manager):
         if "transcript_content" in data and "transcript_index" in data:
             message = {
-                "transcript_content": data["transcript_content"],
-                "transcript_index": data["transcript_index"],
+                "content": data["transcript_content"],
+                "index": data["transcript_index"],
             }
-            room = await cached_rooms.get(room_id)
+            print("In transcript service", message)
+            room = await RoomService.instance().get(room_id)
+            transcript_service = TranscriptService.instance()
             if room:
-                room.save_transcript(TranscriptInstance(**message))
+                await transcript_service.write(room_id, TranscriptInstance(**message))
                 await connection_manager.broadcast(
                     room_id, create_broadcast_message("transcript", message)
                 )
@@ -161,7 +194,7 @@ class RoomService:
 
 
 async def handle_room_socket(websocket, data, room_id, connection_manager):
-    if "room_service" not in globals():
-        global room_service
-        room_service = RoomService()
-    await room_service.handle(websocket, data, room_id, connection_manager)  # type: ignore
+    if "ws_service" not in globals():
+        global ws_service
+        ws_service = WebSocketService()
+    await ws_service.handle(websocket, data, room_id, connection_manager)  # type: ignore

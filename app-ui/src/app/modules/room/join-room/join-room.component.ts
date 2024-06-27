@@ -43,7 +43,7 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit(): void {
     this.room = this.route.snapshot.data.room;
-    let owner = this.room.owner;
+    let owner = this.room.owner_id;
     let user = this.authService.getTokenData().email;
     if (owner === user) {
       this.router.navigate(['room', this.room.room_id]);

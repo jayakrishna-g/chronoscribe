@@ -1,10 +1,10 @@
 import random
 import string
 
-from app.database import get_database
+from app.database import Database
 from app.modules.room.model import Room, RoomMetaData
 
-db = get_database()
+db = Database().instance()
 room_coll = db.get_collection("rooms")
 room_meta_coll = db.get_collection("room_meta")
 
@@ -33,7 +33,7 @@ async def create_room(name: str, description: str, owner: str):
     if room_meta_result.inserted_id is None:
         raise Exception("Error in Inserting Room Meta Data")
 
-    room = Room(meta_data=room_meta_result.inserted_id, id=room_meta.room_id)
+    room = Room(meta_data_id=room_meta_result.inserted_id, id=room_meta.room_id)
 
     room_result = await room_coll.insert_one(room.dict())
 

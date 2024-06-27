@@ -4,18 +4,6 @@ from bson import ObjectId
 from pydantic import BaseModel, Field
 
 
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid ObjectId")
-        return ObjectId(v)
-
-
 class TranscriptInstance(BaseModel):
     content: str
     index: int
@@ -29,7 +17,7 @@ class SummaryInstance(BaseModel):
 
 
 class Question(BaseModel):
-    user_id: PyObjectId
+    user_id: str
     content: str
     is_answered: bool = False
     timestamp: datetime = Field(default_factory=datetime.utcnow)
@@ -43,8 +31,8 @@ class RoomMetaData(BaseModel):
 
 
 class Room(BaseModel):
+    meta_d7ata_id: ObjectId
     id: str
-    meta_data: PyObjectId
     transcript_file: str = ""
     summary_file: str = ""
     is_active: bool = True
@@ -60,7 +48,7 @@ class Room(BaseModel):
 class RoomCreate(BaseModel):
     name: str
     description: str
-    owner_id: PyObjectId
+    owner_id: str
 
 
 class RoomUpdate(BaseModel):
