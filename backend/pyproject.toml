@@ -3,6 +3,7 @@ name = "backend"
 version = "0.1.0"
 description = "Chronoscribe backend"
 authors = ["Your Name <you@example.com>"]
+package-mode = false
 
 
 [tool.poetry.dependencies]
