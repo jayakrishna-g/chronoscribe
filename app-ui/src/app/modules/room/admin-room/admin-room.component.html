@@ -3,16 +3,25 @@
       @if (room) {
         <app-room-details class="sm:w-1/5" [room]=room></app-room-details>
       } 
-      <div class="flex flex-row gap-10 md:gap-4 ">
+      <div class="flex flex-col p-2 shadow-lg rounded-md md:gap-4 w-full sm:w-auto">
+        <div class="flex flex-row p-4 justify-between">
+          <h1>Reactions</h1>
+          <button type="submit" (click)="resetEmoji()" class="text-black px-2 py-2 border-2 rounded flex flex-col items-center whitespace-normal break-words">
+            <mat-icon style="font-size: 24px; height: 24px; width: 24px">restart_alt</mat-icon>
+          </button>
+        </div>
+        <div class="flex flex-row">
         @for (emoji of this.roomService.emoji$ | async; track emoji) {
-          <div class="bg-white shadow-md rounded-lg p-4 mt-2 lg:text-4xl md:text-xl flex lg:flex-col sm:flex-row items-center">
+          <div class="bg-white p-4 mt-2 lg:text-4xl md:text-xl flex lg:flex-col sm:flex-row items-center">
             <div class="flex sm:flex-row lg:flex-col items-center">
               {{ emoji.emoji }}
               {{ emoji.count }}
             </div>
           </div>
         }
+        
       </div>
+    </div>
       <div class="flex flex-row md:gap-4 ">
       <span style="flex: 1 1 auto"></span>
       @if ((this.roomService.unreadQuestions$ | async) === 0) {
@@ -61,16 +70,6 @@
         Quick Question
       </button>
   
-      <button
-        (click)="resetEmoji()"
-        class="flex flex-col shadow-lg rounded-lg p-4 rounded-md items-center justify-center"
-      >
-        <div class="h-24 w-24 flex flex-col items-center justify-center">
-          <mat-icon style="font-size: 64px; height: 64px; width: 64px">restart_alt</mat-icon>
-        </div>
-        Reset Reactions
-      </button>
-  
       @if (!isRecording) {
       <div>
         <button
@@ -98,9 +97,13 @@
       }
     </div>
   </div>
-    <div class="flex flex-row flex-wrap gap-4 p-4 overflow-auto" style="justify-content: space-between">
+    <div class="flex flex-row flex-wrap gap-4 p-4 overflow-auto [&::-webkit-scrollbar]:hidden" style="justify-content: space-between">
+      <div class="h-full w-full md:h-80 md:w-80">
       <app-live-transcription-board [room]="room"></app-live-transcription-board>
+    </div>
+    <div class="h-full w-full  md:h-80 md:w-80">
       <app-summary-board [room]="room"></app-summary-board>
+    </div>
     </div>
   </div>
   
