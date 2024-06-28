@@ -1,204 +1,27 @@
-<div class="ml-8 mr-8 flex flex-col gap-4">
-  <div class="flex flex-row gap-4 p-4" style="justify-content: center; align-items: center">
-    @if (room) {
-    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" style="margin-top: 20px">
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <mat-card-title>Room Details</mat-card-title><br />
-        <mat-card-subtitle>Created By: {{ room.owner_id }} </mat-card-subtitle>
-        <mat-card-content>
-          <p>Room Name: {{ room.name }}</p>
-          <p>Room Description: {{ room.description }}</p>
-          <p>Room ID: {{ room.room_id }}</p>
-        </mat-card-content>
-      </div>
-    </div>
-    } @for (emoji of this.roomService.emoji$ | async; track emoji) {
-    <div class="bg-white shadow-md rounded-lg p-4 text-[64px]">
-      {{ emoji.emoji }}
-      {{ emoji.count }}
-    </div>
-    }
+<app-layout
+  [layout]="['Card', 'List', 'Minimal']"
+  [datasource]="rooms"
+  [layoutItemTemplate]="layoutItem"
+  [addItem]="addItem"
+  [filter]="filter"
+>
+  <input type="text" />
+</app-layout>
 
-    <span style="flex: 1 1 auto"></span>
-    @if ((this.roomService.unreadQuestions$ | async) === 0) {
-    <button (click)="questions()" class="flex flex-col shadow-lg rounded-lg p-4 rounded-md items-center justify-center">
-      <div class="h-24 w-24 flex flex-col items-center justify-center">
-        <mat-icon style="font-size: 64px; height: 64px; width: 64px">messages</mat-icon>
-      </div>
-      Questions
-    </button>
-    } @if (this.roomService.unreadQuestions$ | async) {
-    <button
-      (click)="questions()"
-      class="
-        flex flex-col
-        shadow-lg
-        rounded-lg
-        p-4
-        rounded-md
-        items-center
-        justify-center
-        bg-blue-500
-        text-white
-        position-relative
-      "
-    >
-      <div class="h-24 w-24 flex flex-col items-center justify-center" style="position: relative">
-        <mat-icon style="font-size: 64px; height: 64px; width: 64px">messages</mat-icon>
-        <div
-          class="rounded-full bg-red-500 text-white position-absolute p-2 h-8 w-8"
-          style="position: absolute; top: 0; right: 0"
-        >
-          {{ this.roomService.unreadQuestions$ | async }}
-        </div>
-      </div>
-      Questions
-    </button>
-    }
-
-    <button
-      (click)="quickQuestion()"
-      class="flex flex-col shadow-lg rounded-lg p-4 rounded-md items-center justify-center"
-    >
-      <div class="h-24 w-24 flex flex-col items-center justify-center">
-        <mat-icon style="font-size: 64px; height: 64px; width: 64px">quiz_outlined</mat-icon>
-      </div>
-      Quick Question
-    </button>
-
-    <button
-      (click)="resetEmoji()"
-      class="flex flex-col shadow-lg rounded-lg p-4 rounded-md items-center justify-center"
-    >
-      <div class="h-24 w-24 flex flex-col items-center justify-center">
-        <mat-icon style="font-size: 64px; height: 64px; width: 64px">restart_alt</mat-icon>
-      </div>
-      Reset Reactions
-    </button>
-
-    @if (!isRecording) {
-    <div>
-      <button
-        (click)="startRecording()"
-        class="flex flex-col shadow-lg rounded-lg p-4 bg-blue-500 text-white rounded-md items-center justify-center"
-      >
-        <div class="h-24 w-24 flex flex-col items-center justify-center">
-          <mat-icon style="font-size: 64px; height: 64px; width: 64px">mic</mat-icon>
-        </div>
-        Start Recording
-      </button>
-    </div>
-    } @if (isRecording) {
-    <div>
-      <button
-        (click)="stopRecording()"
-        class="flex flex-col shadow-lg rounded-lg p-4 bg-red-500 text-white rounded-md items-center justify-center"
-      >
-        <div class="h-24 w-24 flex flex-col items-center justify-center">
-          <mat-icon style="font-size: 64px; height: 64px; width: 64px">mic_off</mat-icon>
-        </div>
-        Stop Recording
-      </button>
-    </div>
-    }
-  </div>
-
-  <div class="flex flex-row gap-4 p-4 overflow-auto" style="justify-content: space-between">
-    <div class="flex flex-col gap-1 shadow-md rounded-lg p-4 bg-white">
-      <mat-card-title>Live Transcription</mat-card-title><br />
-      <mat-card-subtitle>Live transcription of your voice will appear here.</mat-card-subtitle>
-      <div class="h-[1em]"></div>
-      <div class="overflow-y-auto h-[66vh]" #scrollMe>
-        @for (transcript of this.recordingService.transcript$ | async; track transcript; let i = $index; let last =
-        $last) {
-        <div class="overflow-y-auto border-b border-gray-200 p-4">
-          <span class="text text-gray-500"> {{ transcript.content }}</span>
-        </div>
-        }
-      </div>
-    </div>
-    <div class="flex flex-col gap-1 shadow-md rounded-lg p-4 bg-white">
-      <mat-card-title>Summary</mat-card-title><br />
-      <mat-card-subtitle>Summaries of Transcripts</mat-card-subtitle>
-      <div class="h-[1em]"></div>
-      <div class="overflow-y-auto h-[66vh]" #scrollMe>
-        @for (transcript of this.roomService.summary$ | async; track transcript; let i = $index; let last = $last) {
-        <div class="overflow-y-auto border-b border-gray-200 p-4">
-          <span class="text text-gray-800"> {{ transcript }}</span>
-        </div>
-        }
-      </div>
-    </div>
-  </div>
-</div>
-
-<ng-template #template>
-  <h1>Quick Question</h1>
-  @if ((quizQuestion | async) === null) {
-  <form (ngSubmit)="askQuestion()" [formGroup]="quickQuestionForm" class="flex flex-col h-[60vh] w-[60vw] gap-2">
-    <mat-form-field>
-      <mat-label>Question</mat-label>
-      <input matInput formControlName="question" placeholder="Question" />
-    </mat-form-field>
-    @for (option of quizOptions(); track option; let i = $index) {
-    <mat-form-field>
-      <mat-label>Option {{ i + 1 }}</mat-label>
-      <input matInput [formControl]="option" placeholder="Option" />
-    </mat-form-field>
-    }
-    <span style="flex: 1 1 auto"></span>
-    <button (click)="addOption()" type="button" class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Option</button>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Ask</button>
-  </form>
-  } @else {
-  <div class="bg-white p-4 flex flex-col w-[60vw] h-[60vh] gap-4">
-    <h1>Quick Question Stats</h1>
-    <div class="flex flex-col gap-4 p-4 h-full">
-      @for (option of this.roomService.quizStats$ | async; track option; let i = $index) {
-      <div class="flex flex-col gap-4 p-4">
-        <div class="w-full h-8 bg-gray-100 rounded-full" style="position: relative">
-          <div
-            class="h-8 bg-blue-200 rounded-full"
-            [style]="'width:' + (option.percentage || 0) + '%;position: absolute;top:0;left:0'"
-          ></div>
-          <span class="h-8 w-full" style="position: absolute; top: 0; left: 4px"
-            >{{ option.option + 1 }}: {{ option.count }}</span
-          >
-        </div>
-      </div>
-      }
-    </div>
-  </div>
-  }
-  <ng-template #quizStats>
-    <div class="bg-white p-4 flex flex-col w-[60vw] h-[60vh] gap-4">
-      <h1>Quick Question Stats</h1>
-      <div class="flex flex-col gap-4 p-4 h-full">
-        @for (option of this.roomService.quizStats$ | async; track option; let i = $index) {
-        <div class="flex flex-col gap-4 p-4">
-          <div class="w-full h-8 bg-gray-100 rounded-full" style="position: relative">
-            <div
-              class="h-8 bg-blue-200 rounded-full"
-              [style]="'width:' + (option.percentage || 0) + '%;position: absolute;top:0;left:0'"
-            ></div>
-            <span class="h-8 w-full" style="position: absolute; top: 0; left: 4px"
-              >{{ option.option + 1 }}: {{ option.count }}</span
-            >
-          </div>
-        </div>
-        }
-      </div>
-    </div>
-  </ng-template>
+<ng-template #addItem let-layout="layout">
+  <app-layout-item [layout]="layout">
+    <mat-icon icon>add_circle_outline</mat-icon>
+    <span title>Create Room</span>
+    <span description>Creates a new room and takes you to room page</span>
+  </app-layout-item>
 </ng-template>
 
-<ng-template #questionsdialog>
-  <h1>Questions</h1>
-  <div class="p-4 border border-gray-300 rounded-lg" style="height: 60vh; width: 60vw; overflow-y: auto">
-    @for (question of this.roomService.questions$ | async; track question) {
-    <div class="p-4 border-b border-gray-300">
-      <span>{{ question }}</span>
-    </div>
-    }
-  </div>
+<ng-template #layoutItem let-data="data" let-layout="layout">
+  <app-layout-item [layout]="layout" [routerLink]="data.room_id">
+    <span title>{{ data.name }}</span>
+    <span description>
+      <span> Room Id: {{ data.room_id }} </span> <br />
+      {{ data.description }}
+    </span>
+  </app-layout-item>
 </ng-template>
