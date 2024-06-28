@@ -12,7 +12,7 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-summary-board',
   standalone: true,
-  imports: [    
+  imports: [
     FlexModule,
     MatLegacyCardModule,
     MatIconModule,
@@ -20,20 +20,17 @@ import { AsyncPipe } from '@angular/common';
     ReactiveFormsModule,
     MatLegacyFormFieldModule,
     MatLegacyInputModule,
-    AsyncPipe],
+    AsyncPipe,
+  ],
   templateUrl: './summary-board.component.html',
-  styleUrl: './summary-board.component.scss'
+  styleUrl: './summary-board.component.scss',
 })
 export class SummaryBoardComponent implements OnInit {
+  @Input() room!: Room;
 
-  @Input() room!:Room;
-
-  constructor(
-    public roomService: RoomService
-  ) {}
+  constructor(public roomService: RoomService) {}
 
   ngOnInit(): void {
     this.roomService.setSummary(this.room.summaries || []);
   }
-
 }

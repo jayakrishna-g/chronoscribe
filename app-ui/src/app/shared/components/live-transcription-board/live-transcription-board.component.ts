@@ -9,27 +9,30 @@ import { RoomService } from 'src/app/modules/room/room.service';
 import { FormsModule } from '@angular/forms';
 import { RecordingService } from '../../services/recording.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 
 @Component({
   selector: 'app-live-transcription-board',
   standalone: true,
-  providers: [RoomService,RecordingService],
+  providers: [RoomService, RecordingService],
   imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe],
   templateUrl: './live-transcription-board.component.html',
-  styleUrl: './live-transcription-board.component.scss'
+  styleUrl: './live-transcription-board.component.scss',
 })
-export class LiveTranscriptionBoardComponent implements OnInit{
+export class LiveTranscriptionBoardComponent implements OnInit {
+  @Input() room!: Room;
 
-  @Input() room!:Room;
+  loggedInUser = 'user';
 
   constructor(
-  public roomService:RoomService,
-  public recordingService: RecordingService,
-  private route: ActivatedRoute
-) { }
+    public roomService: RoomService,
+    public recordingService: RecordingService,
+    private route: ActivatedRoute,
+    private authService: AuthenticationService
+  ) {}
 
   ngOnInit(): void {
-
+    this.loggedInUser = this.authService.getTokenData().email;
     this.recordingService.setTranscript(this.room.transcript || []);
     this.route.params.subscribe((params) => {
       this.roomService.connectToRoom(params.id || '');
@@ -39,6 +42,4 @@ export class LiveTranscriptionBoardComponent implements OnInit{
       });
     });
   }
-
-
 }

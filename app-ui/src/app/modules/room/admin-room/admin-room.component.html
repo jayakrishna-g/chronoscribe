@@ -1,31 +1,37 @@
 <div class="ml-8 mr-8 flex flex-col gap-4">
-    <div class="flex flex-row flex-wrap gap-4 p-4" style="justify-content: center; align-items: center">
-      @if (room) {
-        <app-room-details class="sm:w-1/5" [room]=room></app-room-details>
-      } 
-      <div class="flex flex-col p-2 shadow-lg rounded-md md:gap-4 w-full sm:w-auto">
-        <div class="flex flex-row p-4 justify-between">
-          <h1>Reactions</h1>
-          <button type="submit" (click)="resetEmoji()" class="text-black px-2 py-2 border-2 rounded flex flex-col items-center whitespace-normal break-words">
-            <mat-icon style="font-size: 24px; height: 24px; width: 24px">restart_alt</mat-icon>
-          </button>
-        </div>
-        <div class="flex flex-row">
+  <div class="flex flex-row flex-wrap gap-4 p-4" style="justify-content: center; align-items: center">
+    @if (room) {
+    <app-room-details class="sm:w-1/5" [room]="room"></app-room-details>
+    }
+    <div class="flex flex-col p-2 shadow-lg rounded-md md:gap-4 w-full sm:w-auto">
+      <div class="flex flex-row p-4 justify-between">
+        <h1>Reactions</h1>
+        <button
+          type="submit"
+          (click)="resetEmoji()"
+          class="text-black px-2 py-2 border-2 rounded flex flex-col items-center whitespace-normal break-words"
+        >
+          <mat-icon style="font-size: 24px; height: 24px; width: 24px">restart_alt</mat-icon>
+        </button>
+      </div>
+      <div class="flex flex-row">
         @for (emoji of this.roomService.emoji$ | async; track emoji) {
-          <div class="bg-white p-4 mt-2 lg:text-4xl md:text-xl flex lg:flex-col sm:flex-row items-center">
-            <div class="flex sm:flex-row lg:flex-col items-center">
-              {{ emoji.emoji }}
-              {{ emoji.count }}
-            </div>
+        <div class="bg-white p-4 mt-2 lg:text-4xl md:text-xl flex lg:flex-col sm:flex-row items-center">
+          <div class="flex sm:flex-row lg:flex-col items-center">
+            {{ emoji.emoji }}
+            {{ emoji.count }}
           </div>
+        </div>
         }
-        
       </div>
     </div>
-      <div class="flex flex-row md:gap-4 ">
+    <div class="flex flex-row md:gap-4">
       <span style="flex: 1 1 auto"></span>
       @if ((this.roomService.unreadQuestions$ | async) === 0) {
-      <button (click)="questions()" class="flex flex-col shadow-lg rounded-lg p-4 rounded-md items-center justify-center">
+      <button
+        (click)="questions()"
+        class="flex flex-col shadow-lg rounded-lg p-4 rounded-md items-center justify-center"
+      >
         <div class="h-24 w-24 flex flex-col items-center justify-center">
           <mat-icon style="font-size: 64px; height: 64px; width: 64px">messages</mat-icon>
         </div>
@@ -59,7 +65,7 @@
         Questions
       </button>
       }
-  
+
       <button
         (click)="quickQuestion()"
         class="flex flex-col shadow-lg rounded-lg p-4 rounded-md items-center justify-center"
@@ -69,7 +75,7 @@
         </div>
         Quick Question
       </button>
-  
+
       @if (!isRecording) {
       <div>
         <button
@@ -97,35 +103,58 @@
       }
     </div>
   </div>
-    <div class="flex flex-row flex-wrap gap-4 p-4 overflow-auto [&::-webkit-scrollbar]:hidden" style="justify-content: space-between">
-      <div class="h-full w-full md:h-80 md:w-80">
+  <div
+    class="flex flex-row flex-wrap gap-4 p-4 overflow-auto [&::-webkit-scrollbar]:hidden"
+    style="justify-content: space-between"
+  >
+    <div class="h-full w-full md:h-80 md:w-80">
       <app-live-transcription-board [room]="room"></app-live-transcription-board>
     </div>
-    <div class="h-full w-full  md:h-80 md:w-80">
+    <div class="h-full w-full md:h-80 md:w-80">
       <app-summary-board [room]="room"></app-summary-board>
     </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <h1>Quick Question</h1>
+  @if ((quizQuestion | async) === null) {
+  <form (ngSubmit)="askQuestion()" [formGroup]="quickQuestionForm" class="flex flex-col h-[60vh] w-[60vw] gap-2">
+    <mat-form-field>
+      <mat-label>Question</mat-label>
+      <input matInput formControlName="question" placeholder="Question" />
+    </mat-form-field>
+    @for (option of quizOptions(); track option; let i = $index) {
+    <mat-form-field>
+      <mat-label>Option {{ i + 1 }}</mat-label>
+      <input matInput [formControl]="option" placeholder="Option" />
+    </mat-form-field>
+    }
+    <span style="flex: 1 1 auto"></span>
+    <button (click)="addOption()" type="button" class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Option</button>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Ask</button>
+  </form>
+  } @else {
+  <div class="bg-white p-4 flex flex-col w-[60vw] h-[60vh] gap-4">
+    <h1>Quick Question Stats</h1>
+    <div class="flex flex-col gap-4 p-4 h-full">
+      @for (option of this.roomService.quizStats$ | async; track option; let i = $index) {
+      <div class="flex flex-col gap-4 p-4">
+        <div class="w-full h-8 bg-gray-100 rounded-full" style="position: relative">
+          <div
+            class="h-8 bg-blue-200 rounded-full"
+            [style]="'width:' + (option.percentage || 0) + '%;position: absolute;top:0;left:0'"
+          ></div>
+          <span class="h-8 w-full" style="position: absolute; top: 0; left: 4px"
+            >{{ option.option + 1 }}: {{ option.count }}</span
+          >
+        </div>
+      </div>
+      }
     </div>
   </div>
-  
-  <ng-template #template>
-    <h1>Quick Question</h1>
-    @if ((quizQuestion | async) === null) {
-    <form (ngSubmit)="askQuestion()" [formGroup]="quickQuestionForm" class="flex flex-col h-[60vh] w-[60vw] gap-2">
-      <mat-form-field>
-        <mat-label>Question</mat-label>
-        <input matInput formControlName="question" placeholder="Question" />
-      </mat-form-field>
-      @for (option of quizOptions(); track option; let i = $index) {
-      <mat-form-field>
-        <mat-label>Option {{ i + 1 }}</mat-label>
-        <input matInput [formControl]="option" placeholder="Option" />
-      </mat-form-field>
-      }
-      <span style="flex: 1 1 auto"></span>
-      <button (click)="addOption()" type="button" class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Option</button>
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Ask</button>
-    </form>
-    } @else {
+  }
+  <ng-template #quizStats>
     <div class="bg-white p-4 flex flex-col w-[60vw] h-[60vh] gap-4">
       <h1>Quick Question Stats</h1>
       <div class="flex flex-col gap-4 p-4 h-full">
@@ -144,37 +173,16 @@
         }
       </div>
     </div>
-    }
-    <ng-template #quizStats>
-      <div class="bg-white p-4 flex flex-col w-[60vw] h-[60vh] gap-4">
-        <h1>Quick Question Stats</h1>
-        <div class="flex flex-col gap-4 p-4 h-full">
-          @for (option of this.roomService.quizStats$ | async; track option; let i = $index) {
-          <div class="flex flex-col gap-4 p-4">
-            <div class="w-full h-8 bg-gray-100 rounded-full" style="position: relative">
-              <div
-                class="h-8 bg-blue-200 rounded-full"
-                [style]="'width:' + (option.percentage || 0) + '%;position: absolute;top:0;left:0'"
-              ></div>
-              <span class="h-8 w-full" style="position: absolute; top: 0; left: 4px"
-                >{{ option.option + 1 }}: {{ option.count }}</span
-              >
-            </div>
-          </div>
-          }
-        </div>
-      </div>
-    </ng-template>
   </ng-template>
-  
-  <ng-template #questionsdialog>
-    <h1>Questions</h1>
-    <div class="p-4 border border-gray-300 rounded-lg" style="height: 60vh; width: 60vw; overflow-y: auto">
-      @for (question of this.roomService.questions$ | async; track question) {
-      <div class="p-4 border-b border-gray-300">
-        <span>{{ question }}</span>
-      </div>
-      }
+</ng-template>
+
+<ng-template #questionsdialog>
+  <h1>Questions</h1>
+  <div class="p-4 border border-gray-300 rounded-lg" style="height: 60vh; width: 60vw; overflow-y: auto">
+    @for (question of this.roomService.questions$ | async; track question) {
+    <div class="p-4 border-b border-gray-300">
+      <span>{{ question }}</span>
     </div>
-  </ng-template>
-  
+    }
+  </div>
+</ng-template>

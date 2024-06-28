@@ -24,7 +24,17 @@ import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/s
   styleUrls: ['./join-room.component.scss'],
   providers: [RoomService],
   standalone: true,
-  imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe, RoomDetailsComponent,LiveTranscriptionBoardComponent, SummaryBoardComponent],
+  imports: [
+    FlexModule,
+    MatLegacyCardModule,
+    FormsModule,
+    MatLegacyRadioModule,
+    MatLegacyProgressBarModule,
+    AsyncPipe,
+    RoomDetailsComponent,
+    LiveTranscriptionBoardComponent,
+    SummaryBoardComponent,
+  ],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   room: Room = this.route.snapshot.data.room;
