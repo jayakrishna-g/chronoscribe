@@ -6,8 +6,8 @@ from app.modules.room.cache import (
     SummaryCache,
     TranscriptCache,
 )
-from app.modules.room.model import Room, RoomCreate, RoomMetaData, TranscriptInstance
 from app.modules.room.crud import create_room
+from app.modules.room.model import Room, RoomCreate, RoomMetaData, TranscriptInstance
 
 cache_manager = get_cache_manager()
 connection_manager = get_connection_manager()
@@ -33,10 +33,7 @@ class RoomMetaService:
         return await self._cache.get_room_meta(room_id)
 
     async def write(self, room_id, value):
-        await self._cache.write_room_meta(room_id, value)
-
-    async def add(self, room_meta: RoomMetaData):
-        return await self._cache.add_room_meta(room_meta)
+        await self._cache.set_room_meta(room_id, value)
 
     @staticmethod
     def instance():
@@ -57,7 +54,8 @@ class TranscriptService:
         return self._cache.get_transcript(room_id)
 
     def write(self, room_id, value):
-        return self._cache.write_transcript(room_id, value)
+        print(value)
+        return self._cache.set_transcript(room_id, value)
 
     @staticmethod
     def instance():
@@ -79,7 +77,7 @@ class SummaryService:
         return self._cache.get_summary(room_id)
 
     async def write(self, room_id, value):
-        return self._cache.write_summary(room_id, value)
+        return self._cache.set_summary(room_id, value)
 
     @staticmethod
     def instance():
@@ -134,7 +132,7 @@ class WebSocketService:
             room = await RoomService.instance().get(room_id)
             transcript_service = TranscriptService.instance()
             if room:
-                await transcript_service.write(room_id, TranscriptInstance(**message))
+                await transcript_service.write(room_id, [TranscriptInstance(**message)])
                 await connection_manager.broadcast(
                     room_id, create_broadcast_message("transcript", message)
                 )

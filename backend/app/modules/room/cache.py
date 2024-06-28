@@ -1,150 +1,197 @@
 import asyncio
+import json
 import typing
+from datetime import datetime
 
 from app.core.cache_system import Cache
 from app.database import Database
-from app.modules.room.model import Room, RoomMetaData
+from app.modules.room.model import (
+    Room,
+    RoomMetaData,
+    SummaryInstance,
+    TranscriptInstance,
+)
+from bson import ObjectId
 
 db = Database().instance()
 
 
-class RoomCache(Cache):
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        if isinstance(o, datetime):
+            return o.isoformat()
+        return super().default(o)
+
+
+def object_hook(dct):
+    for key, value in dct.items():
+        if key == "_id" or key == "meta_data_id":
+            dct[key] = ObjectId(value)
+        elif key in ["timestamp", "created_at", "updated_at"]:
+            dct[key] = datetime.fromisoformat(value)
+    return dct
+
+
+class BaseCache(Cache):
+    def __init__(self, cache_name, redis_url):
+        super().__init__(cache_name, redis_url)
+
+    async def _get_from_collection(self, collection, query):
+        return await collection.find_one(query)
+
+    async def _update_collection(self, collection, query, update):
+        return await collection.update_one(query, update, upsert=True)
+
+    async def _serialize(self, data):
+        return json.dumps(data.dict(), cls=JSONEncoder)
+
+    async def _deserialize(self, data, model_class):
+        if data:
+            return model_class(**json.loads(data, object_hook=object_hook))
+        return None
+
+
+class RoomCache(BaseCache):
     def __init__(self):
-        super().__init__()
+        super().__init__("room_cache", "redis://localhost:6379")
         self._collection = db.get_collection("rooms")
 
-    async def _get_from_db(self, room_id):
-        return await self._collection.find_one({"id": room_id})
+    async def get_room(self, room_id) -> Room | None:
+        room_data = await self._get(room_id)
+        if room_data:
+            print(room_data, "room_data")
+            return await self._deserialize(room_data, Room)
+        room_from_db = await self._get_from_collection(
+            self._collection, {"id": room_id}
+        )
+        if room_from_db:
+            await self.set_room(room_id, Room(**room_from_db))
+            return Room(**room_from_db)
+        return None
 
-    async def _write_to_db(self, room_id, value):
-        if not value:
-            raise Exception("Room Value not provided")
-        print(value)
-        return await self._collection.update_one({"id": room_id}, value)
-
-    async def get_room(self, room_id):
-        room = await self._get(room_id)
-        if room:
-            return room
-        print("Fetching Room Data from DB")
-        room_from_db: Room = await self._get_from_db(room_id)  # type: ignore
-        if not room_from_db:
-            raise Exception("Accessing Room Data which does not exist")
-        await self.write_room(room_id, room_from_db)
-        return room_from_db
-
-    async def add_room(self, room: Room):
-        inser_res = await self._collection.insert_one(room.model_dump())
-        room_id = room.id
-        if inser_res.acknowledged:
-            await self.write_room(room_id, room)
-        else:
-            raise Exception("Error in Adding Room to DB")
-
-    async def write_room(self, room_id, room: Room):
-        print(f"Writing Room Data of room{room_id} to Cache {room}")
-        await self._set(room_id, room)
+    async def set_room(self, room_id, room: Room):
+        await self._set(room_id, await self._serialize(room))
 
     async def sync_func(self, key: str, value: typing.Any):
-        print(f"Syncing Room Data for Room {key} with Data {value}")
-        await self._write_to_db(key, value)
+        await self._update_collection(
+            self._collection,
+            {"id": key},
+            {"$set": json.loads(value, object_hook=object_hook)},
+        )
 
 
-class RoomMetaCache(Cache):
+class RoomMetaCache(BaseCache):
     def __init__(self):
-        super().__init__()
+        super().__init__("room_meta_cache", "redis://localhost:6379")
         self._collection = db.get_collection("room_meta")
 
-    async def _get_from_db(self, room_id):
-        return await self._collection.find_one({"room_id": room_id})
+    async def get_room_meta(self, room_id) -> RoomMetaData | None:
+        room_meta_data = await self._get(room_id)
+        if room_meta_data:
+            return await self._deserialize(room_meta_data, RoomMetaData)
+        room_meta_from_db = await self._get_from_collection(
+            self._collection, {"room_id": room_id}
+        )
+        if room_meta_from_db:
+            await self.set_room_meta(room_id, RoomMetaData(**room_meta_from_db))
+            return RoomMetaData(**room_meta_from_db)
+        return None
 
-    async def _write_to_db(self, room_id, value):
-        return await self._collection.update_one({"room_id": room_id}, value)
+    async def set_room_meta(self, room_id, room_meta: RoomMetaData):
+        await self._set(room_id, await self._serialize(room_meta), ttl=600)
 
-    async def _serilaize(self, room_meta) -> RoomMetaData:
-        return RoomMetaData(**room_meta)
-
-    async def get_room_meta(self, room_id) -> RoomMetaData:
-        room_meta = await self._get(room_id)
-        if room_meta:
-            return room_meta
-        room_meta_from_db = await self._get_from_db(room_id)
-        if not room_meta_from_db:
-            raise Exception("Accessing Room Meta Data which does not exist")
-        serialized_room_meta = await self._serilaize(room_meta_from_db)
-        await self.write_room_meta(room_id, serialized_room_meta)
-        return serialized_room_meta
-
-    async def add_room_meta(self, room_meta: RoomMetaData):
-        if room_meta.room_id is None:
-            raise Exception("Room ID not provided")
-        inser_res = await self._collection.insert_one(room_meta.model_dump())
-        room_id = room_meta.room_id
-        if inser_res.acknowledged:
-            await self.write_room_meta(room_id, room_meta)
-            return room_meta
-        else:
-            raise Exception("Error in Adding Room Meta Data to DB")
-
-    async def write_room_meta(self, room_id, room_meta):
-        print(f"Writing Meta Data of room{room_id} from Cache")
-        await self._set(room_id, room_meta, ttl=600)
-
-    async def sync_func(self, key, value):
-        print(f"Room Meta Cache: {self.cache}")
-        print(f"Syncing Room Meta Data for Room {key} with Data {value}")
-        await self._write_to_db(key, value)
+    async def sync_func(self, key: str, value: typing.Any):
+        await self._update_collection(
+            self._collection,
+            {"room_id": key},
+            {"$set": json.loads(value, object_hook=object_hook)},
+        )
 
 
-class TranscriptCache(Cache):
+class TranscriptCache(BaseCache):
     def __init__(self):
-        super().__init__()
+        super().__init__("transcript_cache", "redis://localhost:6379")
         self._collection = db.get_collection("transcript")
 
-    async def _get_from_db(self):
-        return ""  # To-Do
-
-    async def _write_to_db(self):
-        return await asyncio.sleep(1)  # To-Do
-
-    async def get_transcript(self, room_id):
-        transcript = await self._get(room_id)
-        if transcript:
-            return transcript
-        # transcript_from_db = await self._get_from_db()
+    async def get_transcript(self, room_id) -> list[TranscriptInstance] | None:
+        transcript_data = await self._get(room_id)
+        if transcript_data:
+            return [
+                await self._deserialize(instance, TranscriptInstance)
+                for instance in json.loads(transcript_data)
+            ]  # type: ignore
+        transcript_from_db = await self._get_from_collection(
+            self._collection, {"room_id": room_id}
+        )
+        if transcript_from_db:
+            await self.set_transcript(
+                room_id,
+                [
+                    TranscriptInstance(**instance)
+                    for instance in transcript_from_db["instances"]
+                ],
+            )
+            return [
+                TranscriptInstance(**instance)
+                for instance in transcript_from_db["instances"]
+            ]
         return None
 
+    async def set_transcript(self, room_id, transcript: list[TranscriptInstance]):
+        await self._set(
+            room_id,
+            json.dumps([instance.dict() for instance in transcript], cls=JSONEncoder),
+            ttl=600,
+        )
+
     async def sync_func(self, key: str, value: typing.Any):
-        print(f"Transcript Cache: {self.cache}")
-        print(f"Syncing Transcripts for Room{key}")
-        await self._write_to_db()
+        await self._update_collection(
+            self._collection,
+            {"room_id": key},
+            {"$set": {"instances": json.loads(value)}},
+        )
 
-    async def write_transcript(self, room_id, transcript):
-        await self._set(room_id, transcript, ttl=600)
 
-
-class SummaryCache(Cache):
+class SummaryCache(BaseCache):
     def __init__(self):
-        super().__init__()
+        super().__init__("summary_cache", "redis://localhost:6379")
         self._collection = db.get_collection("summary")
 
-    async def _get_from_db(self, room_id):
-        return ""  # To-Do
-
-    async def _write_to_db(self, room_id):
-        return  # To-Do
-
-    async def get_summary(self, room_id):
-        summary = await self._get(room_id)
-        if summary:
-            return summary
-        summary_from_db = await self._get_from_db(room_id=room_id)
+    async def get_summary(self, room_id) -> list[SummaryInstance] | None:
+        summary_data = await self._get(room_id)
+        if summary_data:
+            return [
+                await self._deserialize(instance, SummaryInstance)
+                for instance in json.loads(summary_data)
+            ]  # type: ignore
+        summary_from_db = await self._get_from_collection(
+            self._collection, {"room_id": room_id}
+        )
+        if summary_from_db:
+            await self.set_summary(
+                room_id,
+                [
+                    SummaryInstance(**instance)
+                    for instance in summary_from_db["instances"]
+                ],
+            )
+            return [
+                SummaryInstance(**instance) for instance in summary_from_db["instances"]
+            ]
         return None
 
-    async def sync_func(self, key: str, value: typing.Any):
-        print(self.cache)
-        print(f"Syncing Summary Data for Room {key}")
-        await self._write_to_db(key)
+    async def set_summary(self, room_id, summary: list[SummaryInstance]):
+        await self._set(
+            room_id,
+            json.dumps([instance.dict() for instance in summary], cls=JSONEncoder),
+            ttl=600,
+        )
 
-    async def write_summary(self, room_id, summary):
-        await self._set(room_id, summary, ttl=600)
+    async def sync_func(self, key: str, value: typing.Any):
+        await self._update_collection(
+            self._collection,
+            {"room_id": key},
+            {"$set": {"instances": json.loads(value)}},
+        )
