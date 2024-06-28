@@ -19,10 +19,11 @@ class Database:
         else:
             instance = Database()
             instance.connect(cfg.config.database_url)
-            globals()[_identifier] = globals().get(_identifier)
+            globals()[_identifier] = instance
             return instance
 
     def connect(self, uri, db: str = "chronoscribe"):
+        print(f"Connecting to Database with URI {uri} and DB {db}")
         print(f"Connecting to Database with URI {uri} and DB {db}")
         self._client = AsyncIOMotorClient(uri)
         self._db = self._client[db]  # type: ignore

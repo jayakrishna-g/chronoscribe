@@ -17,6 +17,8 @@ class RoomCache(Cache):
         return await self._collection.find_one({"id": room_id})
 
     async def _write_to_db(self, room_id, value):
+        if not value:
+            raise Exception("Room Value not provided")
         print(value)
         return await self._collection.update_one({"id": room_id}, value)
 

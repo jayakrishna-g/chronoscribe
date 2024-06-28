@@ -31,7 +31,7 @@ class RoomMetaData(BaseModel):
 
 
 class Room(BaseModel):
-    meta_d7ata_id: ObjectId
+    meta_data_id: ObjectId
     id: str
     transcript_file: str = ""
     summary_file: str = ""

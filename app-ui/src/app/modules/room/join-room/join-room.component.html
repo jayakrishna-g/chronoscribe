@@ -45,11 +45,7 @@
       <div class="overflow-y-auto h-[66vh]" #scrollMe>
         @for (transcript of this.roomService.transcript$ | async; track transcript; let i = $index; let last = $last) {
         <div class="overflow-y-auto border-b border-gray-200 p-4">
-          @if (!last) {
-          <span class="text text-gray-500"> {{ transcript.transcript_content }}</span>
-          } @if (last) {
-          <span class="text text-gray-800">{{ transcript.transcript_content }}</span>
-          }
+          <span class="text text-gray-500"> {{ transcript.content }}</span>
         </div>
         }
       </div>

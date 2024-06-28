@@ -137,8 +137,8 @@ export class RoomService {
     console.log(data);
     let currentTranscript = this.transcript_listener.value;
     console.log(currentTranscript);
-    if (currentTranscript.length > data.transcript_index) {
-      currentTranscript[data.transcript_index] = data;
+    if (currentTranscript.length > data.index) {
+      currentTranscript[data.index] = data;
     } else {
       currentTranscript.push(data);
     }

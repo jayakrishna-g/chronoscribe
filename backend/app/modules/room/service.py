@@ -125,10 +125,10 @@ class RoomService:
 
 class WebSocketService:
     async def transcript(self, room_id, websocket, data, connection_manager):
-        if "transcript_content" in data and "transcript_index" in data:
+        if "content" in data and "index" in data:
             message = {
-                "content": data["transcript_content"],
-                "index": data["transcript_index"],
+                "content": data["content"],
+                "index": data["index"],
             }
             print("In transcript service", message)
             room = await RoomService.instance().get(room_id)

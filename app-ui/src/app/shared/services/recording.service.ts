@@ -4,8 +4,8 @@ import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { repeat, retry, takeUntil } from 'rxjs/operators';
 
 export interface TranscriptInstance {
-  transcript_content: string;
-  transcript_index: number;
+  content: string;
+  index: number;
 }
 
 @Injectable({
@@ -14,12 +14,12 @@ export interface TranscriptInstance {
 export class RecordingService {
   transcript = new BehaviorSubject<TranscriptInstance[]>([]);
   stopRecording$ = new Subject<boolean>();
-  liveTranscript = new BehaviorSubject<TranscriptInstance>({ transcript_content: '', transcript_index: 0 });
+  liveTranscript = new BehaviorSubject<TranscriptInstance>({ content: '', index: 0 });
   initialLength = 0;
   constructor(private speechRecognition$: SpeechRecognitionService) {
     this.liveTranscript.subscribe((live) => {
-      if (this.transcript.value.length > live.transcript_index) {
-        this.transcript.value[live.transcript_index] = live;
+      if (this.transcript.value.length > live.index) {
+        this.transcript.value[live.index] = live;
       } else {
         this.transcript.value.push(live);
       }
@@ -31,8 +31,8 @@ export class RecordingService {
       .pipe(retry(), repeat(), continuous(), takeUntil(this.stopRecording$.asObservable()))
       .subscribe((event) => {
         this.liveTranscript.next({
-          transcript_content: event[event.length - 1].item(0).transcript,
-          transcript_index: this.initialLength + event.length - 1,
+          content: event[event.length - 1].item(0).transcript,
+          index: this.initialLength + event.length - 1,
         });
       });
   }
