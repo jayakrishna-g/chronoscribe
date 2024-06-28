@@ -6,7 +6,7 @@ api_version = "v1"
 enable_logging = true
 
 [development]
-database_url = "${MONGO_URI}"
+database_url = "mongodb://localhost"
 jwt_secret_key = "Test"
 debug = true
 

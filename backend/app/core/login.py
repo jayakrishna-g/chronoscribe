@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from app.modules.user.model import UserLogin
 from app.modules.user.service import authenticate_user, create_user
 
-login_router = APIRouter()
+login_router = APIRouter(prefix="/api")
 
 
 @login_router.post("/signup")

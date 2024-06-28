@@ -3,7 +3,7 @@
     "target": "http://localhost:8000",
     "secure": false
   },
-  "/room/ws": {
+  "/ws": {
     "target": "ws://localhost:8000",
     "secure": false,
     "ws": true

@@ -12,14 +12,12 @@ import { AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe],
   templateUrl: './room-details.component.html',
-  styleUrl: './room-details.component.scss'
+  styleUrl: './room-details.component.scss',
 })
 export class RoomDetailsComponent implements OnInit {
-
-  @Input() room!: Room ;
+  @Input() room!: Room;
 
   ngOnInit(): void {
-      console.log(this.room);
+    console.log(this.room);
   }
-
 }

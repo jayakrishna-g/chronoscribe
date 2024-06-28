@@ -8,12 +8,9 @@
             "name": "Python Debugger: FastAPI",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
+            "module": "fastapi",
             "args": [
-                "app:app",
-                "--reload",
-                "--port",
-                "8080"
+                "dev"
             ],
             "jinja": true
         }

@@ -8,9 +8,8 @@ describe('LiveTranscriptionBoardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LiveTranscriptionBoardComponent]
-    })
-    .compileComponents();
+      imports: [LiveTranscriptionBoardComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LiveTranscriptionBoardComponent);
     component = fixture.componentInstance;

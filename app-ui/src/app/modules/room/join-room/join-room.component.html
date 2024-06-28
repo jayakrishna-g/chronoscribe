@@ -1,41 +1,59 @@
 <div class="ml-8 mr-8 flex flex-col gap-4">
-  <div class="flex flex-row flex-wrap gap-1 p-4" style="justify-content: space-between; align-items: center; width: 100%">
+  <div
+    class="flex flex-row flex-wrap gap-1 p-4"
+    style="justify-content: space-between; align-items: center; width: 100%"
+  >
     @if (room) {
-      <app-room-details class="sm:w-1/5" [room]=room></app-room-details>
-      <div class="flex flex-row gap-10 md:gap-4 ">
+    <app-room-details class="sm:w-1/5" [room]="room"></app-room-details>
+    <div class="flex flex-row gap-10 md:gap-4">
       @for (emoji of ['😀', '😑', '☹️']; track emoji) {
       <div
-        class="bg-white shadow-md rounded-lg p-4 lg:text-4xl md:text-xl flex lg:flex-col sm:flex-row hover:bg-gray-100 cursor-pointer"
+        class="
+          bg-white
+          shadow-md
+          rounded-lg
+          p-4
+          lg:text-4xl
+          md:text-xl
+          flex
+          lg:flex-col
+          sm:flex-row
+          hover:bg-gray-100
+          cursor-pointer
+        "
         (click)="emojiClick(emoji)"
       >
         {{ emoji }}
       </div>
       }
+    </div>
+    <div
+      class="bg-white shadow-md rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2"
+      style="flex: 1 1 auto; height: 100%"
+    >
+      <span class="text-2xl">Have a question?</span>
+      <textarea
+        class="text-md p-2 border border-gray-300 rounded-md h-full w-full"
+        placeholder="Enter your question here"
+        [(ngModel)]="question"
+      ></textarea>
+      <div class="flex flex-row gap-4">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded max-w-64" (click)="askQuestion()">Ask</button>
       </div>
-      <div
-        class="bg-white shadow-md rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2"
-        style="flex: 1 1 auto; height: 100%"
-      >
-        <span class="text-2xl">Have a question?</span>
-        <textarea
-          class="text-md p-2 border border-gray-300 rounded-md h-full w-full"
-          placeholder="Enter your question here"
-          [(ngModel)]="question"
-        ></textarea>
-        <div class="flex flex-row gap-4">
-          <button class="bg-blue-500 text-white px-4 py-2 rounded max-w-64" (click)="askQuestion()">Ask</button>
-        </div>
-      </div>
+    </div>
     }
   </div>
 
-  <div class="flex flex-row flex-wrap gap-4 p-4 overflow-auto [&::-webkit-scrollbar]:hidden" style="justify-content: space-between">
+  <div
+    class="flex flex-row flex-wrap gap-4 p-4 overflow-auto [&::-webkit-scrollbar]:hidden"
+    style="justify-content: space-between"
+  >
     <div class="h-full w-full md:h-80 md:w-80">
-    <app-live-transcription-board [room]="room"></app-live-transcription-board>
-  </div>
-  <div class="h-full w-full  md:h-80 md:w-80">
-    <app-summary-board [room]="room"></app-summary-board>
-  </div>
+      <app-live-transcription-board [room]="room"></app-live-transcription-board>
+    </div>
+    <div class="h-full w-full md:h-80 md:w-80">
+      <app-summary-board [room]="room"></app-summary-board>
+    </div>
   </div>
 </div>
 

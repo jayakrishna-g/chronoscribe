@@ -20,7 +20,7 @@ export interface Room {
   room_id?: string;
   name: string;
   description: string;
-  owner: string;
+  owner_id: string;
   transcript?: TranscriptInstance[];
   summaries?: string[];
 }
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
       const room: Room = {
         name: this.createRoomForm.controls['name'].value,
         description: this.createRoomForm.controls['description'].value,
-        owner: this.authService.getTokenData().email,
+        owner_id: this.authService.getTokenData().email,
       };
       console.log(room);
       this.http.post<Room>('/api/room', room).subscribe((res) => {

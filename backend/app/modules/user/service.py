@@ -10,10 +10,10 @@ from app.core.utils import (
     get_password_hash,
     verify_password,
 )
-from app.database import get_database
+from app.database import Database
 from app.modules.user.model import UserInDB, UserLogin
 
-db = get_database()
+db = Database().instance()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
 
 user_coll = db.get_collection("users")

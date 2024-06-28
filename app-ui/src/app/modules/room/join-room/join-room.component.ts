@@ -24,7 +24,17 @@ import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/s
   styleUrls: ['./join-room.component.scss'],
   providers: [RoomService],
   standalone: true,
-  imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe, RoomDetailsComponent,LiveTranscriptionBoardComponent, SummaryBoardComponent],
+  imports: [
+    FlexModule,
+    MatLegacyCardModule,
+    FormsModule,
+    MatLegacyRadioModule,
+    MatLegacyProgressBarModule,
+    AsyncPipe,
+    RoomDetailsComponent,
+    LiveTranscriptionBoardComponent,
+    SummaryBoardComponent,
+  ],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   room: Room = this.route.snapshot.data.room;
@@ -46,7 +56,7 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit(): void {
     this.room = this.route.snapshot.data.room;
-    let owner = this.room.owner;
+    let owner = this.room.owner_id;
     let user = this.authService.getTokenData().email;
     if (owner === user) {
       this.router.navigate(['room', this.room.room_id]);
