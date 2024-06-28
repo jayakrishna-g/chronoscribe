@@ -14,6 +14,9 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { AsyncPipe } from '@angular/common';
 import { QuizQuestion } from '../admin-room/admin-room.component';
+import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
+import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
+import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 
 @Component({
   selector: 'app-join-room',
@@ -21,7 +24,7 @@ import { QuizQuestion } from '../admin-room/admin-room.component';
   styleUrls: ['./join-room.component.scss'],
   providers: [RoomService],
   standalone: true,
-  imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe],
+  imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe, RoomDetailsComponent,LiveTranscriptionBoardComponent, SummaryBoardComponent],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   room: Room = this.route.snapshot.data.room;

@@ -21,6 +21,9 @@ import { FlexModule } from '@angular/flex-layout/flex';
 import { AsyncPipe } from '@angular/common';
 import { RoomService } from '../room.service';
 import { Room } from '../../home/home.component';
+import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
+import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
+import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 
 export type QuizQuestion = {
   question: string;
@@ -42,6 +45,9 @@ export type QuizQuestion = {
     MatLegacyFormFieldModule,
     MatLegacyInputModule,
     AsyncPipe,
+    RoomDetailsComponent,
+    LiveTranscriptionBoardComponent,
+    SummaryBoardComponent
   ],
 })
 export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
