@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Any
 
 from app.modules.room.cache import (
     RoomCache,

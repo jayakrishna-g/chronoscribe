@@ -18,8 +18,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
 
 user_coll = db.get_collection("users")
 
-print(user_coll.find())
-
 
 async def get_user(username: str) -> Mapping[str, Any] | None:
     user = await user_coll.find_one({"username": username})
@@ -30,7 +28,6 @@ async def create_user(user: UserLogin):
     user_dict = user.model_dump()
     user_dict["hashed_password"] = get_password_hash(user_dict["password"])
     del user_dict["password"]
-    print(user_dict)
     await user_coll.insert_one(user_dict)
     del user_dict["_id"]
     return user_dict
@@ -43,7 +40,6 @@ async def authenticate_user(username: str, password: str):
     user = {
         v: user_mapping[v] for v in filter(lambda x: x != "_id", user_mapping.keys())
     }
-    print(user)
     if not user:
         return False
     if not verify_password(password, user["hashed_password"]):
