@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
-from jose import jwt
 import bcrypt
+from jose import jwt
 
 from app.config import config
 
@@ -39,11 +39,14 @@ def decode_access_token(token: str):
 # def get_password_hash(password):
 #     return pwd_context.hash(password)
 
+
 def get_password_hash(password):
     salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
-    return hashed.decode('utf-8')
+    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
+    return hashed.decode("utf-8")
+
 
 def verify_password(plain_password, hashed_password):
-    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
-
+    return bcrypt.checkpw(
+        plain_password.encode("utf-8"), hashed_password.encode("utf-8")
+    )

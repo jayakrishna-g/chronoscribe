@@ -1,4 +1,6 @@
-from app.core.connection_manager import get_connection_manager
+from loguru import logger
+
+from app.core.connection_manager import ConnectionManager
 from app.modules.room import CacheName, get_cache_manager
 from app.modules.room.cache import (
     RoomCache,
@@ -7,13 +9,13 @@ from app.modules.room.cache import (
     TranscriptCache,
 )
 from app.modules.room.crud import create_room
-from app.modules.room.model import Room, RoomCreate, RoomMetaData, TranscriptInstance
+from app.modules.room.model import RoomCreate, TranscriptInstance
 
 cache_manager = get_cache_manager()
-connection_manager = get_connection_manager()
+connection_manager = ConnectionManager.instance()
 
 
-async def get_owner_rooms(owner):
+async def get_owner_rooms():
     return []
 
 
@@ -54,7 +56,6 @@ class TranscriptService:
         return self._cache.get_transcript(room_id)
 
     def write(self, room_id, value):
-        print(value)
         return self._cache.set_transcript(room_id, value)
 
     @staticmethod
@@ -128,7 +129,7 @@ class WebSocketService:
                 "content": data["content"],
                 "index": data["index"],
             }
-            print("In transcript service", message)
+            logger.info("In transcript service", message)
             room = await RoomService.instance().get(room_id)
             transcript_service = TranscriptService.instance()
             if room:
@@ -178,7 +179,6 @@ class WebSocketService:
         return services.get(service_name)
 
     async def handle(self, websocket, data, room_id, connection_manager):
-        print(data)
         service_name = data.get("service")
         if not service_name:
             raise ValueError("Service Type not specified")

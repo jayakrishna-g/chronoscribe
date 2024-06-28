@@ -41,9 +41,6 @@ def get_config():
     # Create a Pydantic Settings model instance
     settings = Settings(**config_data)
 
-    print(f"Running in {profile} mode.")
-    print(f"Configuration: {settings.dict()}")
-
     return settings
 
 

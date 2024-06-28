@@ -1,7 +1,8 @@
-import asyncio
 import json
 import typing
 from datetime import datetime
+
+from bson import ObjectId
 
 from app.core.cache_system import Cache
 from app.database import Database
@@ -11,7 +12,6 @@ from app.modules.room.model import (
     SummaryInstance,
     TranscriptInstance,
 )
-from bson import ObjectId
 
 db = Database().instance()
 
@@ -61,7 +61,7 @@ class RoomCache(BaseCache):
     async def get_room(self, room_id) -> Room | None:
         room_data = await self._get(room_id)
         if room_data:
-            print(room_data, "room_data")
+            # logger.info(, "room_data")
             return await self._deserialize(room_data, Room)
         room_from_db = await self._get_from_collection(
             self._collection, {"id": room_id}

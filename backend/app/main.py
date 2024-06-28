@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from loguru import logger
 
 import app.config as cfg
 from app.core import core_router
@@ -35,7 +36,7 @@ async def startup_event():
 app.include_router(api_router)
 app.include_router(core_router)
 
-print(app.routes)
+logger.info(f"{app.routes}")
 
 
 if __name__ == "__main__":

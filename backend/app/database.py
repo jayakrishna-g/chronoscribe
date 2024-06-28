@@ -1,3 +1,4 @@
+from loguru import logger
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 import app.config as cfg
@@ -23,8 +24,8 @@ class Database:
             return instance
 
     def connect(self, uri, db: str = "chronoscribe"):
-        print(f"Connecting to Database with URI {uri} and DB {db}")
-        print(f"Connecting to Database with URI {uri} and DB {db}")
+        logger.info(f"Connecting to Database with URI {uri} and DB {db}")
+        logger.info(f"Connecting to Database with URI {uri} and DB {db}")
         self._client = AsyncIOMotorClient(uri)
         self._db = self._client[db]  # type: ignore
 

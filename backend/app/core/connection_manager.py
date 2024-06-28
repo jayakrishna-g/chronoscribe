@@ -21,9 +21,12 @@ class ConnectionManager:
         for client in self.connected_clients.get(room_id, set()):
             await client.send_json(data)
 
-
-def get_connection_manager() -> ConnectionManager | Any:
-    if "connection_manager" not in globals():
-        global connection_manager
-        connection_manager = ConnectionManager()
-    return connection_manager  # type: ignore
+    @staticmethod
+    def instance():
+        instance: ConnectionManager = globals().get("connection_manager")  # type: ignore
+        if instance:
+            return instance
+        else:
+            instance = ConnectionManager()
+            globals()["connection_manager"] = instance
+            return instance

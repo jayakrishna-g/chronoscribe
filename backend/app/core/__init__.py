@@ -1,6 +1,6 @@
-from fastapi import APIRouter, FastAPI
-from app.core.login import login_router
+from fastapi import APIRouter
 
+from app.core.login import login_router
 
 core_router = APIRouter()
 
