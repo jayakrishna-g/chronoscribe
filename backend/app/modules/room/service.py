@@ -70,7 +70,7 @@ async def get_unique_id():
 
 
 async def save_room(room: Room):
-    room.summarize()
+    #room.summarize()
     if len(room.summaries) > 0 and room.has_newSummary():
         await connection_manager.broadcast(
             room.room_id, create_broadcast_message("summary", room.summaries[-1])

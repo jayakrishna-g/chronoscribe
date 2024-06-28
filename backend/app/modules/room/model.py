@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing_extensions import Any
 
-from app.modules.summarizer.model import get_summary
+# from app.modules.summarizer.model import get_summary
 
 
 class TranscriptInstance(BaseModel):
@@ -54,7 +54,8 @@ class Room:
         if len(cur_text) == 0:
             return
         self.prev_summary_len = len(self.summaries)
-        summary = get_summary(cur_text)
+        # summary = get_summary(cur_text)
+        summary = ""
         summary_str: str = "".join(summary)
         self.summaries.append(summary_str)
         print("Summarized from index:", self.start_summary_index)

@@ -3,13 +3,13 @@ import { Route, RouterModule, Routes } from '@angular/router';
 import { RoomComponent } from './room.component';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { JoinRoomComponent } from './join-room/join-room.component';
-import { AllComponent } from './all/all.component';
 import { RoomsResolver } from '../resolvers/rooms.resolver';
+import { AdminRoomComponent } from './admin-room/admin-room.component';
 
 const routes: Routes = [
   {
     path: ':id',
-    component: RoomComponent,
+    component: AdminRoomComponent,
     resolve: { room: RoomResolver },
   },
   {
@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: AllComponent,
+    component: RoomComponent,
     resolve: { rooms: RoomsResolver },
   },
 ];

@@ -1,16 +1,7 @@
 <div class="ml-8 mr-8 flex flex-col gap-4">
   <div class="flex flex-row gap-1 p-4" style="justify-content: space-between; align-items: center; width: 100%">
     @if (room) {
-    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" style="width: 100%">
-      <div class="bg-white shadow-md rounded-lg p-4">
-        <mat-card-title>Room Details</mat-card-title><br />
-        <mat-card-subtitle>Created By: {{ room.owner }} </mat-card-subtitle>
-        <mat-card-content>
-          <p>Room Name: {{ room.name }}</p>
-          <p>Room Description: {{ room.description }}</p>
-          <p>Room ID: {{ room.room_id }}</p>
-        </mat-card-content>
-      </div>
+      <app-room-details [room]=room></app-room-details>
       @for (emoji of ['😀', '😑', '☹️']; track emoji) {
       <div
         class="bg-white shadow-md rounded-lg p-4 text-[64px] hover:bg-gray-100 cursor-pointer"
@@ -33,39 +24,12 @@
           <button class="bg-blue-500 text-white px-4 py-2 rounded max-w-64" (click)="askQuestion()">Ask</button>
         </div>
       </div>
-    </div>
     }
   </div>
 
   <div class="flex flex-row gap-4 p-4 overflow-auto" style="justify-content: space-between">
-    <div class="flex flex-col gap-1 shadow-md rounded-lg p-4 bg-white">
-      <mat-card-title>Live Transcription</mat-card-title><br />
-      <mat-card-subtitle>Live transcription of your voice will appear here.</mat-card-subtitle>
-      <div class="h-[1em]"></div>
-      <div class="overflow-y-auto h-[66vh]" #scrollMe>
-        @for (transcript of this.roomService.transcript$ | async; track transcript; let i = $index; let last = $last) {
-        <div class="overflow-y-auto border-b border-gray-200 p-4">
-          @if (!last) {
-          <span class="text text-gray-500"> {{ transcript.transcript_content }}</span>
-          } @if (last) {
-          <span class="text text-gray-800">{{ transcript.transcript_content }}</span>
-          }
-        </div>
-        }
-      </div>
-    </div>
-    <div class="flex flex-col gap-1 shadow-md rounded-lg p-4 bg-white">
-      <mat-card-title>Summary</mat-card-title><br />
-      <mat-card-subtitle>Summaries of Transcripts</mat-card-subtitle>
-      <div class="h-[1em]"></div>
-      <div class="overflow-y-auto h-[66vh]" #scrollMe>
-        @for (transcript of this.roomService.summary$ | async; track transcript; let i = $index; let last = $last) {
-        <div class="overflow-y-auto border-b border-gray-200 p-4">
-          <span class="text text-gray-800"> {{ transcript }}</span>
-        </div>
-        }
-      </div>
-    </div>
+    <app-live-transcription-board [room]="room"></app-live-transcription-board>
+    <app-summary-board [room]="room"></app-summary-board>
   </div>
 </div>
 

@@ -1,0 +1,25 @@
+<div class="flex flex-col gap-1 shadow-md rounded-lg p-4 bg-white">
+  <mat-card-title>Live Transcription</mat-card-title><br />
+  <mat-card-subtitle>Live transcription of your voice will appear here.</mat-card-subtitle>
+  <div class="h-[1em]"></div>
+  <div class="overflow-y-auto h-[66vh]" #scrollMe>
+    @if (room.name === room.owner) { 
+    @for (transcript of this.recordingService.transcript$ | async; track transcript; let i = $index; let last = $last) {
+    <div class="overflow-y-auto border-b border-gray-200 p-4">
+      @if (!last) {
+      <span class="text text-gray-500"> {{ transcript.transcript_content }}</span>
+      } @if (last) {
+      <span class="text text-gray-800">{{ transcript.transcript_content }}</span>
+      }
+    </div>
+    } } @else { @for (transcript of this.roomService.transcript$ | async; track transcript; let i = $index; let last = $last) {
+    <div class="overflow-y-auto border-b border-gray-200 p-4">
+      @if (!last) {
+      <span class="text text-gray-500"> {{ transcript.transcript_content }}</span>
+      } @if (last) {
+      <span class="text text-gray-800">{{ transcript.transcript_content }}</span>
+      }
+    </div>
+    } }
+  </div>
+</div>
