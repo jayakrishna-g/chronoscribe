@@ -1,10 +1,8 @@
-from app.TokenVerification import JWTVerificationMiddleware, verify_token
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 
 from app.modules.user.model import UserLogin
 from app.modules.user.service import authenticate_user, create_user
-from fastapi import Request
-
+import app.TokenVerification as tv
 
 login_router = APIRouter()
 
@@ -33,10 +31,3 @@ async def login(data: UserLogin):
         "message": "Login successful",
         "token": user.get("access_token"),
     }
-
-
-@login_router.post("/verify")
-async def verify(data):
-    print(data)
-    verify_token(data.token)
-    return {"status": True, "message": "Token is valid"}

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing_extensions import Any
 
-from app.modules.summarizer.model import get_summary
+# from app.modules.summarizer.model import get_summary
 
 
 class TranscriptInstance(BaseModel):
@@ -17,14 +17,12 @@ class Room:
         self.owner: str = owner
         self.transcript: list[TranscriptInstance] = []
 
-        self.summaries: list[str] = [""]
+        # self.summaries: list[str] = [""]s
         self.start_summary_index: int = 0
         self.transcript_changed: bool = False
         self.prev_summary_len: int = 0
         self.reactions: dict[str, Any] = {}
         return None
-        # self.start_summary()
-        # self.create()
 
     def dict(self) -> dict:
         return {
@@ -33,12 +31,12 @@ class Room:
             "description": self.description,
             "owner": self.owner,
             "transcript": [x.dict() for x in self.transcript],
-            "summaries": self.summaries,
+            # "summaries": self.summaries,
             "reactions": self.reactions,
         }
 
-    def has_newSummary(self) -> bool:
-        return self.prev_summary_len < len(self.summaries)
+    # def has_newSummary(self) -> bool:
+    #     return self.prev_summary_len < len(self.summaries)
 
     def summarize(self) -> None:
         # summary = get_summary(self.current_transcript)
@@ -53,12 +51,12 @@ class Room:
             cur_text += self.transcript[i].transcript_content
         if len(cur_text) == 0:
             return
-        self.prev_summary_len = len(self.summaries)
-        summary = get_summary(cur_text)
-        summary_str: str = "".join(summary)
-        self.summaries.append(summary_str)
-        print("Summarized from index:", self.start_summary_index)
-        print("Summarized:", summary)
+        # self.prev_summary_len = len(self.summaries)
+        # summary = get_summary(cur_text)
+        # summary_str: str = "".join(summary)
+        # self.summaries.append(summary_str)
+        # print("Summarized from index:", self.start_summary_index)
+        # print("Summarized:", summary)
         self.transcript_changed = False
 
     def db_dict(self):
@@ -69,7 +67,7 @@ class Room:
             "description": self.description,
             "owner": self.owner,
             "transcript": transcript_content,
-            "summaries": self.summaries,
+            # "summaries": self.summaries,
             "reactions": self.reactions,
         }
 
