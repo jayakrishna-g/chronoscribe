@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/authentication/auth.guard';
 import { ShellComponent } from './core/shell/shell.component';
 // import { KeyCloakLoginComponent } from './path/to/KeyCloakLoginComponent'; // Import the KeyCloakLoginComponent class
-
+import { LogoutComponent } from './core/logout/logout.component';
+import { LoginComponent } from './core/login/login.component';
 const routes: Routes = [
   {
     path: '',
@@ -23,6 +24,14 @@ const routes: Routes = [
       //   component: KeyCloakLoginComponent,
       // },
     ],
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
 ];
 

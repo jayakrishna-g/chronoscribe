@@ -11,19 +11,19 @@ import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { AuthenticationService } from './app/core/authentication/authentication.service';
 import { APP_INITIALIZER } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/',
-        realm: 'myrealm',
-        clientId: 'chronoscribe',
+        url: environment.keyCloakUrl,
+        realm: environment.kyCloakRealm,
+        clientId: environment.keyCloakClientId,
       },
       initOptions: {
-        onLoad: 'login-required',
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
         checkLoginIframe: false,
-        // redirectUri: 'http://localhost:4200/keycloak-login',
+        redirectUri: environment.forntendAppUrl,
       },
       enableBearerInterceptor: true,
     });

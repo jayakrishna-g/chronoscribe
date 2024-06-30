@@ -4,6 +4,11 @@
 
 export const environment = {
   production: false,
+  keyCloakUrl: 'http://localhost:8080/',
+  kyCloakRealm: 'chronoscribe',
+  keyCloakClientId: 'chronoscribe',
+  forntendAppUrl: 'http://localhost:4200/home',
+  logoutRedirectUri: 'http://localhost:4200/logout',
 };
 
 /*

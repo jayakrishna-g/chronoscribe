@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { TokenData, AuthenticationService } from '../../authentication/authentication.service';
 import { MatIconModule } from '@angular/material/icon';
+import { environment } from 'src/environments/environment';
+import { KeycloakService } from 'keycloak-angular';
 
 interface NavListItem {
   icon: string;
@@ -31,14 +33,22 @@ export class NavListComponent implements OnInit {
 
   normalItems: NavListItem[] = [...this.commonItems];
 
-  constructor(private router: Router, private authService: AuthenticationService) {
+  constructor(
+    private router: Router,
+    private keycloakService: KeycloakService,
+    private authService: AuthenticationService
+  ) {
     this.tokenData = this.authService.getTokenData();
   }
   ngOnInit(): void {}
 
   logout() {
-    localStorage.setItem('token', '');
-    localStorage.setItem('tokenData', '');
-    this.router.navigate(['login']);
+    debugger;
+    this.keycloakService.logout().then(() => {
+      console.log('logged out');
+      localStorage.removeItem('token');
+      localStorage.removeItem('tokenData');
+      this.keycloakService.clearToken();
+    });
   }
 }

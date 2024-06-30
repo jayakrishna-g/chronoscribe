@@ -65,7 +65,7 @@ export class AuthenticationService {
   }
 
   verifyKeycloakToken(token: string) {
-    return this.http.post<AuthenticationResponse>('/api/verify', token);
+    return this.http.post<AuthenticationResponse>('/api/verify', { token: token });
   }
 
   storeTokenData(token?: string) {

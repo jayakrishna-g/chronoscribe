@@ -13,7 +13,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuZvNWKgHFLyavYZPCFMbHhoSQ1Qmrh+dSWTf
 -----END PUBLIC KEY-----
 """
 jwt_algorithm = "RS256"
-keycloak_audience= "chronoscribe"
+keycloak_audience= "account"
 debug = true
 jwt_secret_key= 'Test'
 

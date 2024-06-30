@@ -15,6 +15,7 @@ import { MatLegacyInputModule } from '@angular/material/legacy-input';
 import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { NgTemplateOutlet } from '@angular/common';
+import { KeycloakService } from 'keycloak-angular';
 
 export interface Room {
   room_id?: string;
@@ -44,9 +45,32 @@ export class HomeComponent implements OnInit {
   joinRoomForm!: UntypedFormGroup;
   user = this.authService.getTokenData().email;
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthenticationService) {}
+  constructor(
+    private keycloakService: KeycloakService,
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthenticationService
+  ) {}
 
   ngOnInit(): void {
+    // get the token and store it
+    debugger;
+    if (this.keycloakService.isLoggedIn()) {
+      if (!this.authService.isAuthenticated()) {
+        this.keycloakService.getToken().then((token) => {
+          console.log('token', token);
+
+          this.authService.verifyKeycloakToken(token).subscribe((response) => {
+            if (response.status) {
+              console.log('token verified', response);
+              this.authService.setToken(token);
+              this.authService.storeTokenData(token);
+            }
+          });
+        });
+      }
+    }
+
     this.createRoomForm = new UntypedFormGroup({
       name: new UntypedFormControl('', Validators.required),
       description: new UntypedFormControl('', Validators.required),

@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
         if (this.authservice.jwtHelper.isTokenExpired(token)) {
           const newToken = await this.keycloakService.getToken();
           this.authservice.setToken(newToken);
+          this.authservice.storeTokenData(newToken);
         }
       }
     } catch (error) {
@@ -34,36 +35,16 @@ export class AppComponent implements OnInit {
     }
   };
 
-  ngOnInit() {
+  async ngOnInit() {
     console.log('AppComponent ngOnInit');
     try {
-      debugger;
-      if (this.keycloakService.isLoggedIn()) {
-        if (!this.authservice.isAuthenticated()) {
-          this.keycloakService.getToken().then((token) => {
-            console.log('token', token);
-
-            this.authservice.verifyKeycloakToken(token).subscribe((response) => {
-              if (response.status) {
-                console.log('token verified', response);
-                this.authservice.setToken(token);
-                this.authservice.storeTokenData(token);
-              }
-            });
-          });
-        }
+      if (!this.keycloakService.isLoggedIn()) {
+        console.log('user logged in');
+        this.keycloakService.login();
+      } else {
+        await this.verifyToken();
+        this.router.navigate(['home']);
       }
-      this.router.navigate(['home']);
-
-      this.keycloakService.keycloakEvents$.subscribe((event) => {
-        console.log('event', event);
-        if (event.type === KeycloakEventType.OnTokenExpired) {
-          this.keycloakService.getToken().then((token) => {
-            this.authservice.setToken(token);
-            this.authservice.storeTokenData(token);
-          });
-        }
-      });
     } catch (error) {
       // Handle error
       console.log('error', error);

@@ -1,3 +1,4 @@
+import token
 from pydantic import BaseModel, EmailStr
 
 
@@ -27,7 +28,7 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: str | None = None
+    token: str | None = None
 
 
 class UserInDB(User):

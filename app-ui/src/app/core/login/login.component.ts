@@ -17,6 +17,7 @@ import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
 
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { FlexModule } from '@angular/flex-layout/flex';
+import { KeycloakService } from 'keycloak-angular';
 @UntilDestroy()
 @Component({
   selector: 'app-login',
@@ -45,37 +46,31 @@ export class LoginComponent implements OnInit {
   constructor(
     @Inject(UntypedFormBuilder)
     private formBuilder: UntypedFormBuilder,
-    private authService: AuthenticationService,
+    private authservice: AuthenticationService,
     @Inject(Router)
     private router: Router,
     @Inject(ActivatedRoute)
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private keycloakService: KeycloakService
   ) {}
 
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['home']);
-    }
-    this.formChoice = this.route.snapshot.url[0].path;
-    this.createLoginForm();
-    this.createSignUpForm();
-  }
+  ngOnInit(): void {}
 
   login() {
-    this.authService
+    this.authservice
       .login(this.loginForm.value)
       .pipe(untilDestroyed(this))
       .subscribe((loginStatus) => {
         if (loginStatus.status && loginStatus.token) {
-          this.authService.setToken(loginStatus.token);
-          this.authService.storeTokenData(loginStatus.token);
+          this.authservice.setToken(loginStatus.token);
+          this.authservice.storeTokenData(loginStatus.token);
         }
         this.router.navigate(['home']);
       });
   }
 
   signup() {
-    this.authService
+    this.authservice
       .signUp({
         full_name: this.signUpForm.controls['full_name'].value,
         email: this.signUpForm.controls['email'].value,

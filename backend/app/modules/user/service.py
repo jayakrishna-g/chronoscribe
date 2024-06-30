@@ -11,7 +11,7 @@ from app.core.utils import (
     verify_password,
 )
 from app.database import Database
-from app.modules.user.model import UserInDB, UserLogin
+from app.modules.user.model import User, UserInDB, UserLogin
 
 db = Database().instance()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
@@ -24,10 +24,17 @@ async def get_user(username: str) -> Mapping[str, Any] | None:
     return user
 
 
-async def create_user(user: UserLogin):
+async def user_exists(email: str) -> bool:
+    user = await user_coll.find_one({"email": email})
+    if not user:
+        return False
+    return True
+
+
+async def create_user(user: User):
     user_dict = user.model_dump()
-    user_dict["hashed_password"] = get_password_hash(user_dict["password"])
-    del user_dict["password"]
+    # user_dict["hashed_password"] = get_password_hash(user_dict["password"])
+    # del user_dict["password"]
     await user_coll.insert_one(user_dict)
     del user_dict["_id"]
     return user_dict

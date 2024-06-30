@@ -1,10 +1,10 @@
 from contextlib import asynccontextmanager
 
 import jwt
-from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from loguru import logger
 
 import app.config as cfg
@@ -12,8 +12,6 @@ import app.TokenVerification as tv
 from app.core import core_router
 from app.database import Database
 from app.modules import api_router
-
-db = Database.instance()
 
 # db.connect(cfg.config.database_url)
 
