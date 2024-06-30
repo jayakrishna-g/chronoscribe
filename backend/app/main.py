@@ -1,16 +1,23 @@
+from contextlib import asynccontextmanager
+
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from loguru import logger
 
 import app.config as cfg
 import app.TokenVerification as tv
 from app.core import core_router
-from app.database import get_database
+from app.database import Database
 from app.modules import api_router
 
-app = FastAPI(root_path="/api")
+db = Database.instance()
+
+# db.connect(cfg.config.database_url)
+
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,13 +45,19 @@ def verify_token(request, call_next):
     return call_next(request)
 
 
-db = get_database(cfg.config.database_url, "darkknight")
+@asynccontextmanager
+async def startup_event():
+    db = Database.instance()
+    db.connect(cfg.config.database_url, cfg.config.app_name)
+    yield
+    db.close()
+
 
 app.include_router(api_router)
 app.include_router(core_router)
 
 
-print(app.routes)
+logger.info(f"{app.routes}")
 
 
 if __name__ == "__main__":

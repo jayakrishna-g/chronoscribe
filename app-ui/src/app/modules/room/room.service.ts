@@ -6,8 +6,8 @@ import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 import { WebSocketSubject, webSocket as websocket } from 'rxjs/webSocket';
 import { webSocket } from 'rxjs/webSocket';
 import { BehaviorSubject } from 'rxjs';
-import { QuizQuestion } from './room.component';
 import { environment } from 'src/environments/environment';
+import { QuizQuestion } from './admin-room/admin-room.component';
 
 export type RoomSocketData = {
   transcript_content: string;
@@ -137,8 +137,8 @@ export class RoomService {
     console.log(data);
     let currentTranscript = this.transcript_listener.value;
     console.log(currentTranscript);
-    if (currentTranscript.length > data.transcript_index) {
-      currentTranscript[data.transcript_index] = data;
+    if (currentTranscript.length > data.index) {
+      currentTranscript[data.index] = data;
     } else {
       currentTranscript.push(data);
     }
@@ -205,8 +205,8 @@ export class RoomService {
     return this.unreadQuestions.asObservable();
   }
 
-  getRoom(roomId: string) {
-    return this.http.get<Room>(`/api/room/${roomId}`);
+  getRoomMetaData(roomId: string) {
+    return this.http.get<Room>(`/api/room/meta/${roomId}`);
   }
 
   getRooms() {
@@ -215,9 +215,9 @@ export class RoomService {
   }
 
   connectToRoom(roomId: string) {
-    let url = `ws://${window.location.hostname}:4200/room/ws/${roomId}`;
+    let url = `ws://${window.location.hostname}:4200/ws/room/${roomId}`;
     if (environment.production) {
-      url = `ws://${window.location.hostname}/room/ws/${roomId}`;
+      url = `ws://${window.location.hostname}/ws/room/${roomId}`;
     }
     this.websocket$ = websocket(url);
     this.websocket$.subscribe((data) => {

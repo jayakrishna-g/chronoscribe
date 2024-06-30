@@ -2,7 +2,10 @@ import os
 from typing import Any
 
 import tomli
+from dotenv import load_dotenv
 from pydantic import BaseModel
+
+load_dotenv()
 
 
 class Settings(BaseModel):
@@ -39,9 +42,6 @@ def get_config():
 
     # Create a Pydantic Settings model instance
     settings = Settings(**config_data)
-
-    print(f"Running in {profile} mode.")
-    print(f"Configuration: {settings.dict()}")
 
     return settings
 

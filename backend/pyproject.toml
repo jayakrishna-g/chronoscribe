@@ -3,6 +3,7 @@ name = "backend"
 version = "0.1.0"
 description = "Chronoscribe backend"
 authors = ["Your Name <you@example.com>"]
+package-mode = false
 
 
 [tool.poetry.dependencies]
@@ -11,7 +12,6 @@ fastapi = "^0.111.0"
 tomli = "^2.0.1"
 motor = "^3.4.0"
 python-jose = "^3.3.0"
-passlib = "^1.7.4"
 schedule = "^1.2.2"
 torch = "2.2.2"
 transformers = "^4.41.2"
@@ -21,7 +21,8 @@ python-dotenv = "^1.0.1"
 pydantic-settings = "^2.3.3"
 jwt = "^1.3.1"
 bcrypt = "^4.1.3"
-pyjwt = "^2.8.0"
+redis = "^5.0.7"
+loguru = "^0.7.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -31,7 +32,6 @@ mypy = "^1.10.0"
 isort = "^5.13.2"
 motor-types = "^1.0.0b4"
 types-python-jose = "^3.3.4.20240106"
-types-passlib = "^1.7.7.20240327"
 
 [build-system]
 requires = ["poetry-core"]

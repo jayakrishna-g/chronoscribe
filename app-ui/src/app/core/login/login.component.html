@@ -14,56 +14,58 @@
 
       <mat-card-content class="login-box">
         @if (formChoice === 'login') {
-        <form (ngSubmit)="login()" [formGroup]="loginForm">
-          <mat-form-field>
+        <form (ngSubmit)="login()" [formGroup]="loginForm" class="space-y-4">
+          <mat-form-field class="w-full">
             <mat-label>Username</mat-label>
-            <input type="text" matInput formControlName="username" placeholder="Username" />
+            <input type="text" matInput formControlName="username" placeholder="Username" class="w-full" />
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field class="w-full">
             <mat-label>Password</mat-label>
-            <input type="password" matInput formControlName="password" placeholder="Password" />
+            <input type="password" matInput formControlName="password" placeholder="Password" class="w-full" />
           </mat-form-field>
-          <button mat-flat-button color="primary" type="submit">Login</button>
-          <a href="\EditPass" style="display: block">forgot or edit password?</a>
+          <button mat-flat-button color="primary" type="submit" class="w-full lg:w-1/4">Login</button>
+          <a href="\EditPass" class="block text-center mt-2">forgot or edit password?</a>
         </form>
         } @if (formChoice === 'signup') {
-        <form (ngSubmit)="signup()" [formGroup]="signUpForm">
-          <mat-form-field>
+        <form (ngSubmit)="signup()" [formGroup]="signUpForm" class="space-y-4">
+          <mat-form-field class="w-full">
             <mat-label>Full Name</mat-label>
-            <input type="text" matInput formControlName="full_name" placeholder="FullName" />
+            <input type="text" matInput formControlName="full_name" placeholder="Full Name" class="w-full" />
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field class="w-full">
             <mat-label>Username</mat-label>
-            <input type="text" matInput formControlName="username" placeholder="Username" />
+            <input type="text" matInput formControlName="username" placeholder="Username" class="w-full" />
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field class="w-full">
             <mat-label>Email</mat-label>
-            <input type="email" matInput formControlName="email" placeholder="Email" />
+            <input type="email" matInput formControlName="email" placeholder="Email" class="w-full" />
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field class="w-full">
             <mat-label>Password</mat-label>
             <input
               type="password"
               matInput
               formControlName="password"
               placeholder="Password"
+              class="w-full"
               (change)="onPasswordchange()"
             />
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field class="w-full">
             <mat-label>Confirm Password</mat-label>
             <input
               type="password"
               matInput
               formControlName="passwordAgain"
               placeholder="Confirm Password"
+              class="w-full"
               (change)="onPasswordchange()"
             />
             @if (passwordAgain.hasError('mismatch')) {
-            <mat-error>Passwords are different!should be same</mat-error>
+            <mat-error>Passwords are different! should be same</mat-error>
             }
           </mat-form-field>
-          <button mat-flat-button color="primary" type="submit">Sign Up</button>
+          <button mat-flat-button color="primary" type="submit" class="w-full lg:w-1/4">Sign Up</button>
         </form>
         }
       </mat-card-content>

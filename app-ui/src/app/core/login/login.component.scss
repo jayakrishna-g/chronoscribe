@@ -21,9 +21,7 @@
 }
 
 .login-box {
-  // background-color: rgba(123, 165, 243, 0.6);
-  background-color: white;
-  padding: 1em;
+  @apply bg-white p-4;
 }
 
 :host ::ng-deep .mat-form-field {

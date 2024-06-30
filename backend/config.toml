@@ -6,7 +6,7 @@ api_version = "v1"
 enable_logging = true
 
 [development]
-database_url = "mongodb://localhost/darkknight"
+database_url = "mongodb://localhost"
 keycloak_public_key = """
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuZvNWKgHFLyavYZPCFMbHhoSQ1Qmrh+dSWTfoSoX7egC8Be+GTEDIHRGMIGbA3/GYoEzATjVvOVFLVnTzsSCu9nATHfwaTRmL4qw2YniNR7ZwyZqHJqXJTlnn21k8RjIvgZrwFm8VgTNQo5NpndVCB/GkIwx1Egex+eCfhnzSG5mjTufR/HkRN2kE6MWol4SWCm/4mmjWN5qP/yexqg3x3psDKYoqzA7vaybiClV3VULGVVj5231s1b/CTz/LQOk/4bW3179h4NjHYDLRbK1iVMZb+Mk6BS8UECM7/XABXncOXmH809WhKi55gONwD3NB+PRoMUyKvbt+UAFKTTl6wIDAQAB
