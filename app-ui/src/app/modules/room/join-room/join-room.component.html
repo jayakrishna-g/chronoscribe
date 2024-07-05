@@ -1,10 +1,22 @@
-<div class="ml-8 mr-8 flex flex-col gap-4">
-  <div
-    class="flex flex-row flex-wrap gap-1 p-4"
-    style="justify-content: space-between; align-items: center; width: 100%"
-  >
-    @if (room) {
-    <app-room-details class="sm:w-1/5" [room]="room"></app-room-details>
+<div class="gap-4 p-4 flex flex-col md:flex-row h-full w-full">
+  <div class="flex flex-col gap-4 w-full md:w-1/3 md:max-w-96">
+    <app-room-details [room]="room"></app-room-details>
+    <ng-container *ngTemplateOutlet="emojiTemplate"></ng-container>
+    <ng-container *ngTemplateOutlet="comments"></ng-container>
+  </div>
+  <div class="flex flex-col gap-4 overflow-auto [&::-webkit-scrollbar]:hidden w-full md:flex">
+    <div class="md:h-1/3">
+      <app-summary-board [room]="room"></app-summary-board>
+    </div>
+    <div class="md:h-2/3">
+      <app-live-transcription-board [room]="room"></app-live-transcription-board>
+    </div>
+  </div>
+</div>
+<ng-template #emojiTemplate>
+  <div class="bg-white border rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2">
+    <span class="text-2xl">How are you feeling?</span>
+    <span>Share your thoughts here</span>
     <div class="flex flex-row gap-10 md:gap-4">
       @for (emoji of ['😀', '😑', '☹️']; track emoji) {
       <div
@@ -27,35 +39,23 @@
       </div>
       }
     </div>
-    <div
-      class="bg-white shadow-md rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2"
-      style="flex: 1 1 auto; height: 100%"
-    >
-      <span class="text-2xl">Have a question?</span>
-      <textarea
-        class="text-md p-2 border border-gray-300 rounded-md h-full w-full"
-        placeholder="Enter your question here"
-        [(ngModel)]="question"
-      ></textarea>
-      <div class="flex flex-row gap-4">
-        <button class="bg-blue-500 text-white px-4 py-2 rounded max-w-64" (click)="askQuestion()">Ask</button>
-      </div>
-    </div>
-    }
   </div>
+</ng-template>
 
-  <div
-    class="flex flex-row flex-wrap gap-4 p-4 overflow-auto [&::-webkit-scrollbar]:hidden"
-    style="justify-content: space-between"
-  >
-    <div class="h-full w-full md:h-80 md:w-80">
-      <app-live-transcription-board [room]="room"></app-live-transcription-board>
-    </div>
-    <div class="h-full w-full md:h-80 md:w-80">
-      <app-summary-board [room]="room"></app-summary-board>
+<ng-template #comments>
+  <div class="bg-white border rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2">
+    <span class="text-2xl">Have a question?</span>
+    <span>Ask your question here.</span>
+    <textarea
+      class="text-md p-2 border border-gray-300 rounded-md h-full w-full"
+      placeholder="Enter your question here"
+      [(ngModel)]="question"
+    ></textarea>
+    <div class="flex flex-row gap-4">
+      <button class="bg-black text-white px-4 py-2 rounded max-w-64" (click)="askQuestion()">Ask</button>
     </div>
   </div>
-</div>
+</ng-template>
 
 <ng-template #quizdialog>
   <div class="bg-white p-4 flex flex-col w-[60vw] h-[60vh] gap-4">
@@ -68,7 +68,7 @@
         }
       </mat-radio-group>
       <span style="flex: 1 1 auto"></span>
-      <button class="bg-blue-500 text-white px-4 py-2 rounded-md" (click)="submitQuiz()">Submit</button>
+      <button class="bg-black text-white px-4 py-2 rounded-md" (click)="submitQuiz()">Submit</button>
       <div #timer>
         <mat-progress-bar mode="determinate" [value]="((60 - ((timeLeft | async) || 0)) * 100) / 60"></mat-progress-bar>
       </div>

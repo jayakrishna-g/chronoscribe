@@ -16,7 +16,7 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: 'Space Grotesk', Roboto, 'Helvetica Neue', sans-serif;
 }
 
 // Define your theme with color palettes, typography and density
@@ -195,85 +195,85 @@ $mat-dark-theme-warn: mat.m2-define-palette(
 );
 
 $mat-typography: mat.m2-define-legacy-typography-config(
-  $font-family: 'Inter',
+  $font-family: 'Space Grotesk',
   $display-4:
     mat.m2-define-typography-level(
       $font-size: 96px,
       $font-weight: 300,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $display-3:
     mat.m2-define-typography-level(
       $font-size: 60px,
       $font-weight: 500,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $display-2:
     mat.m2-define-typography-level(
       $font-size: 48px,
       $font-weight: 500,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $display-1:
     mat.m2-define-typography-level(
       $font-size: 34px,
       $font-weight: 500,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $headline:
     mat.m2-define-typography-level(
       $font-size: 24px,
       $font-weight: 500,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $title:
     mat.m2-define-typography-level(
       $font-size: 20px,
       $font-weight: 500,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $subheading-2:
     mat.m2-define-typography-level(
       $font-size: 18px,
       $font-weight: 500,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $subheading-1:
     mat.m2-define-typography-level(
-      $font-size: 20px,
+      $font-size: 16px,
       $font-weight: 500,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $body-2:
     mat.m2-define-typography-level(
       $font-size: 16px,
       $font-weight: 400,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $body-1:
     mat.m2-define-typography-level(
       $font-size: 16px,
       $font-weight: 400,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $caption:
     mat.m2-define-typography-level(
       $font-size: 12px,
       $font-weight: Medium,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $button:
     mat.m2-define-typography-level(
       $font-size: 16px,
       $font-weight: regular,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
   $input:
     mat.m2-define-typography-level(
       $font-size: 16px,
       $line-height: 1.33,
       $font-weight: regular,
-      $font-family: 'Inter',
+      $font-family: 'Space Grotesk',
     ),
 );
 
@@ -304,3 +304,17 @@ $mat-dark-theme: mat.m2-define-dark-theme(
     ),
   )
 );
+
+// include all components
+// Only include core styles once
+@include mat.core();
+
+// Include the light theme styles
+@include mat.all-component-themes($mat-core-theme);
+@include mat.all-component-colors($mat-core-theme);
+@include mat.all-component-typographies($mat-typography);
+
+// Include the dark theme styles conditionally
+.dark-theme {
+  @include mat.all-component-colors($mat-dark-theme);
+}

@@ -1,4 +1,4 @@
-<div fxFill class="p-4 flex flex-col gap-4">
+<div fxFill class="p-4 flex flex-col gap-4 max-w-6xl mx-auto">
   <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
     <div class="flex flex-col gap-4">
       <ng-container *ngTemplateOutlet="greeting"></ng-container>
@@ -12,8 +12,8 @@
 
 <ng-template #greeting>
   <div class="flex flex-col gap-4 p-8 bg-white border rounded-lg w-full">
-    <span class="text-2xl font-bold">Hello 👋</span>
-    <span>{{ user }}</span>
+    <span class="text-2xl font-bold">Welcome {{ user }}</span>
+    <span>Get started by creating or joining a room</span>
   </div>
 </ng-template>
 
@@ -23,23 +23,19 @@
     <div>
       <form (ngSubmit)="createRoom()" [formGroup]="createRoomForm" class="grid gap-2">
         <mat-label>Room Name</mat-label>
-        <mat-form-field>
-          <input
-            matInput
-            formControlName="name"
-            placeholder="Room Name"
-            class="p-2 border border-gray-300 rounded-md"
-          />
-        </mat-form-field>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Room Name"
+          class="p-2 border border-gray-300 rounded-md bg-gray-200 active:border-black"
+        />
         <mat-label>Room Description</mat-label>
-        <mat-form-field>
-          <input
-            matInput
-            formControlName="description"
-            placeholder="Room Description"
-            class="p-2 border border-gray-300 rounded-md"
-          />
-        </mat-form-field>
+        <input
+          matInput
+          formControlName="description"
+          placeholder="Room Description"
+          class="p-2 border border-gray-300 rounded-md bg-gray-200 active:border-black"
+        />
         <button type="submit" class="bg-black text-white px-4 py-2 rounded-md">Create</button>
       </form>
     </div>
@@ -51,10 +47,13 @@
     <span class="text-xl font-bold">Join Room</span>
     <p>Enter the room ID below to join an existing room.</p>
     <form (ngSubmit)="joinRoom()" [formGroup]="joinRoomForm" class="flex flex-row items-center justify-center gap-2">
-      <mat-form-field class="w-3/4">
-        <input matInput formControlName="roomId" placeholder="Room ID" />
-      </mat-form-field>
-      <button type="submit" class="bg-black text-white px-4 py-2 rounded-md mt-[4px] w-1/4">Join</button>
+      <input
+        matInput
+        formControlName="roomId"
+        placeholder="Room ID"
+        class="p-2 border border-gray-300 rounded-md bg-gray-200 active:border-black w-3/4"
+      />
+      <button type="submit" class="bg-black text-white px-4 py-2 rounded-md w-1/4">Join</button>
     </form>
   </div>
 </ng-template>

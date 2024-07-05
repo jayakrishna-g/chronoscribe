@@ -7,7 +7,7 @@ import { DisplayDetailsComponent } from 'src/app/shared/components/display-detai
 import { BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { QuizQuestion } from '../admin-room/admin-room.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
 import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
@@ -31,6 +31,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     RoomDetailsComponent,
     LiveTranscriptionBoardComponent,
     SummaryBoardComponent,
+    NgTemplateOutlet,
   ],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
