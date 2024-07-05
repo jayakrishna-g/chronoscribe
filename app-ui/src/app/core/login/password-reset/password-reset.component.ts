@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatLegacyCard as MatCard, MatLegacyCardModule } from '@angular/material/legacy-card';
 import {
   AbstractControl,
   UntypedFormBuilder,
@@ -9,26 +8,18 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { AuthenticationService } from '../../authentication/authentication.service';
-import { RouteConfigLoadStart, Router } from '@angular/router';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { FlexModule } from '@angular/flex-layout/flex';
+import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-password-reset',
   templateUrl: './password-reset.component.html',
   styleUrls: ['./password-reset.component.scss'],
   standalone: true,
-  imports: [
-    MatLegacyCardModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FlexModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyButtonModule,
-  ],
+  imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
 export class PasswordResetComponent implements OnInit {
   PassResetForm!: UntypedFormGroup;

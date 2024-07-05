@@ -1,0 +1,23 @@
+:host {
+  ::ng-deep .mat-form-field-infix {
+    margin: 0 !important;
+    border: 0 !important;
+    padding: 0.5em 0 !important;
+    margin-top: 4px !important;
+    input {
+    }
+  }
+  ::ng-deep .mat-form-field-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+  ::ng-deep .mat-form-field-outline {
+    background-color: hsla(240 5.9% 90%);
+    border-radius: 4px;
+  }
+  ::ng-deep .mat-form-field-flex {
+    margin: 0 !important;
+    border: 0 !important;
+  }
+}

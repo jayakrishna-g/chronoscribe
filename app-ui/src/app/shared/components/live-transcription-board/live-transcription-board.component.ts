@@ -1,9 +1,5 @@
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { Room } from 'src/app/modules/home/home.component';
 import { RoomService } from 'src/app/modules/room/room.service';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +11,7 @@ import { AuthenticationService } from 'src/app/core/authentication/authenticatio
   selector: 'app-live-transcription-board',
   standalone: true,
   providers: [RoomService, RecordingService],
-  imports: [FlexModule, MatLegacyCardModule, FormsModule, MatLegacyRadioModule, MatLegacyProgressBarModule, AsyncPipe],
+  imports: [FormsModule, AsyncPipe],
   templateUrl: './live-transcription-board.component.html',
   styleUrl: './live-transcription-board.component.scss',
 })

@@ -11,10 +11,10 @@ import {
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TranscriptInstance } from 'src/app/shared/services/recording.service';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { NgTemplateOutlet } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 export interface Room {
   room_id?: string;
@@ -30,14 +30,7 @@ export interface Room {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    MatLegacyCardModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-  ],
+  imports: [NgTemplateOutlet, MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
 })
 export class HomeComponent implements OnInit {
   createRoomForm!: UntypedFormGroup;

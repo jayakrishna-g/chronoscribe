@@ -10,13 +10,11 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
-
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { FlexModule } from '@angular/flex-layout/flex';
+import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 @UntilDestroy()
 @Component({
   selector: 'app-login',
@@ -24,15 +22,14 @@ import { FlexModule } from '@angular/flex-layout/flex';
   styleUrls: ['./login.component.scss'],
   standalone: true,
   imports: [
-    FlexModule,
-    MatLegacyCardModule,
-    MatLegacyRadioModule,
+    MatCardModule,
+    MatRadioModule,
     FormsModule,
     RouterLink,
     ReactiveFormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
 })
 export class LoginComponent implements OnInit {

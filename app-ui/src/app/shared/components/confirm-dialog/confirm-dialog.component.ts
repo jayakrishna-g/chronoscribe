@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -8,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
   standalone: true,
-  imports: [MatIconModule, MatLegacyButtonModule],
+  imports: [MatIconModule],
 })
 export class ConfirmDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>) {}
