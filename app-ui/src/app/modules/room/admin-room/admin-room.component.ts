@@ -1,8 +1,6 @@
 import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RecordingService } from 'src/app/shared/services/recording.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 import {
   Form,
   UntypedFormArray,
@@ -13,17 +11,18 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { FlexModule } from '@angular/flex-layout/flex';
 import { AsyncPipe } from '@angular/common';
 import { RoomService } from '../room.service';
 import { Room } from '../../home/home.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
 import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 
 export type QuizQuestion = {
   question: string;
@@ -37,13 +36,12 @@ export type QuizQuestion = {
   providers: [RoomService],
   standalone: true,
   imports: [
-    FlexModule,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     AsyncPipe,
     RoomDetailsComponent,
     LiveTranscriptionBoardComponent,

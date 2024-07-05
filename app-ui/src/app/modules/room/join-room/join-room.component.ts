@@ -3,20 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Room } from '../../home/home.component';
 import { RoomService } from '../room.service';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 import { BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { FlexModule } from '@angular/flex-layout/flex';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { QuizQuestion } from '../admin-room/admin-room.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
 import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-join-room',
@@ -25,15 +23,15 @@ import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/s
   providers: [RoomService],
   standalone: true,
   imports: [
-    FlexModule,
-    MatLegacyCardModule,
     FormsModule,
-    MatLegacyRadioModule,
-    MatLegacyProgressBarModule,
+    MatRadioModule,
+    MatProgressBarModule,
+    MatDialogModule,
     AsyncPipe,
     RoomDetailsComponent,
     LiveTranscriptionBoardComponent,
     SummaryBoardComponent,
+    NgTemplateOutlet,
   ],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {

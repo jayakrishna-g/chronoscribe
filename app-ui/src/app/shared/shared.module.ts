@@ -1,7 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material-module/material-module.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TokenInterceptor } from '../core/interceptors/token.interceptor';
@@ -18,7 +17,6 @@ import { LayoutItemDirective } from './components/layout-item/layout-item.direct
 @NgModule({
   exports: [
     MaterialModule,
-    FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
     TimeConversionPipe,
@@ -30,7 +28,6 @@ import { LayoutItemDirective } from './components/layout-item/layout-item.direct
   imports: [
     CommonModule,
     MaterialModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
     TimeConversionPipe,
