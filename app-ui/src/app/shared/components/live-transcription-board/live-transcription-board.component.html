@@ -2,7 +2,7 @@
   <span class="text-2xl">Live Transcription</span>
   <span>Live transcription of your voice will appear here.</span>
   <div class="overflow-y-auto h-100 w-100" #scrollMe>
-    @if (loggedInUser === room.owner_id) { @for (transcript of this.recordingService.transcript$ | async; track
+    @if (loggedInUser === roomMetaData.owner_id) { @for (transcript of this.recordingService.transcript$ | async; track
     transcript; let i = $index; let last = $last) {
     <div class="overflow-y-auto border-b border-gray-200 p-4">
       <span class="text text-gray-500"> {{ transcript.content }}</span>

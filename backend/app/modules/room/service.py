@@ -101,6 +101,9 @@ class RoomService:
     async def get(self, room_id):
         return await self._cache.get_room(room_id)
 
+    async def put(self, room_id, room):
+        return await self._cache.set_room(room_id, room)
+
     async def create(self, room: RoomCreate):
         try:
             room_id = await create_room(room.name, room.description, room.owner_id)
@@ -168,6 +171,14 @@ class WebSocketService:
                 room_id, create_broadcast_message("question", message)
             )
 
+    async def closeRoom(self, room_id, websocket, data, connection_manager):
+        room = await RoomService.instance().get(room_id)
+        room.is_active = False
+        await RoomService.instance().put(room_id, room)
+        await connection_manager.broadcast(
+            room_id, create_broadcast_message("closeRoom", True)
+        )
+
     def map_service(self, service_name):
         services = {
             "transcript": self.transcript,
@@ -175,6 +186,7 @@ class WebSocketService:
             "quick_question": self.quick_question,
             "quick_question_answer": self.quick_question_answer,
             "question": self.question,
+            "close_room": self.closeRoom,
         }
         return services.get(service_name)
 

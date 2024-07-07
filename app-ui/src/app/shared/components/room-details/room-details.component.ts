@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Room } from 'src/app/modules/home/home.component';
+import { RoomMetaData } from 'src/app/modules/home/home.component';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 
@@ -11,9 +11,9 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './room-details.component.scss',
 })
 export class RoomDetailsComponent implements OnInit {
-  @Input() room!: Room;
+  @Input() roomMetaData!: RoomMetaData;
 
   ngOnInit(): void {
-    console.log(this.room);
+    console.log(this.roomMetaData);
   }
 }
