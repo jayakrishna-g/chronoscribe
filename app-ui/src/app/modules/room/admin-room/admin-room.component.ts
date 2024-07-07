@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { RoomService } from '../room.service';
 import { Room } from '../../home/home.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
@@ -46,6 +46,7 @@ export type QuizQuestion = {
     RoomDetailsComponent,
     LiveTranscriptionBoardComponent,
     SummaryBoardComponent,
+    NgTemplateOutlet,
   ],
 })
 export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
@@ -114,9 +115,14 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.roomService.resetEmoji();
   }
 
-  startRecording(): void {
-    this.isRecording = true;
-    this.recordingService.startRecording();
+  toggleRecording(): void {
+    if (this.isRecording) {
+      this.recordingService.stopRecording();
+    } else {
+      this.recordingService.startRecording();
+    }
+
+    this.isRecording = !this.isRecording;
   }
 
   stopRecording(): void {
