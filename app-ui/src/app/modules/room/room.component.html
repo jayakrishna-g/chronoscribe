@@ -1,27 +1,9 @@
-<app-layout
-  [layout]="['Card', 'List', 'Minimal']"
-  [datasource]="rooms"
-  [layoutItemTemplate]="layoutItem"
-  [addItem]="addItem"
-  [filter]="filter"
->
-  <input type="text" />
-</app-layout>
-
-<ng-template #addItem let-layout="layout">
-  <app-layout-item [layout]="layout">
-    <mat-icon icon>add_circle_outline</mat-icon>
-    <span title>Create Room</span>
-    <span description>Creates a new room and takes you to room page</span>
-  </app-layout-item>
-</ng-template>
-
-<ng-template #layoutItem let-data="data" let-layout="layout">
-  <app-layout-item [layout]="layout" [routerLink]="data.room_id">
-    <span title>{{ data.name }}</span>
-    <span description>
-      <span> Room Id: {{ data.room_id }} </span> <br />
-      {{ data.description }}
-    </span>
-  </app-layout-item>
-</ng-template>
+@if (room.is_active && loggedInUser === roomMetaData.owner_id) {
+  <app-admin-room [room] = "room" [roomMetaData] = "roomMetaData"></app-admin-room>
+} 
+@else if (room.is_active && loggedInUser !== roomMetaData.owner_id) {
+  <app-join-room [room] = "room" [roomMetaData] = "roomMetaData"></app-join-room>
+}
+@else {
+  <app-closed-room [room] = "room" [roomMetaData] = "roomMetaData"></app-closed-room>
+}

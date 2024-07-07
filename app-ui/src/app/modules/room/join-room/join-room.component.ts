@@ -1,6 +1,6 @@
-import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Room } from '../../home/home.component';
+import { Room, RoomMetaData } from '../../home/home.component';
 import { RoomService } from '../room.service';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
@@ -35,13 +35,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   ],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
-  room: Room = this.route.snapshot.data.room;
   quiz_question = new BehaviorSubject<QuizQuestion | null>(null);
   selected_option!: string;
   timeLeft = new BehaviorSubject<number>(60);
   question!: string;
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
   @ViewChild('quizdialog') question_dialog!: ElementRef;
+  @Input() room!: Room;
+  @Input() roomMetaData!: RoomMetaData;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,19 +54,24 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
-    this.room = this.route.snapshot.data.room;
-    let owner = this.room.owner_id;
+    let owner = this.roomMetaData.owner_id;
     let user = this.authService.getTokenData().email;
     if (owner === user) {
-      this.router.navigate(['room', this.room.room_id]);
+      this.router.navigate(['room', this.room.id]);
     }
-    this.roomService.setSummary(this.room.summaries || []);
-    if (this.room.transcript) {
-      console.log(this.room.transcript);
-      this.roomService.setTranscript(this.room.transcript);
+    this.roomService.setSummary(this.roomMetaData.summaries || []);
+    if (this.roomMetaData.transcript) {
+      console.log(this.roomMetaData.transcript);
+      this.roomService.setTranscript(this.roomMetaData.transcript);
     }
     this.route.params.subscribe((params) => {
       this.roomService.connectToRoom(params.id || '');
+    });
+    this.roomService.closedRoomFlag$.subscribe((data)=>{
+      if(data){
+        window.location.reload();
+      }
+      
     });
     this.scrollToBottom();
     this.subscribeToQuestions();
@@ -99,7 +105,7 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   askQuestion() {
-    this.roomService.sendQuestion(this.room.room_id || '', this.question);
+    this.roomService.sendQuestion(this.room.id || '', this.question);
     this.question = '';
     this.toastService.success('Question sent');
   }
@@ -108,7 +114,7 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.matDialog.closeAll();
     console.log(this.selected_option);
     this.roomService.sendQuickQuestionAnswer(
-      this.room.room_id || '',
+      this.room.id || '',
       this.quiz_question.value?.options.findIndex((option) => option === this.selected_option)
     );
     this.toastService.success('Answer submitted');
@@ -129,6 +135,6 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   emojiClick(emoji: string) {
-    this.roomService.sendEmoji(this.room.room_id || '', emoji);
+    this.roomService.sendEmoji(this.room.id || '', emoji);
   }
 }
