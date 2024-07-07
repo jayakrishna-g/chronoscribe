@@ -19,9 +19,9 @@
 
 <ng-template #createroom>
   <div class="bg-white border rounded-lg p-8">
-    <span class="text-2xl">Create Room</span>
-    <div>
-      <form (ngSubmit)="createRoom()" [formGroup]="createRoomForm" class="grid gap-2">
+    <p class="text-xl font-bold">Create Room</p>
+    <form (ngSubmit)="createRoom()" [formGroup]="createRoomForm" class="grid gap-2">
+      <div class="flex flex-col">
         <mat-label>Room Name</mat-label>
         <input
           matInput
@@ -29,6 +29,8 @@
           placeholder="Room Name"
           class="p-2 border border-gray-300 rounded-md bg-gray-200 active:border-black"
         />
+      </div>
+      <div class="flex flex-col">
         <mat-label>Room Description</mat-label>
         <input
           matInput
@@ -36,9 +38,10 @@
           placeholder="Room Description"
           class="p-2 border border-gray-300 rounded-md bg-gray-200 active:border-black"
         />
-        <button type="submit" class="bg-black text-white px-4 py-2 rounded-md">Create</button>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit" class="bg-black text-white px-4 py-2 rounded-md mt-4">Create</button>
+    </form>
   </div>
 </ng-template>
 
