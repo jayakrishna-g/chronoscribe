@@ -133,7 +133,7 @@ class WebSocketService:
             room = await RoomService.instance().get(room_id)
             transcript_service = TranscriptService.instance()
             if room:
-                await transcript_service.write(room_id, [TranscriptInstance(**message)])
+                await transcript_service.write(room_id, TranscriptInstance(**message))
                 await connection_manager.broadcast(
                     room_id, create_broadcast_message("transcript", message)
                 )

@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { QuizQuestion } from '../admin-room/admin-room.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
-import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -29,7 +28,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatDialogModule,
     AsyncPipe,
     RoomDetailsComponent,
-    LiveTranscriptionBoardComponent,
     SummaryBoardComponent,
     NgTemplateOutlet,
   ],

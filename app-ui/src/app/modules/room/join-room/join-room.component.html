@@ -9,10 +9,23 @@
       <app-summary-board [room]="room"></app-summary-board>
     </div>
     <div class="md:h-2/3">
-      <app-live-transcription-board [room]="room"></app-live-transcription-board>
+      <ng-container *ngTemplateOutlet="liveTranscription"></ng-container>
     </div>
   </div>
 </div>
+<ng-template #liveTranscription>
+  <div class="flex flex-col gap-1 border rounded-lg p-4 bg-white w-full h-full">
+    <span class="text-2xl">Live Transcription</span>
+    <span>Live transcription of your voice will appear here.</span>
+    <div class="overflow-y-auto h-100 w-100" #scrollMe>
+      @for (transcript of this.roomService.transcript$ | async; track transcript; let i = $index; let last = $last) {
+      <div class="overflow-y-auto border-b border-gray-200 p-4">
+        <span class="text text-gray-500"> {{ transcript.content }}</span>
+      </div>
+      }
+    </div>
+  </div>
+</ng-template>
 <ng-template #emojiTemplate>
   <div class="bg-white border rounded-lg p-4 text-md hover:bg-gray-100 cursor-pointer flex flex-col gap-2">
     <span class="text-2xl">How are you feeling?</span>

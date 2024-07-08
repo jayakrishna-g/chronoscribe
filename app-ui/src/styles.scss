@@ -318,3 +318,9 @@ $mat-dark-theme: mat.m2-define-dark-theme(
 .dark-theme {
   @include mat.all-component-colors($mat-dark-theme);
 }
+
+::ng-deep {
+  .mdc-notched-outline__trailing {
+    border-width: unset !important;
+  }
+}

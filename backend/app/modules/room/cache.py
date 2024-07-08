@@ -117,33 +117,35 @@ class TranscriptCache(BaseCache):
 
     async def get_transcript(self, room_id) -> list[TranscriptInstance] | None:
         transcript_data = await self._get(room_id)
+        print(transcript_data)
         if transcript_data:
+            # transcript_data = json.loads(transcript_data, object_hook=object_hook)
             return [
                 await self._deserialize(instance, TranscriptInstance)
                 for instance in json.loads(transcript_data)
             ]  # type: ignore
-        transcript_from_db = await self._get_from_collection(
-            self._collection, {"room_id": room_id}
-        )
-        if transcript_from_db:
-            await self.set_transcript(
-                room_id,
-                [
-                    TranscriptInstance(**instance)
-                    for instance in transcript_from_db["instances"]
-                ],
-            )
-            return [
-                TranscriptInstance(**instance)
-                for instance in transcript_from_db["instances"]
-            ]
         return None
 
-    async def set_transcript(self, room_id, transcript: list[TranscriptInstance]):
+    async def set_transcript(self, room_id, transcript: TranscriptInstance):
+        print(transcript)
+        cur_transcript = await self.get_transcript(room_id)
+        if cur_transcript is None:
+            cur_transcript = [transcript]
+        print(cur_transcript[-1].index, transcript.index)
+        if cur_transcript[-1].index < transcript.index:
+            cur_transcript.append(transcript)
+        elif cur_transcript[-1].index == transcript.index:
+            cur_transcript[-1] = transcript
+
+        print(cur_transcript)
+        serialized_transcript = [
+            await self._serialize(instance) for instance in cur_transcript
+        ]
+        serialized_transcript = json.dumps(serialized_transcript, cls=JSONEncoder)
         await self._set(
             room_id,
-            json.dumps([instance.dict() for instance in transcript], cls=JSONEncoder),
-            ttl=600,
+            serialized_transcript,
+            ttl=6000,
         )
 
     async def sync_func(self, key: str, value: typing.Any):

@@ -16,7 +16,6 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { RoomService } from '../room.service';
 import { Room } from '../../home/home.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
-import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -44,7 +43,6 @@ export type QuizQuestion = {
     MatInputModule,
     AsyncPipe,
     RoomDetailsComponent,
-    LiveTranscriptionBoardComponent,
     SummaryBoardComponent,
     NgTemplateOutlet,
   ],
