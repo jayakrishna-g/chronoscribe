@@ -25,6 +25,15 @@ async def fetch_room_meta(room_id: str):
         return {"error": "Room not found"}
     return room_meta.model_dump_json()
 
+@room_api_router.get("/data/{room_id}")
+async def fetch_room_meta(room_id: str):
+    logger.info(f"fetching room with id {room_id}")
+    room_meta = await RoomService.instance().get(room_id)
+    logger.info(f"room  fetched {room_meta}")
+    if not room_meta:
+        return {"error": "Room not found"}
+    return room_meta.model_dump_json()
+
 
 @room_api_router.post("/")
 async def create_room(room: RoomCreate):

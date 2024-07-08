@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Room } from '../home/home.component';
+import { Room, RoomMetaData } from '../home/home.component';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 import { WebSocketSubject, webSocket as websocket } from 'rxjs/webSocket';
@@ -49,6 +49,7 @@ export class RoomService {
   quizQuestion_listener = new BehaviorSubject<QuizQuestion | null>(null);
   quizStats_listener = new BehaviorSubject<QuizStat[]>([]);
   questions_listener = new BehaviorSubject<string[]>([]);
+  closedRoomFlag = new BehaviorSubject<boolean>(false);
   unreadQuestions = new BehaviorSubject<number>(0);
   constructor(private http: HttpClient, private authService: AuthenticationService) {}
 
@@ -75,9 +76,15 @@ export class RoomService {
       case 'question':
         this.handleQuestion(body.message);
         break;
+      case 'closeRoom':
+          this.handleCloseRoom(body.message);
+          break;
       default:
         break;
     }
+  }
+  handleCloseRoom(data: any) {
+    this.closedRoomFlag.next(data);
   }
 
   handleQuestion(data: { question: string }) {
@@ -158,6 +165,10 @@ export class RoomService {
     });
   }
 
+  closeRoomService(roomId: string) {
+    this.contactRoomService(roomId,'close_room',{});
+  }
+
   resetUnreadQuestions() {
     this.unreadQuestions.next(0);
   }
@@ -207,13 +218,21 @@ export class RoomService {
     return this.unreadQuestions.asObservable();
   }
 
+  get closedRoomFlag$() {
+    return this.closedRoomFlag.asObservable();
+  }
+
   getRoomMetaData(roomId: string) {
-    return this.http.get<Room>(`/api/room/meta/${roomId}`);
+    return this.http.get<RoomMetaData>(`/api/room/meta/${roomId}`);
+  }
+
+  getRoomData(roomId: string) {
+    return this.http.get<Room>(`/api/room/data/${roomId}`);
   }
 
   getRooms() {
     let owner = this.authService.getTokenData().email;
-    return this.http.get<Room[]>(`/api/room/all/${owner}`);
+    return this.http.get<RoomMetaData[]>(`/api/room/all/${owner}`);
   }
 
   connectToRoom(roomId: string) {

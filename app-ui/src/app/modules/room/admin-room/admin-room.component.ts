@@ -1,5 +1,5 @@
-import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecordingService } from 'src/app/shared/services/recording.service';
 import {
   Form,
@@ -14,7 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { RoomService } from '../room.service';
-import { Room } from '../../home/home.component';
+import { Room, RoomMetaData } from '../../home/home.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -51,23 +51,25 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
   @ViewChild('template') template!: TemplateRef<any>;
   @ViewChild('questionsdialog') question_dialog!: TemplateRef<any>;
+  @Input() room!: Room;
+  @Input() roomMetaData!: RoomMetaData;
+
 
   isRecording: boolean = false;
-  room!: Room;
   quickQuestionForm!: UntypedFormGroup;
   quizQuestion = new BehaviorSubject<QuizQuestion | null>(null);
   constructor(
     private route: ActivatedRoute,
     public recordingService: RecordingService,
     public roomService: RoomService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router:Router
   ) {}
 
   ngOnInit(): void {
-    this.room = this.route.snapshot.data.room;
-    this.roomService.setTranscript(this.room.transcript || []);
-    this.recordingService.setTranscript(this.room.transcript || []);
-    this.roomService.setSummary(this.room.summaries || []);
+    this.roomService.setTranscript(this.roomMetaData.transcript || []);
+    this.recordingService.setTranscript(this.roomMetaData.transcript || []);
+    this.roomService.setSummary(this.roomMetaData.summaries || []);
     this.route.params.subscribe((params) => {
       this.roomService.connectToRoom(params.id || '');
       this.recordingService.liveTranscript$.subscribe((transcript) => {
@@ -109,6 +111,17 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
+  closeRoom(){
+    console.log("exit");
+    this.room.is_active = false;
+    this.roomService.closeRoomService(this.room.id);
+    this.roomService.closedRoomFlag$.subscribe((data)=>{
+      if(data){
+        window.location.reload();
+      }
+    })
+  }
+
   resetEmoji(): void {
     this.roomService.resetEmoji();
   }
@@ -141,7 +154,7 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
         options: this.quickQuestionForm.controls['options'].value,
       };
       console.log(question);
-      this.roomService.sendQuickQuestion(this.room.room_id || '', question);
+      this.roomService.sendQuickQuestion(this.room.id || '', question);
       this.quizQuestion.next(question);
       this.quickQuestionForm.reset();
     }

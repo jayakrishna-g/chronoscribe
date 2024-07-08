@@ -16,13 +16,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 
-export interface Room {
+export interface RoomMetaData {
   room_id?: string;
   name: string;
   description: string;
   owner_id: string;
   transcript?: TranscriptInstance[];
   summaries?: string[];
+}
+
+export interface Room {
+  id: string;
+  transcript_file: string;
+  summary_file: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 @Component({
@@ -51,13 +60,13 @@ export class HomeComponent implements OnInit {
 
   createRoom() {
     if (this.createRoomForm.valid) {
-      const room: Room = {
+      const room: RoomMetaData = {
         name: this.createRoomForm.controls['name'].value,
         description: this.createRoomForm.controls['description'].value,
         owner_id: this.authService.getTokenData().email,
       };
       console.log(room);
-      this.http.post<Room>('/api/room', room).subscribe((res) => {
+      this.http.post<RoomMetaData>('/api/room', room).subscribe((res) => {
         this.router.navigate(['room', res.room_id]);
       });
     }
@@ -65,7 +74,7 @@ export class HomeComponent implements OnInit {
 
   joinRoom() {
     if (this.joinRoomForm.valid) {
-      this.router.navigate(['room', 'join', this.joinRoomForm.controls['roomId'].value]);
+      this.router.navigate(['room', this.joinRoomForm.controls['roomId'].value]);
     }
   }
 }
