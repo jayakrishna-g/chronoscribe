@@ -1,6 +1,15 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RecordingService } from 'src/app/shared/services/recording.service';
+import { RecordingService, TranscriptInstance } from 'src/app/shared/services/recording.service';
 import {
   Form,
   UntypedFormArray,
@@ -53,7 +62,7 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('questionsdialog') question_dialog!: TemplateRef<any>;
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
-
+  @Input() transcripts!: TranscriptInstance[];
 
   isRecording: boolean = false;
   quickQuestionForm!: UntypedFormGroup;
@@ -63,13 +72,12 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     public recordingService: RecordingService,
     public roomService: RoomService,
     private dialog: MatDialog,
-    private router:Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.roomService.setTranscript(this.roomMetaData.transcript || []);
-    this.recordingService.setTranscript(this.roomMetaData.transcript || []);
-    this.roomService.setSummary(this.roomMetaData.summaries || []);
+    this.roomService.setTranscript(this.transcripts);
+    this.recordingService.setTranscript(this.transcripts);
     this.route.params.subscribe((params) => {
       this.roomService.connectToRoom(params.id || '');
       this.recordingService.liveTranscript$.subscribe((transcript) => {
@@ -111,15 +119,15 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
-  closeRoom(){
-    console.log("exit");
+  closeRoom() {
+    console.log('exit');
     this.room.is_active = false;
     this.roomService.closeRoomService(this.room.id);
-    this.roomService.closedRoomFlag$.subscribe((data)=>{
-      if(data){
+    this.roomService.closedRoomFlag$.subscribe((data) => {
+      if (data) {
         window.location.reload();
       }
-    })
+    });
   }
 
   resetEmoji(): void {

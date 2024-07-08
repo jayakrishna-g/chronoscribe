@@ -1,9 +1,7 @@
 @if (room.is_active && loggedInUser === roomMetaData.owner_id) {
-  <app-admin-room [room] = "room" [roomMetaData] = "roomMetaData"></app-admin-room>
-} 
-@else if (room.is_active && loggedInUser !== roomMetaData.owner_id) {
-  <app-join-room [room] = "room" [roomMetaData] = "roomMetaData"></app-join-room>
-}
-@else {
-  <app-closed-room [room] = "room" [roomMetaData] = "roomMetaData"></app-closed-room>
+<app-admin-room [room]="room" [roomMetaData]="roomMetaData" [transcripts]="transcripts"></app-admin-room>
+} @else if (room.is_active && loggedInUser !== roomMetaData.owner_id) {
+<app-join-room [room]="room" [roomMetaData]="roomMetaData" [transcripts]="transcripts"></app-join-room>
+} @else {
+<app-closed-room [room]="room" [roomMetaData]="roomMetaData" [transcripts]="transcripts"></app-closed-room>
 }

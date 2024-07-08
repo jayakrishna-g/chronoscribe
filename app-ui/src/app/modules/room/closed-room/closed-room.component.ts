@@ -9,6 +9,7 @@ import { RoomDetailsComponent } from 'src/app/shared/components/room-details/roo
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 import { RoomService } from '../room.service';
 import { Room, RoomMetaData } from '../../home/home.component';
+import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 
 @Component({
   selector: 'app-closed-room',
@@ -32,4 +33,5 @@ import { Room, RoomMetaData } from '../../home/home.component';
 export class ClosedRoomComponent {
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
+  @Input() transcripts!: TranscriptInstance[];
 }

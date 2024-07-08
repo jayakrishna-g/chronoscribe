@@ -9,7 +9,7 @@ from app.modules.room.cache import (
     TranscriptCache,
 )
 from app.modules.room.crud import create_room
-from app.modules.room.model import RoomCreate, TranscriptInstance
+from app.modules.room.model import Room, RoomCreate, TranscriptInstance
 
 cache_manager = get_cache_manager()
 connection_manager = ConnectionManager.instance()
@@ -53,7 +53,7 @@ class TranscriptService:
         self._cache: TranscriptCache = cache_manager.get_cache(CacheName.transcript)  # type: ignore
 
     async def get(self, room_id):
-        return self._cache.get_transcript(room_id)
+        return await self._cache.get_transcript(room_id)
 
     def write(self, room_id, value):
         return self._cache.set_transcript(room_id, value)
@@ -98,7 +98,7 @@ class RoomService:
     def __init__(self) -> None:
         self._cache: RoomCache = cache_manager.get_cache(CacheName.room)  # type: ignore
 
-    async def get(self, room_id):
+    async def get(self, room_id) -> Room | None:
         return await self._cache.get_room(room_id)
 
     async def put(self, room_id, room):
@@ -173,6 +173,8 @@ class WebSocketService:
 
     async def closeRoom(self, room_id, websocket, data, connection_manager):
         room = await RoomService.instance().get(room_id)
+        if room is None:
+            raise ValueError("Room not found")
         room.is_active = False
         await RoomService.instance().put(room_id, room)
         await connection_manager.broadcast(

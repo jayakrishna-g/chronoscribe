@@ -77,8 +77,8 @@ export class RoomService {
         this.handleQuestion(body.message);
         break;
       case 'closeRoom':
-          this.handleCloseRoom(body.message);
-          break;
+        this.handleCloseRoom(body.message);
+        break;
       default:
         break;
     }
@@ -165,8 +165,12 @@ export class RoomService {
     });
   }
 
+  getTranscript(roomId: string) {
+    return this.http.get<TranscriptInstance[]>(`/api/room/transcript/${roomId}`);
+  }
+
   closeRoomService(roomId: string) {
-    this.contactRoomService(roomId,'close_room',{});
+    this.contactRoomService(roomId, 'close_room', {});
   }
 
   resetUnreadQuestions() {
@@ -191,6 +195,7 @@ export class RoomService {
   }
 
   get transcript$() {
+    console.log(this.transcript_listener.value);
     return this.transcript_listener.asObservable();
   }
 
@@ -267,6 +272,7 @@ export class RoomService {
   }
 
   setTranscript(transcript: TranscriptInstance[]) {
+    console.log(transcript);
     if (!transcript) return;
     this.transcript_listener.next(transcript);
   }

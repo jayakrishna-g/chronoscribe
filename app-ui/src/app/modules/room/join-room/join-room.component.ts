@@ -14,6 +14,7 @@ import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/s
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 
 @Component({
   selector: 'app-join-room',
@@ -41,6 +42,7 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('quizdialog') question_dialog!: ElementRef;
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
+  @Input() transcripts!: TranscriptInstance[];
 
   constructor(
     private route: ActivatedRoute,
@@ -52,24 +54,14 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
-    let owner = this.roomMetaData.owner_id;
-    let user = this.authService.getTokenData().email;
-    if (owner === user) {
-      this.router.navigate(['room', this.room.id]);
-    }
-    this.roomService.setSummary(this.roomMetaData.summaries || []);
-    if (this.roomMetaData.transcript) {
-      console.log(this.roomMetaData.transcript);
-      this.roomService.setTranscript(this.roomMetaData.transcript);
-    }
+    this.roomService.setTranscript(this.transcripts);
     this.route.params.subscribe((params) => {
       this.roomService.connectToRoom(params.id || '');
     });
-    this.roomService.closedRoomFlag$.subscribe((data)=>{
-      if(data){
+    this.roomService.closedRoomFlag$.subscribe((data) => {
+      if (data) {
         window.location.reload();
       }
-      
     });
     this.scrollToBottom();
     this.subscribeToQuestions();

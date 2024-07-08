@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import {  RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { RoomComponent } from './room.component';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { RoomMetaResolver } from '../resolvers/roomMeta.resolver';
+import { TranscriptResolver } from '../resolvers/transcript.resolver';
 
 const routes: Routes = [
   {
@@ -10,8 +11,9 @@ const routes: Routes = [
     component: RoomComponent,
     resolve: {
       room: RoomResolver,
-      roomMetaData: RoomMetaResolver
-    }
+      roomMetaData: RoomMetaResolver,
+      transcripts: TranscriptResolver,
+    },
   },
 ];
 
