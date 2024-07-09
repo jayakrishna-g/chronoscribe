@@ -17,7 +17,7 @@ import { ClosedRoomComponent } from './closed-room/closed-room.component';
     JoinRoomComponent,
     RoomDetailsComponent,
     AdminRoomComponent,
-    ClosedRoomComponent
+    ClosedRoomComponent,
   ],
 })
 export class RoomModule {}

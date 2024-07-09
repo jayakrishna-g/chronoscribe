@@ -21,8 +21,6 @@ export interface RoomMetaData {
   name: string;
   description: string;
   owner_id: string;
-  transcript?: TranscriptInstance[];
-  summaries?: string[];
 }
 
 export interface Room {

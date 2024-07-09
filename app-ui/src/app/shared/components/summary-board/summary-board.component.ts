@@ -17,7 +17,5 @@ export class SummaryBoardComponent implements OnInit {
 
   constructor(public roomService: RoomService) {}
 
-  ngOnInit(): void {
-    this.roomService.setSummary(this.roomMetaData.summaries || []);
-  }
+  ngOnInit(): void {}
 }

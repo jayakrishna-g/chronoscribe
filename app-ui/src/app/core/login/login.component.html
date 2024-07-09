@@ -1,12 +1,7 @@
 <div class="login-page">
-  <div class="login-container">
-    <h1>Live Transcription App</h1>
-    <mat-card>
-      @if (formChoice === 'login') {
-      <mat-card-title>Login</mat-card-title>
-      } @if (formChoice === 'signup') {
-      <mat-card-title>Sign Up</mat-card-title>
-      }
+  <div class="login-container border rounded-lg p-4 bg-white w-full">
+    <h1>Chronoscribe</h1>
+    <div>
       <mat-radio-group aria-label="Select one option" [(ngModel)]="formChoice">
         <mat-radio-button value="login" [checked]="true" routerLink="./../login"> Login </mat-radio-button>
         <mat-radio-button value="signup" [checked]="false" routerLink="./../signup"> Signup </mat-radio-button>
@@ -69,6 +64,6 @@
         </form>
         }
       </mat-card-content>
-    </mat-card>
+    </div>
   </div>
 </div>

@@ -14,11 +14,16 @@ export interface TranscriptInstance {
 export class RecordingService {
   transcript = new BehaviorSubject<TranscriptInstance[]>([]);
   stopRecording$ = new Subject<boolean>();
-  liveTranscript = new BehaviorSubject<TranscriptInstance>({ content: '', index: 0 });
+  liveTranscript = new Subject<TranscriptInstance>();
   initialLength = 0;
   constructor(private speechRecognition$: SpeechRecognitionService) {
     this.liveTranscript.subscribe((live) => {
-      if (this.transcript.value.length > live.index) {
+      let len = this.transcript.value.length;
+      if (len === 0) {
+        this.transcript.value.push(live);
+        return;
+      }
+      if (this.transcript.value[len - 1].index === live.index) {
         this.transcript.value[live.index] = live;
       } else {
         this.transcript.value.push(live);

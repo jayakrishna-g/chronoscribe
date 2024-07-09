@@ -57,7 +57,6 @@ export class RoomService {
     if (!data?.status) return;
     if (data?.type !== 'broadcast') return;
     let body = data.body;
-    console.log(body);
     switch (body.service) {
       case 'transcript':
         this.handleTranscript(body.message);
@@ -78,8 +77,8 @@ export class RoomService {
         this.handleQuestion(body.message);
         break;
       case 'closeRoom':
-          this.handleCloseRoom(body.message);
-          break;
+        this.handleCloseRoom(body.message);
+        break;
       default:
         break;
     }
@@ -107,7 +106,7 @@ export class RoomService {
     currentStats.forEach((stat) => {
       tot += stat.count;
     });
-    console.log(tot);
+    // console.log(tot);
     currentStats.forEach((stat) => {
       stat.percentage = (stat.count / tot) * 100;
     });
@@ -116,7 +115,7 @@ export class RoomService {
   }
 
   handleQuickQuestion(data: QuizQuestion) {
-    console.log(data);
+    // console.log(data);
     this.quizQuestion_listener.next(data);
   }
 
@@ -143,8 +142,11 @@ export class RoomService {
   handleTranscript(data: TranscriptInstance) {
     console.log(data);
     let currentTranscript = this.transcript_listener.value;
-    console.log(currentTranscript);
-    if (currentTranscript.length > data.index) {
+    let len = currentTranscript.length;
+    // console.log(currentTranscript);
+    if (len === 0) {
+      currentTranscript.push(data);
+    } else if (currentTranscript[len - 1].index == data.index) {
       currentTranscript[data.index] = data;
     } else {
       currentTranscript.push(data);
@@ -163,8 +165,12 @@ export class RoomService {
     });
   }
 
+  getTranscript(roomId: string) {
+    return this.http.get<TranscriptInstance[]>(`/api/room/transcript/${roomId}`);
+  }
+
   closeRoomService(roomId: string) {
-    this.contactRoomService(roomId,'close_room',{});
+    this.contactRoomService(roomId, 'close_room', {});
   }
 
   resetUnreadQuestions() {
@@ -189,6 +195,7 @@ export class RoomService {
   }
 
   get transcript$() {
+    console.log(this.transcript_listener.value);
     return this.transcript_listener.asObservable();
   }
 
@@ -240,7 +247,7 @@ export class RoomService {
     }
     this.websocket$ = websocket(url);
     this.websocket$.subscribe((data) => {
-      console.log(data);
+      // console.log(data);
       this.handleWebsocketData(data);
     });
   }
@@ -255,7 +262,7 @@ export class RoomService {
   }
 
   sendQuickQuestionAnswer(room_id: string, answer: number | any) {
-    console.log(answer);
+    // console.log(answer);
     if (answer !== null || answer !== undefined)
       this.contactRoomService(room_id, 'quick_question_answer', { answer: answer });
   }
@@ -265,6 +272,7 @@ export class RoomService {
   }
 
   setTranscript(transcript: TranscriptInstance[]) {
+    console.log(transcript);
     if (!transcript) return;
     this.transcript_listener.next(transcript);
   }

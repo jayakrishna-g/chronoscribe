@@ -5,17 +5,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { LiveTranscriptionBoardComponent } from 'src/app/shared/components/live-transcription-board/live-transcription-board.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 import { RoomService } from '../room.service';
 import { Room, RoomMetaData } from '../../home/home.component';
+import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 
 @Component({
   selector: 'app-closed-room',
   standalone: true,
   providers: [RoomService],
-  imports: [MatCardModule,
+  imports: [
+    MatCardModule,
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
@@ -23,15 +24,14 @@ import { Room, RoomMetaData } from '../../home/home.component';
     MatInputModule,
     AsyncPipe,
     RoomDetailsComponent,
-    LiveTranscriptionBoardComponent,
     SummaryBoardComponent,
-    NgTemplateOutlet,],
+    NgTemplateOutlet,
+  ],
   templateUrl: './closed-room.component.html',
-  styleUrl: './closed-room.component.scss'
+  styleUrl: './closed-room.component.scss',
 })
 export class ClosedRoomComponent {
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
-
-
+  @Input() transcripts!: TranscriptInstance[];
 }

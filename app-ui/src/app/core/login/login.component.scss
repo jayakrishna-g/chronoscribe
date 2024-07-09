@@ -1,14 +1,21 @@
 @use '@angular/material' as mat;
-
+:host {
+  height: 100vh;
+  width: 100vw;
+}
 .login-page {
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-container {
   @include mat.elevation(2);
   background-color: rgb(255 255 255 / 7%);
   width: 350px;
+  padding: 1rem;
 }
 
 .title {
