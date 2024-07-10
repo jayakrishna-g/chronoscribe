@@ -43,6 +43,9 @@ export class RoomComponent implements OnInit {
   ngOnInit(): void {
     this.room = JSON.parse(this.route.snapshot.data.room);
     this.transcripts = this.route.snapshot.data.transcripts;
+    if (!this.transcripts) {
+      this.transcripts = [];
+    }
     this.roomMetaData = JSON.parse(this.route.snapshot.data.roomMetaData);
     this.loggedInUser = this.authService.getTokenData().email;
   }
