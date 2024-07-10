@@ -31,6 +31,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
+import { IndexeddbService } from 'src/app/shared/services/indexeddb.service';
 
 export type QuizQuestion = {
   question: string;
@@ -68,12 +69,14 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   isRecording: boolean = false;
   quickQuestionForm!: UntypedFormGroup;
   quizQuestion = new BehaviorSubject<QuizQuestion | null>(null);
+  file: File | null = null;
   constructor(
     private route: ActivatedRoute,
     public recordingService: RecordingService,
     public roomService: RoomService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private indexeddbService: IndexeddbService
   ) {}
 
   ngOnInit(): void {
@@ -86,8 +89,10 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.roomService.sendTranscript(params.id || '', transcript);
       });
     });
+    this.indexeddbService.createDatabase();
     this.initQuizQuestionsForm();
     this.scrollToBottom();
+    console.log(this.transcripts);
   }
 
   ngOnDestroy(): void {
@@ -132,6 +137,7 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
       //this.room.is_active = false;
       console.log(result);
       if (result === 'continue') {
+        this.indexeddbService.saveFile(this.file);
         this.roomService.closeRoomService(this.room.id);
       }
       console.log('The dialog was closed');
