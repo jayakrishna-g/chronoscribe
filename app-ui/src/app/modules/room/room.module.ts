@@ -7,17 +7,12 @@ import { JoinRoomComponent } from './join-room/join-room.component';
 import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
 import { AdminRoomComponent } from './admin-room/admin-room.component';
 import { ClosedRoomComponent } from './closed-room/closed-room.component';
+import { RoomService } from './room.service';
+import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule.forRoot(),
-    RoomRoutingModule,
-    RoomComponent,
-    JoinRoomComponent,
-    RoomDetailsComponent,
-    AdminRoomComponent,
-    ClosedRoomComponent,
-  ],
+  imports: [CommonModule, SharedModule.forRoot(), RoomRoutingModule, RoomDetailsComponent, SummaryBoardComponent],
+  declarations: [RoomComponent, JoinRoomComponent, AdminRoomComponent, ClosedRoomComponent],
+  providers: [RoomService],
 })
 export class RoomModule {}
