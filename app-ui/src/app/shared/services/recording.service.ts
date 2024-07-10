@@ -35,6 +35,7 @@ export class RecordingService {
     this.speechRecognition$
       .pipe(retry(), repeat(), continuous(), takeUntil(this.stopRecording$.asObservable()))
       .subscribe((event) => {
+        console.log(event);
         this.liveTranscript.next({
           content: event[event.length - 1].item(0).transcript,
           index: this.initialLength + event.length - 1,

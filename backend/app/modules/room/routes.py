@@ -1,4 +1,4 @@
-from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect, File, UploadFile
 from loguru import logger
 
 from app.core.connection_manager import ConnectionManager
@@ -40,6 +40,11 @@ async def fetch_room(room_id: str):
         return {"error": "Room not found"}
     return room_meta.model_dump_json()
 
+@room_api_router.post("/file/{room_id}")
+async def save_file(room_id: str,file: UploadFile = File(...)):
+    logger.info(f"Saving room file with id {room_id}")
+    logger.info(file)
+    return {"status":"success"}
 
 @room_api_router.get("/transcript/{room_id}")
 async def fetch_room_transcript(room_id: str):

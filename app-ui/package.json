@@ -25,6 +25,8 @@
     "@ng-web-apis/common": "^3.0.6",
     "@ng-web-apis/speech": "^3.0.7",
     "@ngneat/until-destroy": "^8.1.4",
+    "file-saver": "^2.0.5",
+    "fs": "^0.0.1-security",
     "ngx-toastr": "^15.2.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.6.3",
