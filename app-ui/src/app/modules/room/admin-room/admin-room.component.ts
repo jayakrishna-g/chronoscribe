@@ -10,25 +10,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecordingService, TranscriptInstance } from 'src/app/shared/services/recording.service';
-import {
-  Form,
-  UntypedFormArray,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { RoomService } from '../room.service';
 import { Room, RoomMetaData } from '../../home/home.component';
-import { RoomDetailsComponent } from 'src/app/shared/components/room-details/room-details.component';
-import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 
@@ -41,20 +26,7 @@ export type QuizQuestion = {
   selector: 'app-admin-room',
   templateUrl: './admin-room.component.html',
   styleUrls: ['./admin-room.component.scss'],
-  providers: [RoomService],
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatIconModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    AsyncPipe,
-    RoomDetailsComponent,
-    SummaryBoardComponent,
-    NgTemplateOutlet,
-  ],
+  providers: [RecordingService],
 })
 export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;

@@ -13,20 +13,6 @@ import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 
 @Component({
   selector: 'app-closed-room',
-  standalone: true,
-  providers: [RoomService],
-  imports: [
-    MatCardModule,
-    MatIconModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    AsyncPipe,
-    RoomDetailsComponent,
-    SummaryBoardComponent,
-    NgTemplateOutlet,
-  ],
   templateUrl: './closed-room.component.html',
   styleUrl: './closed-room.component.scss',
 })
