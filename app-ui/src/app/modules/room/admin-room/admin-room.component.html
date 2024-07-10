@@ -169,3 +169,13 @@
     }
   </div>
 </ng-template>
+
+<ng-template #exitroomdialog let-onClose="onClose">
+  <div class="p-4 rounded-2xl" style="height: 20vh; width: 60vw; overflow-y: auto">
+  <h1>Closing room</h1>
+  <div class="flex justify-between mt-4">
+  <button type="submit" class="bg-black text-white px-4 py-2 rounded-md w-2/5" (click)="onClose('continue')">Continue</button>
+  <button type="submit" class="bg-black text-white px-4 py-2 rounded-md w-2/5" (click)="onClose('cancel')">Cancel</button>
+</div>
+</div>
+</ng-template>
