@@ -29,18 +29,6 @@ import { TranscriptInstance } from 'src/app/shared/services/recording.service';
   selector: 'app-join-room',
   templateUrl: './join-room.component.html',
   styleUrls: ['./join-room.component.scss'],
-  providers: [RoomService],
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatRadioModule,
-    MatProgressBarModule,
-    MatDialogModule,
-    AsyncPipe,
-    RoomDetailsComponent,
-    SummaryBoardComponent,
-    NgTemplateOutlet,
-  ],
 })
 export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   quiz_question = new BehaviorSubject<QuizQuestion | null>(null);

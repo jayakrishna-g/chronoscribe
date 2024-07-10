@@ -149,8 +149,11 @@ export class RoomService {
       currentTranscript.push(data);
     } else if (currentTranscript[len - 1].index == data.index) {
       currentTranscript[data.index] = data;
-    } else {
+    } else if (currentTranscript[len - 1].index < data.index) {
       currentTranscript.push(data);
+    } else {
+      console.error('Index mismatch');
+      currentTranscript[data.index].content = data.content;
     }
     this.transcript_listener.next(currentTranscript);
   }
