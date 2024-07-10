@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Room, RoomMetaData } from '../../home/home.component';
 import { RoomService } from '../room.service';
@@ -41,8 +41,10 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   question!: string;
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
   @ViewChild('quizdialog') question_dialog!: ElementRef;
+  @ViewChild('exitroomredirectdialog') exitroomredirect_dialog!: TemplateRef<any>;
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
+  private initialLoad = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,10 +70,24 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.roomService.connectToRoom(params.id || '');
     });
     this.roomService.closedRoomFlag$.subscribe((data)=>{
-      if(data){
-        window.location.reload();
+      if (this.initialLoad) {
+        this.initialLoad = false;
+        return;
       }
-      
+      const dialogRef = this.matDialog.open(DisplayDetailsComponent, {
+        data: {
+          template: this.exitroomredirect_dialog,
+        },
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+        if(result === "home"){
+          this.router.navigate(["home"]);
+        } else {
+          window.location.reload();
+        }
+        console.log('The dialog was closed');
+      });
     });
     this.scrollToBottom();
     this.subscribeToQuestions();

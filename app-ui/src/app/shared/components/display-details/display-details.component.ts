@@ -14,4 +14,8 @@ export class DisplayDetailsComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<DisplayDetailsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {}
+
+  onClose(data:any): void {
+    this.dialogRef.close(data);
+  }
 }

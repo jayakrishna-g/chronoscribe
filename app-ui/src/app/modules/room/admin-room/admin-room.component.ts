@@ -53,6 +53,7 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
   @ViewChild('template') template!: TemplateRef<any>;
   @ViewChild('questionsdialog') question_dialog!: TemplateRef<any>;
+  @ViewChild('exitroomdialog') exitroom_dialog!: TemplateRef<any>;
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
 
@@ -115,8 +116,20 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   closeRoom(){
     console.log("exit");
-    this.room.is_active = false;
-    this.roomService.closeRoomService(this.room.id);
+    
+    const dialogRef = this.dialog.open(DisplayDetailsComponent, {
+      data: {
+        template: this.exitroom_dialog,
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      //this.room.is_active = false;
+      console.log(result);
+      if(result === "continue"){
+        this.roomService.closeRoomService(this.room.id);
+      }
+      console.log('The dialog was closed');
+    });
     this.roomService.closedRoomFlag$.subscribe((data)=>{
       if(data){
         window.location.reload();
