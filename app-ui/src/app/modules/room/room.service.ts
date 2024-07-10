@@ -142,6 +142,7 @@ export class RoomService {
   handleTranscript(data: TranscriptInstance) {
     console.log(data);
     let currentTranscript = this.transcript_listener.value;
+    if (!currentTranscript) currentTranscript = [];
     let len = currentTranscript.length;
     // console.log(currentTranscript);
     if (len === 0) {
