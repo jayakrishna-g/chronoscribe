@@ -12,7 +12,6 @@ class TranscriptInstance(BaseModel):
 
 class SummaryInstance(BaseModel):
     content: str
-    index: int
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
@@ -28,6 +27,14 @@ class RoomMetaData(BaseModel):
     name: str
     description: str
     owner_id: str
+
+
+class RoomActivity(BaseModel):
+    room_id: str
+    user_id: str
+    activity: str
+    is_owner: bool = False
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
 class Room(BaseModel):
