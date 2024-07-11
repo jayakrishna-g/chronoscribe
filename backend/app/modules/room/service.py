@@ -9,6 +9,7 @@ from app.modules.room.cache import (
     TranscriptCache,
 )
 from app.modules.room.crud import create_room
+from app.modules.room.gcp import upload_to_gcp
 from app.modules.room.model import Room, RoomCreate, TranscriptInstance
 
 cache_manager = get_cache_manager()
@@ -210,3 +211,29 @@ async def handle_room_socket(websocket, data, room_id, connection_manager):
         global ws_service
         ws_service = WebSocketService()
     await ws_service.handle(websocket, data, room_id, connection_manager)  # type: ignore
+
+class FileService:
+    async def filesave(self, room_id,file):
+        try:
+            bucket_name = "educast"
+            res = await upload_to_gcp(file,bucket_name,room_id)
+            #await save_file(room_id,file)
+            room = await RoomService.instance().get(room_id)
+            room.transcript_file = res
+            await RoomService.instance().put(room_id, room)
+            return res
+        except Exception as e:
+            raise e
+        
+    @staticmethod
+    def instance():
+        _identifier = "file_service"
+        instance: FileService = globals().get(_identifier)  # type: ignore
+
+        if instance:
+            return instance
+
+        else:
+            instance = FileService()
+            globals()[_identifier] = instance
+            return instance
