@@ -8,6 +8,7 @@ import { webSocket } from 'rxjs/webSocket';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { QuizQuestion } from './admin-room/admin-room.component';
+import { RoomActivity } from '../resolvers/rooms.resolver';
 
 export type RoomSocketData = {
   transcript_content: string;
@@ -25,13 +26,18 @@ export type QuizStat = {
   percentage?: number;
 };
 
+export type SummaryInstance = {
+  content: string;
+  timestamp: string;
+};
+
 @Injectable({
   providedIn: 'any',
 })
 export class RoomService {
   private websocket$!: WebSocketSubject<any>;
   transcript_listener = new BehaviorSubject<TranscriptInstance[]>([]);
-  summary_listener = new BehaviorSubject<string[]>([]);
+  summary_listener = new BehaviorSubject<SummaryInstance[]>([]);
   emoji_listener = new BehaviorSubject<Emoji[]>([
     {
       emoji: '😀',
@@ -135,7 +141,7 @@ export class RoomService {
 
   handleSummary(data: string) {
     let currentSummary = this.summary_listener.value;
-    currentSummary.push(data);
+    currentSummary.push({ content: data, timestamp: Date.now().toString() });
     this.summary_listener.next(currentSummary);
   }
 
@@ -175,6 +181,10 @@ export class RoomService {
 
   closeRoomService(roomId: string) {
     this.contactRoomService(roomId, 'close_room', {});
+  }
+
+  collectSummary(roomId: string, start: number, end: number) {
+    this.contactRoomService(roomId, 'summary', { start, end });
   }
 
   resetUnreadQuestions() {
@@ -244,6 +254,14 @@ export class RoomService {
     return this.http.get<RoomMetaData[]>(`/api/room/all/${owner}`);
   }
 
+  getSummary(roomId: string) {
+    return this.http.get<SummaryInstance[]>(`/api/room/summary/${roomId}`);
+  }
+
+  getRoomActivityData() {
+    return this.http.get<RoomActivity[]>(`/api/room/all`);
+  }
+
   connectToRoom(roomId: string) {
     let url = `ws://${window.location.hostname}:4200/ws/room/${roomId}`;
     if (environment.production) {
@@ -281,7 +299,8 @@ export class RoomService {
     this.transcript_listener.next(transcript);
   }
 
-  setSummary(summary: string[]) {
+  setSummary(summary: SummaryInstance[]) {
+    console.log(summary);
     if (!summary) return;
     this.summary_listener.next(summary);
   }

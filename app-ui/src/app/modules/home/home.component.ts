@@ -11,10 +11,12 @@ import {
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TranscriptInstance } from 'src/app/shared/services/recording.service';
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { BehaviorSubject } from 'rxjs';
+import { MatIcon } from '@angular/material/icon';
 
 export interface RoomMetaData {
   room_id?: string;
@@ -37,12 +39,24 @@ export interface Room {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [NgTemplateOutlet, MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    NgTemplateOutlet,
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgForOf,
+    AsyncPipe,
+    MatIcon,
+    NgIf,
+  ],
 })
 export class HomeComponent implements OnInit {
   createRoomForm!: UntypedFormGroup;
   joinRoomForm!: UntypedFormGroup;
   user = this.authService.getTokenData().email;
+  recentRooms = new BehaviorSubject<RoomMetaData[]>([]);
 
   constructor(private http: HttpClient, private router: Router, private authService: AuthenticationService) {}
 
@@ -53,6 +67,9 @@ export class HomeComponent implements OnInit {
     });
     this.joinRoomForm = new UntypedFormGroup({
       roomId: new UntypedFormControl('', Validators.required),
+    });
+    this.http.get<RoomMetaData[]>('/api/room/recent').subscribe((res) => {
+      if (res) this.recentRooms.next(res);
     });
   }
 
@@ -73,6 +90,11 @@ export class HomeComponent implements OnInit {
   joinRoom() {
     if (this.joinRoomForm.valid) {
       this.router.navigate(['room', this.joinRoomForm.controls['roomId'].value]);
+    }
+  }
+  navigateToRoom(roomId: string | undefined) {
+    if (roomId) {
+      this.router.navigate(['room', roomId]);
     }
   }
 }

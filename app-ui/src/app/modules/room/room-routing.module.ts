@@ -4,6 +4,7 @@ import { RoomComponent } from './room.component';
 import { RoomResolver } from '../resolvers/room.resolver';
 import { RoomMetaResolver } from '../resolvers/roomMeta.resolver';
 import { TranscriptResolver } from '../resolvers/transcript.resolver';
+import { SummaryResolver } from '../resolvers/summary.resolver';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
       room: RoomResolver,
       roomMetaData: RoomMetaResolver,
       transcripts: TranscriptResolver,
+      summaries: SummaryResolver,
     },
   },
 ];

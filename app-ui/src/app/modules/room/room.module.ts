@@ -9,9 +9,17 @@ import { AdminRoomComponent } from './admin-room/admin-room.component';
 import { ClosedRoomComponent } from './closed-room/closed-room.component';
 import { RoomService } from './room.service';
 import { SummaryBoardComponent } from 'src/app/shared/components/summary-board/summary-board.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
-  imports: [CommonModule, SharedModule.forRoot(), RoomRoutingModule, RoomDetailsComponent, SummaryBoardComponent],
+  imports: [
+    CommonModule,
+    SharedModule.forRoot(),
+    RoomRoutingModule,
+    RoomDetailsComponent,
+    SummaryBoardComponent,
+    MarkdownModule.forRoot(),
+  ],
   declarations: [RoomComponent, JoinRoomComponent, AdminRoomComponent, ClosedRoomComponent],
   providers: [RoomService],
 })

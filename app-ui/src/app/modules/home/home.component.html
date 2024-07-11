@@ -6,9 +6,31 @@
     </div>
     <div class="flex flex-col gap-4">
       <ng-container *ngTemplateOutlet="joinroom"></ng-container>
+      <ng-container *ngTemplateOutlet="roomlist"></ng-container>
     </div>
   </div>
 </div>
+
+<ng-template #roomlist>
+  <div class="bg-white border rounded-lg p-8 gap-4 max-h-[50vh] overflow-y-auto" *ngIf="recentRooms | async as rooms">
+    <p class="text-xl font-bold">Recent Rooms</p>
+    <div class="grid gap-4">
+      <div
+        *ngFor="let room of recentRooms | async"
+        class="flex flex-row gap-2 bg-gray-100 p-4 rounded-lg justify-between cursor-pointer"
+        (click)="navigateToRoom(room.room_id)"
+      >
+        <div class="flex flex-col gap-2">
+          <span class="text-lg font-bold">{{ room.name }}</span>
+          <span>{{ room.description }}</span>
+        </div>
+        <button class="px-4 py-2 rounded-md">
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #greeting>
   <div class="flex flex-col gap-4 p-8 bg-white border rounded-lg w-full">

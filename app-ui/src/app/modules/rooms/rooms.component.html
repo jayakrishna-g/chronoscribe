@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-1 border rounded-lg p-4 bg-white w-full h-full mx-auto">
+  <span class="text-2xl">Rooms</span>
+  <span>Rooms you have created or joined</span>
+  <div class="overflow-y-auto h-full w-full">
+    <div
+      *ngFor="let room of roomActivities | async"
+      class="flex flex-row gap-2 bg-gray-100 p-4 rounded-lg justify-between cursor-pointer"
+    >
+      <div class="flex flex-col gap-2">
+        <span class="text-lg font-bold">{{ room.room_id }}</span>
+        <span>{{ room.room_id }}</span>
+      </div>
+      <button class="px-4 py-2 rounded-md">
+        <!-- <mat-icon>open_in_new</mat-icon> -->
+      </button>
+    </div>
+  </div>
+</div>
