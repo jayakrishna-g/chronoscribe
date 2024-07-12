@@ -50,7 +50,6 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     public recordingService: RecordingService,
     public roomService: RoomService,
     private dialog: MatDialog,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -108,6 +107,14 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
+  createFile(transcripts:any): string{
+    let finalString = "";
+    for(let i=0;i<transcripts.length;i++){
+      finalString = finalString + transcripts[i].content;
+    }
+    return finalString;
+  }
+
   closeRoom() {
     console.log('exit');
 
@@ -118,9 +125,15 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
     dialogRef.afterClosed().subscribe((result) => {
       //this.room.is_active = false;
-      console.log(result);
+      
       if (result === 'continue') {
-        this.roomService.closeRoomService(this.room.id);
+        let file = new Blob([this.createFile(this.transcripts)], { type: "text/plain" });
+        this.roomService.saveFile(file, this.room.id).subscribe((res)=>{
+          console.log(res.status);
+          if(res.status === "success"){
+          this.roomService.closeRoomService(this.room.id);
+          }
+        }); 
       }
       console.log('The dialog was closed');
     });

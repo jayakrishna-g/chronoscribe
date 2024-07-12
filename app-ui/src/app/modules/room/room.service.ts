@@ -187,6 +187,7 @@ export class RoomService {
     this.contactRoomService(roomId, 'summary', { start, end });
   }
 
+
   resetUnreadQuestions() {
     this.unreadQuestions.next(0);
   }
@@ -247,6 +248,12 @@ export class RoomService {
 
   getRoomData(roomId: string) {
     return this.http.get<Room>(`/api/room/data/${roomId}`);
+  }
+
+  saveFile(file: Blob, roomId: string){
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.http.post<any>(`/api/room/file/${roomId}`,formData);
   }
 
   getRooms() {

@@ -1,12 +1,13 @@
 import asyncio
 import json
 
-from fastapi import APIRouter, Depends, FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, FastAPI, File, UploadFile, WebSocket, WebSocketDisconnect
 from loguru import logger
 
 from app.core.connection_manager import ConnectionManager
 from app.modules.room.model import RoomCreate, RoomUpdate
 from app.modules.room.service import (
+    FileService,
     RoomActivityService,
     RoomMetaService,
     RoomService,
@@ -67,6 +68,14 @@ async def fetch_room(room_id: str):
     if not room_meta:
         return {"error": "Room not found"}
     return room_meta.model_dump_json()
+
+
+@room_api_router.post("/file/{room_id}")
+async def save_file(room_id: str, file: UploadFile = File(...)):
+    logger.info(f"Saving room file with id {room_id}")
+    logger.info(file)
+    gcs_url = await FileService.instance().filesave(room_id, file)
+    return {"status": "success", "gcp_url": gcs_url}
 
 
 @room_api_router.get("/transcript/{room_id}")

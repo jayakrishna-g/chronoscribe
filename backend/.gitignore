@@ -8,6 +8,7 @@ htmlcov
 .venv
 .ruff_cache
 .alembic
+.env
 
 .vscode/*
 !.vscode/settings.json
@@ -15,3 +16,4 @@ htmlcov
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+app/modules/room/gcp/*
