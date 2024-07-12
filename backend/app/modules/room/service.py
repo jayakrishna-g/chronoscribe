@@ -1,8 +1,11 @@
+import json
+
 from loguru import logger
 
 from app.core.connection_manager import ConnectionManager
 from app.modules.room import CacheName, get_cache_manager
 from app.modules.room.cache import (
+    RoomActivityCache,
     RoomCache,
     RoomMetaCache,
     SummaryCache,
@@ -10,7 +13,14 @@ from app.modules.room.cache import (
 )
 from app.modules.room.crud import create_room
 from app.modules.room.gcp import upload_to_gcp
-from app.modules.room.model import Room, RoomCreate, TranscriptInstance
+from app.modules.room.model import (
+    Room,
+    RoomActivity,
+    RoomCreate,
+    SummaryInstance,
+    TranscriptInstance,
+)
+from app.modules.summarizer.google_llm_model import TranscriptSummarizer
 
 cache_manager = get_cache_manager()
 connection_manager = ConnectionManager.instance()
@@ -26,6 +36,44 @@ def create_broadcast_message(service, message):
         "type": "broadcast",
         "body": {"service": service, "message": message},
     }
+
+
+class RoomActivityService:
+    def __init__(self) -> None:
+        self._cache: RoomActivityCache = cache_manager.get_cache(
+            CacheName.room_activity
+        )  # type: ignore
+
+    async def get(self, room_id, user_id):
+        return await self._cache.get_room_activity(room_id, user_id)
+
+    async def write(self, room_id, user_id, value):
+        await self._cache.set_room_activity(room_id, user_id, value)
+
+    async def get_recent(self, user_id):
+        return await self._cache.get_user_activity(user_id)
+
+    async def get_all(self, user_id):
+        return await self._cache.get_all(user_id)
+
+    async def register_activity(self, room_id, user_id, activity, is_owner=False):
+        await self.write(
+            room_id,
+            user_id,
+            RoomActivity(
+                room_id=room_id, user_id=user_id, activity=activity, is_owner=is_owner
+            ),
+        )
+
+    @staticmethod
+    def instance():
+        instance: RoomActivityService = globals().get("room_activity_service")  # type: ignore
+        if instance:
+            return instance
+        else:
+            instance = RoomActivityService()
+            globals()["room_activity_service"] = instance
+            return instance
 
 
 class RoomMetaService:
@@ -76,10 +124,19 @@ class SummaryService:
         self._cache: SummaryCache = cache_manager.get_cache(CacheName.summary)  # type: ignore
 
     async def get(self, room_id):
-        return self._cache.get_summary(room_id)
+        return await self._cache.get_summary(room_id)
 
-    async def write(self, room_id, value):
-        return self._cache.set_summary(room_id, value)
+    async def write(self, room_id, value: str):
+        return await self._cache.set_summary(room_id, [SummaryInstance(content=value)])
+
+    async def generate(self, room_id, content):
+        # print("Generating summary" + content)
+
+        transcript = json.dumps(content)
+        summary = TranscriptSummarizer.instance().get_summary(transcript)
+        logger.info("Summary generated", summary)
+        await self.write(room_id, summary)
+        return summary
 
     @staticmethod
     def instance():
@@ -182,7 +239,31 @@ class WebSocketService:
             room_id, create_broadcast_message("closeRoom", True)
         )
 
+    async def summary(self, room_id, websocket, data, connection_manager):
+        room = await RoomService.instance().get(room_id)
+        if room is None:
+            raise ValueError("Room not found")
+        if "start" in data and "end" in data:
+            transcript_service = TranscriptService.instance()
+            transcript = await transcript_service.get(room_id)
+            if transcript:
+                summary_service = SummaryService.instance()
+                cur_content = [
+                    transcript.json()
+                    for transcript in transcript[data["start"] : data["end"]]
+                ]
+                print("Current Content", cur_content)
+                print(data["start"], data["end"])
+                logger.info("Current Content", cur_content)
+                if cur_content:
+                    gen_summary = await summary_service.generate(room_id, cur_content)
+                    if gen_summary:
+                        await connection_manager.broadcast(
+                            room_id, create_broadcast_message("summary", gen_summary)
+                        )
+
     def map_service(self, service_name):
+        print("Service Name", service_name)
         services = {
             "transcript": self.transcript,
             "emoji": self.emoji,
@@ -190,6 +271,7 @@ class WebSocketService:
             "quick_question_answer": self.quick_question_answer,
             "question": self.question,
             "close_room": self.closeRoom,
+            "summary": self.summary,
         }
         return services.get(service_name)
 
@@ -212,19 +294,20 @@ async def handle_room_socket(websocket, data, room_id, connection_manager):
         ws_service = WebSocketService()
     await ws_service.handle(websocket, data, room_id, connection_manager)  # type: ignore
 
+
 class FileService:
-    async def filesave(self, room_id,file):
+    async def filesave(self, room_id, file):
         try:
             bucket_name = "educast"
-            res = await upload_to_gcp(file,bucket_name,room_id)
-            #await save_file(room_id,file)
+            res = await upload_to_gcp(file, bucket_name, room_id)
+            # await save_file(room_id,file)
             room = await RoomService.instance().get(room_id)
             room.transcript_file = res
             await RoomService.instance().put(room_id, room)
             return res
         except Exception as e:
             raise e
-        
+
     @staticmethod
     def instance():
         _identifier = "file_service"

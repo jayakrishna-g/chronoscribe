@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Room, RoomMetaData } from '../../home/home.component';
-import { RoomService } from '../room.service';
+import { RoomService, SummaryInstance } from '../room.service';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
 import { BehaviorSubject } from 'rxjs';
@@ -41,6 +41,8 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
   @Input() transcripts!: TranscriptInstance[];
+  @Input() summaries!: SummaryInstance[];
+
   private initialLoad = true;
 
   constructor(
@@ -54,6 +56,7 @@ export class JoinRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit(): void {
     this.roomService.setTranscript(this.transcripts);
+    this.roomService.setSummary(this.summaries);
     this.route.params.subscribe((params) => {
       this.roomService.connectToRoom(params.id || '');
     });

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { RoomService } from './room.service';
+import { RoomService, SummaryInstance } from './room.service';
 import { TranscriptInstance } from 'src/app/shared/services/recording.service';
 import { Room, RoomMetaData } from '../home/home.component';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
@@ -16,6 +16,7 @@ export class RoomComponent implements OnInit {
   roomMetaData!: RoomMetaData;
   loggedInUser = 'user';
   transcripts!: TranscriptInstance[];
+  summaries!: SummaryInstance[];
 
   constructor(
     private route: ActivatedRoute,
@@ -29,6 +30,11 @@ export class RoomComponent implements OnInit {
     if (!this.transcripts) {
       this.transcripts = [];
     }
+    this.summaries = this.route.snapshot.data.summaries;
+    if (!this.summaries) {
+      this.summaries = [];
+    }
+    console.log(this.route.snapshot.data.summaries, this.summaries);
     this.roomMetaData = JSON.parse(this.route.snapshot.data.roomMetaData);
     this.loggedInUser = this.authService.getTokenData().email;
   }

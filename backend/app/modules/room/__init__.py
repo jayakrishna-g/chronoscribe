@@ -1,6 +1,7 @@
 from enum import Enum
 
 from app.modules.room.cache import (
+    RoomActivityCache,
     RoomCache,
     RoomMetaCache,
     SummaryCache,
@@ -14,12 +15,19 @@ class CacheName(str, Enum):
     summary = "summary"
     room_meta = "room_meta"
     genric = "generic"
+    room_activity = "room_activity"
 
 
 class CacheManager:
     def __init__(self) -> None:
         self.cache_list: dict[
-            CacheName, RoomCache | RoomMetaCache | TranscriptCache | SummaryCache | None
+            CacheName,
+            RoomCache
+            | RoomMetaCache
+            | TranscriptCache
+            | SummaryCache
+            | None
+            | RoomActivityCache,
         ] = {}
         for cache_name in CacheName:
             self.cache_list[cache_name] = None
@@ -36,6 +44,8 @@ class CacheManager:
             self.cache_list[cache_name] = SummaryCache()
         elif cache_name == CacheName.room_meta:
             self.cache_list[cache_name] = RoomMetaCache()
+        elif cache_name == CacheName.room_activity:
+            self.cache_list[cache_name] = RoomActivityCache()
         else:
             raise Exception("Invalid Cache Name")
 

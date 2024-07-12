@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 
+import { MarkdownModule } from 'ngx-markdown';
+
 @Component({
   selector: 'app-summary-board',
   standalone: true,

@@ -11,12 +11,12 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecordingService, TranscriptInstance } from 'src/app/shared/services/recording.service';
 import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { RoomService } from '../room.service';
+import { BehaviorSubject, interval } from 'rxjs';
+import { RoomService, SummaryInstance } from '../room.service';
 import { Room, RoomMetaData } from '../../home/home.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DisplayDetailsComponent } from 'src/app/shared/components/display-details/display-details.component';
-import { writeFileSync } from "fs";
+import { skip } from 'rxjs/operators';
 
 export type QuizQuestion = {
   question: string;
@@ -37,10 +37,14 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() room!: Room;
   @Input() roomMetaData!: RoomMetaData;
   @Input() transcripts!: TranscriptInstance[];
+  @Input() summaries!: SummaryInstance[];
 
   isRecording: boolean = false;
   quickQuestionForm!: UntypedFormGroup;
   quizQuestion = new BehaviorSubject<QuizQuestion | null>(null);
+  timeOut = 5000;
+  collectedTranscripts: TranscriptInstance[] = [];
+  startIndex = this.transcripts?.length || 0;
   constructor(
     private route: ActivatedRoute,
     public recordingService: RecordingService,
@@ -50,16 +54,27 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit(): void {
     this.roomService.setTranscript(this.transcripts);
+    this.roomService.setSummary(this.summaries);
+    this.startIndex = this.transcripts?.length || 0;
     this.recordingService.setTranscript(this.transcripts);
     this.route.params.subscribe((params) => {
       this.roomService.connectToRoom(params.id || '');
       this.recordingService.liveTranscript$.subscribe((transcript) => {
-        console.log(transcript);
         this.roomService.sendTranscript(params.id || '', transcript);
       });
     });
     this.initQuizQuestionsForm();
     this.scrollToBottom();
+    interval(this.timeOut)
+      // .pipe(skip(1))
+      .subscribe(() => {
+        let startIndex = this.startIndex;
+        let endIndex = this.recordingService.transcript.value.length;
+        console.log(startIndex, endIndex);
+        if (startIndex === endIndex) return;
+        this.startIndex = endIndex;
+        this.roomService.collectSummary(this.room.id || '', startIndex, endIndex);
+      });
   }
 
   ngOnDestroy(): void {
