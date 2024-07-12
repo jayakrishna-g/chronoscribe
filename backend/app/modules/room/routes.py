@@ -1,7 +1,15 @@
 import asyncio
 import json
 
-from fastapi import APIRouter, FastAPI, File, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import (
+    APIRouter,
+    Depends,
+    FastAPI,
+    File,
+    UploadFile,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from loguru import logger
 
 from app.core.connection_manager import ConnectionManager

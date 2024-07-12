@@ -42,14 +42,14 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
   isRecording: boolean = false;
   quickQuestionForm!: UntypedFormGroup;
   quizQuestion = new BehaviorSubject<QuizQuestion | null>(null);
-  timeOut = 5000;
+  timeOut = 500000;
   collectedTranscripts: TranscriptInstance[] = [];
   startIndex = this.transcripts?.length || 0;
   constructor(
     private route: ActivatedRoute,
     public recordingService: RecordingService,
     public roomService: RoomService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -107,9 +107,9 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
-  createFile(transcripts:any): string{
-    let finalString = "";
-    for(let i=0;i<transcripts.length;i++){
+  createFile(transcripts: any): string {
+    let finalString = '';
+    for (let i = 0; i < transcripts.length; i++) {
       finalString = finalString + transcripts[i].content;
     }
     return finalString;
@@ -125,15 +125,15 @@ export class AdminRoomComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
     dialogRef.afterClosed().subscribe((result) => {
       //this.room.is_active = false;
-      
+
       if (result === 'continue') {
-        let file = new Blob([this.createFile(this.transcripts)], { type: "text/plain" });
-        this.roomService.saveFile(file, this.room.id).subscribe((res)=>{
+        let file = new Blob([this.createFile(this.transcripts)], { type: 'text/plain' });
+        this.roomService.saveFile(file, this.room.id).subscribe((res) => {
           console.log(res.status);
-          if(res.status === "success"){
-          this.roomService.closeRoomService(this.room.id);
+          if (res.status === 'success') {
+            this.roomService.closeRoomService(this.room.id);
           }
-        }); 
+        });
       }
       console.log('The dialog was closed');
     });

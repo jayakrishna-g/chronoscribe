@@ -24,7 +24,7 @@ export class NavListComponent implements OnInit {
 
   commonItems: NavListItem[] = [
     { icon: 'home', route: 'home', name: 'Home' },
-    { icon: 'settings', route: 'room', name: 'Rooms' },
+    { icon: 'settings', route: 'rooms', name: 'Rooms' },
   ];
 
   mobileItems: NavListItem[] = [...this.commonItems];
