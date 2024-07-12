@@ -1,4 +1,4 @@
-from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, FastAPI, WebSocket, WebSocketDisconnect, File, UploadFile
 from loguru import logger
 
 from app.core.connection_manager import ConnectionManager
@@ -7,8 +7,10 @@ from app.modules.room.service import (
     RoomMetaService,
     RoomService,
     TranscriptService,
+    FileService,
     handle_room_socket,
 )
+import json
 
 room_router = APIRouter()
 api_prefix = "/api/room"
@@ -40,6 +42,12 @@ async def fetch_room(room_id: str):
         return {"error": "Room not found"}
     return room_meta.model_dump_json()
 
+@room_api_router.post("/file/{room_id}")
+async def save_file(room_id: str,file: UploadFile = File(...)):
+    logger.info(f"Saving room file with id {room_id}")
+    logger.info(file)
+    gcs_url = await FileService.instance().filesave(room_id,file)	
+    return {"status":"success", "gcp_url": gcs_url}
 
 @room_api_router.get("/transcript/{room_id}")
 async def fetch_room_transcript(room_id: str):
@@ -80,7 +88,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
     try:
         while True:
             data = await websocket.receive_text()
-            data = eval(data)
+            data = json.loads(data)
             await handle_room_socket(websocket, data, room_id, connection_manager)
     except WebSocketDisconnect:
         await connection_manager.disconnect(websocket, room_id)
