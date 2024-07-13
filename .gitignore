@@ -6,7 +6,7 @@ ui/node_modules
 backend/.pytest_cache
 backend/.coverage
 backend/bart_base.pth
-summarizer
+summarizer/venv
 .angular
 # System Files
 .DS_Store
