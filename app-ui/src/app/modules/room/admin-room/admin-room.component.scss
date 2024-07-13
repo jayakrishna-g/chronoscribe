@@ -1,0 +1,11 @@
+::ng-deep {
+  .mdc-notched-outline__notch {
+    border-right-color: transparent !important;
+    padding-right: 2px !important;
+    margin-right: -2px !important;
+  }
+
+  .mdc-notched-outline {
+    height: fit-content;
+  }
+}
