@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { SpeechRecognitionService, continuous } from '@ng-web-apis/speech';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
-import { repeat, retry, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, from, of, combineLatest } from 'rxjs';
+import { catchError, map, mergeMap, repeat, retry, switchMap, takeUntil } from 'rxjs/operators';
 
 export interface TranscriptInstance {
   content: string;
   index: number;
 }
 
-export interface LiveTranscriptInstance {
-  content: string;
-  index: number;
+export interface LiveTranscriptInstance extends TranscriptInstance {
   isFinal: boolean;
+}
+
+export interface TranslatedTranscript extends TranscriptInstance {
+  translatedContent: string;
 }
 
 @Injectable()
@@ -20,6 +22,8 @@ export class RecordingService {
   stopRecording$ = new Subject<boolean>();
   liveTranscript = new Subject<LiveTranscriptInstance>();
   initialLength = 0;
+  private language$ = new BehaviorSubject<string>('en-US');
+
   constructor(private speechRecognition$: SpeechRecognitionService) {
     this.liveTranscript.subscribe((live) => {
       console.warn(live);
@@ -46,18 +50,47 @@ export class RecordingService {
       }
     });
   }
+
   startRecording(): void {
-    // Create a new instance of SpeechRecognition
-    this.speechRecognition$
-      .pipe(retry(), repeat(), continuous(), takeUntil(this.stopRecording$.asObservable()))
-      .subscribe((event) => {
-        console.log(event);
+    this.language$
+      .pipe(
+        switchMap((lang) => this.createSpeechRecognition(lang)),
+        takeUntil(this.stopRecording$)
+      )
+      .subscribe();
+  }
+
+  private createSpeechRecognition(language: string): Observable<SpeechRecognitionResult[]> {
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = language;
+
+    return new Observable<SpeechRecognitionResult[]>((observer) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
+        observer.next(Array.from(event.results));
+        const lastResult = event.results[event.results.length - 1];
         this.liveTranscript.next({
-          content: event[event.length - 1].item(0).transcript,
-          index: this.initialLength + event.length - 1,
-          isFinal: event[event.length - 1].isFinal,
+          content: lastResult[0].transcript,
+          index: this.initialLength + event.results.length - 1,
+          isFinal: lastResult.isFinal,
         });
-      });
+      };
+
+      recognition.onerror = (error: SpeechRecognitionErrorEvent) => {
+        observer.error(error);
+      };
+
+      recognition.onend = () => {
+        observer.complete();
+      };
+
+      recognition.start();
+
+      return () => {
+        recognition.stop();
+      };
+    }).pipe(retry(), repeat());
   }
 
   stopRecording(): void {
@@ -67,18 +100,25 @@ export class RecordingService {
   setTranscript(transcript: TranscriptInstance[]): void {
     this.transcript.next(transcript);
     this.initialLength = transcript.length;
-    console.log(this.transcript.value);
+  }
+
+  setLanguage(language: string): void {
+    this.language$.next(language);
   }
 
   get transcript$(): Observable<TranscriptInstance[]> {
     return this.transcript.asObservable();
   }
 
-  get liveTranscript$(): Observable<TranscriptInstance> {
+  get liveTranscript$(): Observable<LiveTranscriptInstance> {
     return this.liveTranscript.asObservable();
   }
 
   get summary$(): Observable<string[]> {
     return of(['Summary']);
+  }
+
+  get currentLanguage$(): Observable<string> {
+    return this.language$.asObservable();
   }
 }
